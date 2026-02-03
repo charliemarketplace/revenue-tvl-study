@@ -138,3 +138,19 @@ Monte Carlo paths use a Brownian bridge to hit TVL targets. This is scenario ana
 > "What's the probability OP reaches $X?"
 
 **Key assumption:** The ΔTVL → Δactivity relationship is path-independent. A 1% TVL increase has the same activity effect whether the path eventually hits $500M or $1B. This is defensible for conditional projection but should be stated explicitly.
+
+## Total + Composition Variable Construction
+
+The total + composition restructuring (e.g., `log(total_dex_vol) + btc_share + eth_share`) is an **implementation detail in data prep**, not a change to the model structure.
+
+Panel approach, differences, two-link model, Monte Carlo—all unchanged. This is just how we construct RHS variables in `01_load_and_clean.py`:
+
+```
+# Raw:     dex_vol_btc, dex_vol_eth, dex_vol_stable
+# Derived: total_dex_vol = sum of above
+#          btc_share = btc / total
+#          eth_share = eth / total
+# Model:   Δlog(total) + Δ(btc_share) + Δ(eth_share)
+```
+
+Separates scale ("how much volume") from composition ("what kind"). Reduces collinearity and enables cleaner interpretation of composition effects.
