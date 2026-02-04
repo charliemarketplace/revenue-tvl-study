@@ -154,3 +154,96 @@ Panel approach, differences, two-link model, Monte Carlo—all unchanged. This i
 ```
 
 Separates scale ("how much volume") from composition ("what kind"). Reduces collinearity and enables cleaner interpretation of composition effects.
+
+## Endogeneity Acknowledgment
+
+ΔTVL → Δactivity is a simplification. Reality is likely:
+
+```
+Exogenous shock (bull market, narrative, macro)
+    ├── → ΔTVL
+    └── → Δactivity
+```
+
+Both are responses to underlying conditions, not causally linked. Acceptable for this analysis because:
+- Goal is conditional projection ("if TVL reaches X, expect Y fees"), not causal inference
+- Audience is crypto-native and understands "everything moves together"
+- Stated assumption: OP's growth composition resembles Base/Arbitrum
+
+## Data Specification
+
+### Raw Data (per chain, per day)
+
+| Column | Unit | Definition |
+|--------|------|------------|
+| `chain` | — | Chain identifier (base, arbitrum, op) |
+| `date` | — | Calendar date |
+| `tvl_usd` | USD | Total value locked |
+| `fees_eth` | ETH | Sequencer fees collected (native unit) |
+| `dex_vol_btc` | USD | DEX sell volume in BTC pairs |
+| `dex_vol_eth` | USD | DEX sell volume in ETH pairs |
+| `dex_vol_stable` | USD | DEX volume in stablecoin pairs |
+| `borrow_vol_usd` | USD | Daily new borrows initiated (flow) |
+| `stablecoin_supply` | USD | Total stablecoin supply on chain |
+| `eth_high` | USD | ETH daily high price |
+| `eth_low` | USD | ETH daily low price |
+| `eth_open` | USD | ETH daily open price |
+
+### Derived Columns
+
+| Column | Definition |
+|--------|------------|
+| `total_dex_vol` | `dex_vol_btc + dex_vol_eth + dex_vol_stable` |
+| `dex_btc_share` | `dex_vol_btc / total_dex_vol` |
+| `dex_eth_share` | `dex_vol_eth / total_dex_vol` |
+| `eth_volatility` | `(eth_high - eth_low) / eth_open` |
+| `log_*` | Log-transformed versions of levels |
+
+### Model-Ready Columns (differenced)
+
+| Column | Definition |
+|--------|------------|
+| `d_log_tvl` | `Δlog(tvl_usd)` |
+| `d_log_fees` | `Δlog(fees_eth)` — **dependent variable** |
+| `d_log_total_dex_vol` | `Δlog(total_dex_vol)` |
+| `d_log_borrow_vol` | `Δlog(borrow_vol_usd)` |
+| `d_dex_btc_share` | `Δ(dex_btc_share)` |
+| `d_dex_eth_share` | `Δ(dex_eth_share)` |
+| `eth_volatility` | Level (already stationary) |
+
+## Lag Structure Decision
+
+**Question:** Should ΔTVL_t predict Δactivity_t (same-day) or Δactivity_{t+1} (lagged)?
+
+**Decision:** Start same-day. For Monte Carlo over 180-day horizon, a 1-day lag doesn't materially change cumulative results. Path variance and coefficient variance dominate. Can check lagged spec as robustness if needed.
+
+## Panel Regression Notes
+
+- Fixed effects (FE) is correct—chain-specific unobservables likely correlated with regressors
+- Two-way FE (chain + time) could absorb market-wide daily shocks
+- N=2 chains is thin for clustering; use HAC standard errors instead
+- Honest framing: "pooling two time series with shared slope and chain-specific intercepts"
+
+## Presentation Structure
+
+Preferred narrative flow:
+
+1. **Title** — case study framing
+2. **Intro to me** — credibility framing, context that this demonstrates skills for a role
+3. **Context** — the case study goal
+4. **Main takeaway** — upfront, before the journey
+5. **Agenda** — roadmap of how we got to the takeaway
+6. **Data collected** — sources, coverage, variables
+7. **Model design choice & why** — two-link model, panel, differences
+8. **Summary of data exploration** — distributions, stationarity, correlations
+9. **Model results** — coefficients, R², Shapley output
+10. **Interpreting results & deriving BI** — "DEX volume matters most, here's why"
+11. **Validation & forecasting approach** — OP holdout, Monte Carlo setup (details TBD)
+12. **Forecasting results** — P10/P50/P90 at TVL targets
+13. **Benchmarking BI & recommendations** — tie to hands-on chain experience (POL, TVL composition curation, onboarding strategies)
+
+**Presentation best practices:**
+- Tell them what you'll tell them → tell them → tell them what you told them
+- Slide titles state the point, not the topic ("DEX volume drives 50% of fee variance" not "Analysis")
+- Visuals should be self-evident with title as the takeaway
+- One-sentence and one-paragraph takeaways prepared upfront
