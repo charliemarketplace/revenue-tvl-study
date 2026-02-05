@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+MathJax = { tex: { inlineMath: [['$','$']] } };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<style>
+body { font-family: Georgia, serif; max-width: 720px; margin: 60px auto; line-height: 1.8; color: #1a1a1a; }
+h3 { margin-top: 2em; color: #333; border-bottom: 1px solid #ccc; padding-bottom: 4px; }
+.eq { text-align: center; margin: 1.5em 0; font-size: 1.1em; }
+</style>
+</head>
+<body>
+
+<h3>Link 1a — Hypothesized (failed)</h3>
+<div class="eq">
+$$\Delta\log(\text{DEX\_vol})_{it} = \alpha + \beta_1 \,\Delta\log(\text{TVL})_{it} + \beta_2 \cdot \text{volatility}_t + \gamma_i + \varepsilon_{it}$$
+</div>
+
+<h3>Link 1b — Hypothesized (failed)</h3>
+<div class="eq">
+$$\Delta\log(\text{Borrow\_vol})_{it} = \alpha + \beta_1 \,\Delta\log(\text{TVL})_{it} + \beta_2 \cdot \text{volatility}_t + \gamma_i + \varepsilon_{it}$$
+</div>
+
+<h3>Link 2 — Estimated (R&sup2; = 0.578)</h3>
+<div class="eq">
+$$\Delta\log(\text{fees})_{it} = \alpha + \beta_1 \,\Delta\log(\text{DEX\_vol})_{it} + \beta_2 \,\Delta\log(\text{Borrow\_vol})_{it} + \beta_3 \,\Delta\log(n_{\text{tx}})_{it}$$
+$$+ \;\beta_4 \,\Delta(\text{ETH\_share}^{\,dex})_{it} + \beta_5 \,\Delta(\text{BTC\_share}^{\,dex})_{it}$$
+$$+ \;\beta_6 \,\Delta(\text{ETH\_share}^{\,borrow})_{it} + \beta_7 \,\Delta(\text{BTC\_share}^{\,borrow})_{it}$$
+$$+ \;\beta_8 \cdot \text{volatility}_t + \gamma_i + \varepsilon_{it}$$
+</div>
+
+<h3>Monte Carlo — Daily Fee</h3>
+<div class="eq">
+$$\text{daily\_fee}_t = \exp\!\Big(\log(\tilde{f}^{\,OP}_{\text{Dec}}) \;+\; \hat{\boldsymbol{\beta}} \cdot \mathbf{x}_t \;+\; e_t\Big)$$
+</div>
+
+<h3>Monte Carlo — Annual Fees</h3>
+<div class="eq">
+$$\text{Annual fees} = \sum_{t=1}^{365} \text{daily\_fee}_t$$
+</div>
+
+<h3>Monte Carlo — TVL Path</h3>
+<div class="eq">
+$$\log(\text{TVL}_t) = \log(\text{TVL}_{t-1}) + \Delta\log(\text{TVL}_t)$$
+</div>
+
+</body>
+</html>
