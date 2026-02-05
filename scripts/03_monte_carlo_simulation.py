@@ -55,6 +55,7 @@ def estimate_link2(train_df):
     feature_cols = [
         "d_log_total_dex_vol",
         "d_log_total_borrow_vol",
+        "d_log_n_tx",
         "d_dex_btc_share",
         "d_dex_eth_share",
         "d_borrow_btc_share",
@@ -91,15 +92,17 @@ def prepare_block_arrays(df, block_size=BLOCK_SIZE):
         block_residual_indices: list of arrays mapping blocks to residual indices
     """
     # Columns needed for simulation
+    # Order matters: must match the feature extraction in run_simulations_vectorized
     shock_cols = [
-        "d_log_tvl",
-        "d_log_total_dex_vol",
-        "d_log_total_borrow_vol",
-        "d_dex_btc_share",
-        "d_dex_eth_share",
-        "d_borrow_btc_share",
-        "d_borrow_eth_share",
-        "eth_volatility",
+        "d_log_tvl",           # index 0
+        "d_log_total_dex_vol", # index 1
+        "d_log_total_borrow_vol", # index 2
+        "d_log_n_tx",          # index 3
+        "d_dex_btc_share",     # index 4
+        "d_dex_eth_share",     # index 5
+        "d_borrow_btc_share",  # index 6
+        "d_borrow_eth_share",  # index 7
+        "eth_volatility",      # index 8
     ]
 
     blocks = []
@@ -182,18 +185,20 @@ def run_simulations_vectorized(n_sims, starting_state, blocks, coefficients, res
 
             for day in range(BLOCK_SIZE):
                 # Update TVL (accumulates - it's a stock variable)
-                log_tvl += block[day, 0]
+                log_tvl += block[day, 0]  # d_log_tvl
 
                 # Build feature vector for fee prediction
+                # Order must match model: dex_vol, borrow_vol, n_tx, btc_share, eth_share, borrow_btc, borrow_eth, volatility
                 features = np.array([
                     1.0,              # const
                     block[day, 1],    # d_log_total_dex_vol
                     block[day, 2],    # d_log_total_borrow_vol
-                    block[day, 3],    # d_dex_btc_share
-                    block[day, 4],    # d_dex_eth_share
-                    block[day, 5],    # d_borrow_btc_share
-                    block[day, 6],    # d_borrow_eth_share
-                    block[day, 7],    # eth_volatility
+                    block[day, 3],    # d_log_n_tx
+                    block[day, 4],    # d_dex_btc_share
+                    block[day, 5],    # d_dex_eth_share
+                    block[day, 6],    # d_borrow_btc_share
+                    block[day, 7],    # d_borrow_eth_share
+                    block[day, 8],    # eth_volatility
                     0.0,              # chain_base (OP = 0)
                 ])
 
@@ -215,11 +220,19 @@ def run_simulations_vectorized(n_sims, starting_state, blocks, coefficients, res
         if remaining_days > 0:
             block = blocks[block_indices[sim_idx, n_weeks]]
             for day in range(remaining_days):
-                log_tvl += block[day, 0]
+                log_tvl += block[day, 0]  # d_log_tvl
 
                 features = np.array([
-                    1.0, block[day, 1], block[day, 2], block[day, 3],
-                    block[day, 4], block[day, 5], block[day, 6], block[day, 7], 0.0
+                    1.0,              # const
+                    block[day, 1],    # d_log_total_dex_vol
+                    block[day, 2],    # d_log_total_borrow_vol
+                    block[day, 3],    # d_log_n_tx
+                    block[day, 4],    # d_dex_btc_share
+                    block[day, 5],    # d_dex_eth_share
+                    block[day, 6],    # d_borrow_btc_share
+                    block[day, 7],    # d_borrow_eth_share
+                    block[day, 8],    # eth_volatility
+                    0.0,              # chain_base (OP = 0)
                 ])
 
                 predicted_deviation = np.dot(features, coefficients)

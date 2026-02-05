@@ -50,6 +50,7 @@ def estimate_link2(train_df):
     Link 2: Δactivity → Δfees
 
     d_log_fees ~ d_log_total_dex_vol + d_log_total_borrow_vol
+                 + d_log_n_tx
                  + d_dex_btc_share + d_dex_eth_share
                  + d_borrow_btc_share + d_borrow_eth_share
                  + eth_volatility + chain_fe
@@ -62,6 +63,7 @@ def estimate_link2(train_df):
     feature_cols = [
         "d_log_total_dex_vol",
         "d_log_total_borrow_vol",
+        "d_log_n_tx",
         "d_dex_btc_share",
         "d_dex_eth_share",
         "d_borrow_btc_share",
@@ -197,6 +199,7 @@ def estimate_direct_model(train_df):
         "d_log_tvl",
         "d_log_total_dex_vol",
         "d_log_total_borrow_vol",
+        "d_log_n_tx",
         "eth_volatility",
     ]
 
@@ -242,6 +245,7 @@ def validate_on_holdout(holdout_df, link2_model, feature_cols):
 
     # Prepare X with same columns as training
     X = holdout_df[["d_log_total_dex_vol", "d_log_total_borrow_vol",
+                    "d_log_n_tx",
                     "d_dex_btc_share", "d_dex_eth_share",
                     "d_borrow_btc_share", "d_borrow_eth_share",
                     "eth_volatility", "chain_base"]].copy()
