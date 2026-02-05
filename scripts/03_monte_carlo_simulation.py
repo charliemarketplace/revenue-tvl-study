@@ -26,7 +26,7 @@ warnings.filterwarnings("ignore")
 
 DATA_DIR = Path("data/processed")
 BLOCK_SIZE = 7  # Weekly blocks
-N_SIMULATIONS = 10000
+N_SIMULATIONS = 100000
 HORIZON_DAYS = 365  # 1 year forward
 
 # TVL buckets for conditioning (in millions USD)
