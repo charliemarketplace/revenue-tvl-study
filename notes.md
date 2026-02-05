@@ -398,3 +398,48 @@ Possible directions:
 - Model fees directly with TVL as a covariate (not causal, just correlated)
 - Simulate activity paths, let TVL be a derived outcome
 - Use separate volume elasticities (ETH, BTC, stable) instead of aggregate intensity
+
+## Block Bootstrap Monte Carlo
+
+### Chosen Approach
+
+Sample daily diffs from Base/Arb joint distribution, apply to OP starting state, let TVL be an **outcome** of each simulation (not a target). Then filter simulations by ending TVL to answer "if TVL reached $750M, what fees?"
+
+```
+for sim in range(N_sims):
+    state = op_current  # (log_tvl, log_eth_vol, log_btc_vol, log_stable_vol, log_fees)
+    for week in range(horizon // 7):
+        week_shocks = sample_week(base_arb_diffs)
+        for shock in week_shocks:
+            state = state + shock
+    # Record ending (tvl, cumulative_fees)
+# Group by ending TVL bucket → fee distribution per bucket
+```
+
+### Why Weekly Blocks
+
+i.i.d. day sampling breaks temporal structure:
+- Fees mean-revert (AR(1) = -0.22) — **not weak**
+- Half-life of a fee shock ≈ 3 days: `log(0.5) / log(0.78) ≈ 2.8 days`
+- A week captures most of the mean-reversion dynamics
+- Volatility also clusters (high vol days come in runs)
+
+Weekly blocks preserve within-week AR structure. ~104 non-overlapping weeks available (52 per chain).
+
+### Block Boundary Issue
+
+The transition between sampled weeks won't perfectly respect cross-week AR. Acceptable because:
+- Most mean-reversion happens within 3 days (captured by the block)
+- We're modeling shocks to a different chain anyway (not exact replication)
+- Alternative (parametric VAR) adds complexity without clear benefit
+
+### Interpretation
+
+This approach answers: "If OP experienced Base/Arb-like market dynamics, where might TVL and fees end up?"
+
+TVL outcomes will vary across simulations. Filtering by ending TVL bucket gives:
+- P(fees | TVL ended near $500M)
+- P(fees | TVL ended near $750M)
+- P(fees | TVL ended near $1B)
+
+The width of each distribution reflects genuine uncertainty—same TVL can come from different paths with different fee outcomes.
