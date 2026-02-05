@@ -631,3 +631,39 @@ The answer comes from:
 1. Which blocks were sampled (determines both TVL path and activity path)
 2. How activity maps to fees (model coefficients)
 3. Sum of 365 daily fees (each = baseline + that day's deviation)
+
+## Final Simulation Results
+
+### Configuration
+- Fee baseline: December 2025 median = 0.65 ETH/day
+- Starting TVL: $292M
+- Horizon: 365 days
+- Simulations: 10,000
+- Sampling: Weekly blocks with replacement from Base/Arb
+
+### Results by Ending TVL Bucket
+
+| TVL Bucket | % of Sims | Median Annual Fees (ETH) | P10 | P90 |
+|------------|-----------|--------------------------|-----|-----|
+| <$400M | 62.4% | 338 | 306 | 423 |
+| $400-500M | 15.4% | 353 | 308 | 451 |
+| $500-750M | 16.5% | 361 | 308 | 481 |
+| $750M-1B | 4.2% | 375 | 309 | 494 |
+| >$1B | 1.5% | 387 | 310 | 522 |
+
+### Key Findings
+
+1. **Fees are similar across TVL buckets:** 338 ETH (<$400M) vs 387 ETH (>$1B) — only 15% difference despite 3x TVL difference. Confirms TVL doesn't drive fees.
+
+2. **Most paths stay near current TVL:** 62% end below $400M. Base/Arb dynamics applied to OP's starting point don't often produce explosive growth.
+
+3. **Reaching $750M+ is rare:** Only 5.7% of simulations. These paths sampled more high-growth weeks by chance.
+
+4. **Conditional fee projections:**
+   - If TVL reaches $500-750M → expect ~360 ETH/year (~1.0 ETH/day)
+   - If TVL reaches $750M-1B → expect ~375 ETH/year (~1.0 ETH/day)
+   - If TVL reaches >$1B → expect ~390 ETH/year (~1.1 ETH/day)
+
+### Interpretation for Presentation
+
+"If OP experienced Base/Arb-like market dynamics and TVL reached $750M, annual fees would be ~375 ETH. This is only 11% higher than the median outcome (338 ETH), because **fees are driven by activity, not TVL level**. The paths that reach high TVL happen to sample high-activity weeks, which is why fees are slightly higher — not because high TVL causes higher fees."

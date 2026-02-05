@@ -122,15 +122,18 @@ def prepare_block_arrays(df, block_size=BLOCK_SIZE):
 def get_op_starting_state(df):
     """Get OP's state as simulation starting point."""
     op_df = df[df["chain"] == "optimism"].sort_values("date")
+    op_df["date"] = pd.to_datetime(op_df["date"])
     last_row = op_df.iloc[-1]
 
-    # Use median log_fees as baseline (fees fluctuate around this, not drift from it)
-    baseline_log_fees = op_df["log_fees"].median()
+    # Use December 2025 median as baseline (recent, out-of-sample)
+    dec_2025 = op_df[op_df["date"].dt.month == 12]
+    baseline_log_fees = dec_2025["log_fees"].median()
 
     return {
         "log_tvl": last_row["log_tvl"],
         "log_fees": last_row["log_fees"],
         "baseline_log_fees": baseline_log_fees,
+        "baseline_fee_eth": np.exp(baseline_log_fees),
         "tvl_usd": last_row["tvl_usd"],
         "fees_eth": last_row["fees_eth"],
     }
@@ -309,7 +312,8 @@ def main():
     starting_state = get_op_starting_state(df)
     print(f"\nOP starting state:")
     print(f"  TVL: ${starting_state['tvl_usd']/1e6:.0f}M")
-    print(f"  Daily fees: {starting_state['fees_eth']:.2f} ETH")
+    print(f"  Daily fees (last): {starting_state['fees_eth']:.2f} ETH")
+    print(f"  Fee baseline (Dec 2025 median): {starting_state['baseline_fee_eth']:.2f} ETH/day")
 
     # Run simulations
     print(f"\nRunning {N_SIMULATIONS} simulations over {HORIZON_DAYS} days...")
