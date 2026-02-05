@@ -549,3 +549,85 @@ annual_fees = Σ daily_fee over 365 days
 4. The correlation between TVL and activity is preserved by sampling them together in blocks
 
 **Key implication:** When a simulation reaches $750M TVL, it's because it sampled blocks with net positive TVL growth. Those same blocks also had specific activity patterns. This is the "reverse inference" — we learn what activity regimes produce TVL growth.
+
+## Core Pitch Summary
+
+### The Setup
+
+OP is not like Base or Arbitrum — fundamentally different scale:
+- OP TVL: ~$300M (vs Base $3.7B, Arb $2.8B)
+- OP daily fees: ~0.6 ETH (vs Base/Arb ~50-100 ETH)
+
+**The question:** What fees would OP see if it hits $500M / $750M / $1B TVL?
+
+### The Finding
+
+ΔTVL does **not cause** Δactivity.
+
+Instead: ΔTVL **correlates with** Δactivity, and Δactivity **causes** Δfees.
+
+```
+Market conditions
+    ├──→ ΔTVL        (outcome)
+    └──→ Δactivity   (outcome)
+              └──→ Δfees (via model coefficients)
+```
+
+### The Method
+
+1. **Estimate coefficients:** Panel regression on Base/Arb gives us activity → fee elasticities
+2. **Sample dynamics:** Weekly blocks of (ΔTVL, Δactivity) from Base/Arb, preserving their joint distribution
+3. **Apply model:** Activity diffs → fee diffs via estimated coefficients
+4. **Accumulate TVL:** Let TVL be an outcome of the sampled path
+5. **Filter by target:** "In simulations where TVL reached $750M, what was the fee distribution?"
+
+### Why This Works
+
+- We don't pretend TVL causes fees
+- We use the **correlation** between TVL and activity (preserved by joint sampling)
+- We use the **causation** from activity to fees (estimated coefficients)
+- Filtering by ending TVL answers the conditional question without assuming causation
+
+## Fee Baseline Logic
+
+### The Role of Baseline
+
+```
+daily_fee = exp(baseline_log_fees + deviation)
+```
+
+The baseline is OP's **current fee-generating capacity**. The deviation comes from Base/Arb activity shocks via the model.
+
+### Why Baseline Matters Less Over Time
+
+Base/Arb activity diffs are much larger than OP's typical activity:
+- Base/Arb d_log_dex_vol std: ~0.8
+- Model coefficient: 0.95
+- → Fee deviation std from DEX alone: ~0.76
+
+Over a year, the **cumulative effect of activity shocks dominates the baseline**. The baseline sets the starting point; the sampled dynamics determine the trajectory.
+
+### Recommended Baseline: December 2025 Median
+
+```python
+baseline_log_fees = median(OP December 2025 log_fees)
+                  = -0.38 → 0.68 ETH/day
+```
+
+**Why December:**
+- Reflects OP's **current** state (recent, out-of-sample)
+- Not inflated by historical periods when OP had higher TVL/activity
+- Conservative anchor — deviations from Base/Arb activity will push fees up
+
+**Why median:**
+- Robust to outliers (extreme fee days)
+- Represents "typical" operations
+
+### The Interpretation
+
+"Starting from OP's current fee level (~0.68 ETH/day), if OP experienced Base/Arb-like market dynamics, and those dynamics resulted in TVL reaching $750M, what would annual fees be?"
+
+The answer comes from:
+1. Which blocks were sampled (determines both TVL path and activity path)
+2. How activity maps to fees (model coefficients)
+3. Sum of 365 daily fees (each = baseline + that day's deviation)
