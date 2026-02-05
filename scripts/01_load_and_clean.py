@@ -120,15 +120,31 @@ def load_dex_trades() -> pd.DataFrame:
 
 
 def load_borrow() -> pd.DataFrame:
-    """Load borrow volume data and aggregate by chain/date."""
+    """Load borrow volume data and aggregate by token bucket."""
     df = pd.read_csv(DATA_DIR / "lending_borrow_2025.csv")
     df["date"] = df["block_date"].apply(parse_date)
 
-    # Aggregate all token borrows by chain/date
-    agg = df.groupby(["chain", "date"])["amount_usd"].sum().reset_index()
-    agg = agg.rename(columns={"amount_usd": "borrow_vol_usd"})
+    # Classify each token
+    df["token_class"] = df.apply(
+        lambda r: classify_token(r["chain"], r["token_address"]), axis=1
+    )
 
-    return agg
+    # Aggregate by chain/date/class
+    agg = (
+        df.groupby(["chain", "date", "token_class"])["amount_usd"].sum().unstack(fill_value=0)
+    )
+
+    # Rename columns
+    agg = agg.rename(
+        columns={"btc": "borrow_vol_btc", "eth": "borrow_vol_eth", "stable": "borrow_vol_stable"}
+    )
+
+    # Ensure all columns exist
+    for col in ["borrow_vol_btc", "borrow_vol_eth", "borrow_vol_stable"]:
+        if col not in agg.columns:
+            agg[col] = 0.0
+
+    return agg[["borrow_vol_btc", "borrow_vol_eth", "borrow_vol_stable"]].reset_index()
 
 
 def load_stablecoin_supply() -> pd.DataFrame:
@@ -219,12 +235,23 @@ def compute_derived_columns(df: pd.DataFrame) -> pd.DataFrame:
     # Total DEX volume
     df["total_dex_vol"] = df["dex_vol_btc"] + df["dex_vol_eth"] + df["dex_vol_stable"]
 
-    # Composition shares (handle division by zero)
+    # Total borrow volume
+    df["total_borrow_vol"] = df["borrow_vol_btc"] + df["borrow_vol_eth"] + df["borrow_vol_stable"]
+
+    # DEX composition shares (handle division by zero)
     df["dex_btc_share"] = np.where(
         df["total_dex_vol"] > 0, df["dex_vol_btc"] / df["total_dex_vol"], 0
     )
     df["dex_eth_share"] = np.where(
         df["total_dex_vol"] > 0, df["dex_vol_eth"] / df["total_dex_vol"], 0
+    )
+
+    # Borrow composition shares
+    df["borrow_btc_share"] = np.where(
+        df["total_borrow_vol"] > 0, df["borrow_vol_btc"] / df["total_borrow_vol"], 0
+    )
+    df["borrow_eth_share"] = np.where(
+        df["total_borrow_vol"] > 0, df["borrow_vol_eth"] / df["total_borrow_vol"], 0
     )
 
     # ETH volatility: (high - low) / open
@@ -246,7 +273,10 @@ def compute_model_ready(df: pd.DataFrame) -> pd.DataFrame:
         "dex_vol_eth",
         "dex_vol_stable",
         "total_dex_vol",
-        "borrow_vol_usd",
+        "borrow_vol_btc",
+        "borrow_vol_eth",
+        "borrow_vol_stable",
+        "total_borrow_vol",
     ]
     for col in fill_cols:
         df[col] = df.groupby("chain")[col].ffill()
@@ -256,7 +286,7 @@ def compute_model_ready(df: pd.DataFrame) -> pd.DataFrame:
     df["log_tvl"] = np.log(df["tvl_usd"] + eps)
     df["log_fees"] = np.log(df["fees_eth"] + eps)
     df["log_total_dex_vol"] = np.log(df["total_dex_vol"] + eps)
-    df["log_borrow_vol"] = np.log(df["borrow_vol_usd"] + eps)
+    df["log_total_borrow_vol"] = np.log(df["total_borrow_vol"] + eps)
     df["log_stablecoin_supply"] = np.log(df["stablecoin_supply"] + eps)
 
     # Compute differences within each chain
@@ -264,10 +294,12 @@ def compute_model_ready(df: pd.DataFrame) -> pd.DataFrame:
         "d_log_tvl": "log_tvl",
         "d_log_fees": "log_fees",
         "d_log_total_dex_vol": "log_total_dex_vol",
-        "d_log_borrow_vol": "log_borrow_vol",
+        "d_log_total_borrow_vol": "log_total_borrow_vol",
         "d_log_stablecoin_supply": "log_stablecoin_supply",
         "d_dex_btc_share": "dex_btc_share",
         "d_dex_eth_share": "dex_eth_share",
+        "d_borrow_btc_share": "borrow_btc_share",
+        "d_borrow_eth_share": "borrow_eth_share",
     }
 
     for new_col, src_col in diff_cols.items():
@@ -310,9 +342,11 @@ def main():
         "d_log_tvl",
         "d_log_fees",
         "d_log_total_dex_vol",
-        "d_log_borrow_vol",
+        "d_log_total_borrow_vol",
         "d_dex_btc_share",
         "d_dex_eth_share",
+        "d_borrow_btc_share",
+        "d_borrow_eth_share",
         "eth_volatility",
     ]
     for col in model_cols:
