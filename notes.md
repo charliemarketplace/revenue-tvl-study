@@ -332,3 +332,69 @@ The "link break" is a finding, not a failure. Present it as:
 2. **Finding:** Link 1 doesn't hold — TVL and activity co-move with volatility but TVL doesn't predict activity
 3. **Implication:** Growing TVL alone won't increase fees; need to grow *active* TVL
 4. **Recommendation:** Prioritize DEX liquidity depth (POL), not idle capital accumulation
+
+## Modeling Challenge: TVL as Outcome
+
+### Monte Carlo Still Needed
+
+Monte Carlo remains important for modeling upside/downside uncertainty. The question is what to simulate.
+
+### Bayesian Framing Considered
+
+Proposed structure:
+- **Prior:** P(activity | TVL level) from empirical data
+- **Likelihood:** fees = f(activity) from Link 2 model
+- **Posterior:** P(fees | TVL target)
+
+Problem: Need to define what "conditioning on TVL" means when TVL is an outcome.
+
+### Activity Intensity Rejected
+
+"Activity intensity" (DEX vol / TVL) is too simple—it mostly measures memecoin/altcoin churn. OP isn't "low intensity"; it's **conservative** (disproportionately BTC/ETH/stables which naturally have lower turnover).
+
+### DEX Volume Data Clarification
+
+- Our Dune data: ETH volume includes ETH leg of MEME/ETH swaps (captures speculation indirectly)
+- DefiLlama filtered view: More restrictive token allowlist
+- Decision: Focus on BTC/ETH/stable buy volumes, not DefiLlama totals
+
+Composition tells the story:
+- **ETH buy volume** = includes speculation demand
+- **Stable buy volume** = risk-off flows
+- **BTC buy volume** = long-term holding
+
+### TVL Distribution Problem
+
+Target TVL levels vs. observed data:
+
+| Target | Base Coverage | Arb Coverage | OP Coverage |
+|--------|---------------|--------------|-------------|
+| $500M | Never (min $2.2B) | Never (min $1.9B) | 295 days |
+| $750M | Never | Never | 18 days |
+| $1B | Never | Never | 0 days |
+
+**Base and Arbitrum have never operated at target TVL levels.** Can't directly sample "what did Base look like at $750M?"—it never happened.
+
+### The Core Conceptual Problem
+
+Original idea: Use diffs to simulate paths, accumulate to TVL targets via Brownian bridge.
+
+But if TVL is an outcome (not a driver), **what does it mean to accumulate changes to TVL?**
+
+TVL, activity, and fees all respond to underlying market conditions. Simulating a "path to $750M TVL" implies TVL is controllable or targeted, but it's actually an emergent outcome of:
+- Market conditions (volatility, sentiment)
+- Protocol decisions (incentives, liquidity programs)
+- User behavior (speculation vs. holding)
+
+### Open Question
+
+How to build a projection framework that:
+1. Conditions on TVL targets (per task requirements)
+2. Acknowledges TVL is non-causal
+3. Captures upside/downside via Monte Carlo
+4. Uses the diffs-based model we've estimated
+
+Possible directions:
+- Model fees directly with TVL as a covariate (not causal, just correlated)
+- Simulate activity paths, let TVL be a derived outcome
+- Use separate volume elasticities (ETH, BTC, stable) instead of aggregate intensity
