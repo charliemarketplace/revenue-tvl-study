@@ -519,3 +519,33 @@ This is **reverse inference**:
 - If "stable accumulation" weeks drive growth, prioritize yield opportunities
 
 This turns Monte Carlo from a forecasting tool into a **strategy discovery** tool.
+
+### TVL vs Fees: The Asymmetry
+
+**TVL: Raw accumulation (no model)**
+```
+log_tvl_t = log_tvl_{t-1} + d_log_tvl_from_block
+ending_tvl = exp(Σ d_log_tvl over 365 days)
+```
+- `d_log_tvl` sampled directly from Base/Arb blocks
+- No coefficients, no transformation
+- Preserves raw historical TVL dynamics and correlation with activity
+
+**Fees: Model-based computation**
+```
+features = [d_log_dex, d_log_borrow, composition, volatility]
+deviation = β·features + residual
+daily_fee = exp(baseline_log_fees + deviation)
+annual_fees = Σ daily_fee over 365 days
+```
+- Uses estimated coefficients from panel regression
+- Model transforms activity → fee deviation
+- Baseline prevents drift; fees fluctuate, don't accumulate
+
+**Why no TVL model?**
+1. TVL is the **conditioning variable** — we filter by where it ends up
+2. Preserves **joint distribution** of (TVL, activity) as observed
+3. A TVL model would impose structure that might not transfer to OP
+4. The correlation between TVL and activity is preserved by sampling them together in blocks
+
+**Key implication:** When a simulation reaches $750M TVL, it's because it sampled blocks with net positive TVL growth. Those same blocks also had specific activity patterns. This is the "reverse inference" — we learn what activity regimes produce TVL growth.
