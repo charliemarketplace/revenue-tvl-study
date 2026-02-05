@@ -474,3 +474,48 @@ After horizon: record (ending_tvl, cumulative_fees)
 ```
 
 Sampling with replacement makes sense—some weeks have multi-day TVL growth, others chaotic mean-zero changes, others multi-day drops. The variety of "regimes" creates the distribution of outcomes.
+
+### Stock vs Flow in Simulation
+
+**Critical distinction:**
+- **TVL (stock):** Accumulates diffs. `log_tvl_t = log_tvl_{t-1} + d_log_tvl`. Path-dependent.
+- **Fees (flow):** Do NOT accumulate diffs. Each day's fee = `exp(baseline + deviation)`. Path-independent.
+
+**Why fees don't accumulate:**
+- Fees are earned fresh each day from that day's activity
+- AR(1) = -0.22 means fees mean-revert, but this doesn't mean we chain fee levels
+- If we accumulated: `log_fees_t = log_fees_{t-1} + d_log_fees`, the path would drift explosively (std grows as sqrt(T))
+- Instead: `daily_fee_t = exp(baseline_log_fees + predicted_deviation_t + residual_t)`
+
+The model coefficients tell us **how fees respond to activity shocks**, not how fees evolve as a persistent state.
+
+**Annual fees = sum of 365 independent daily fees**, each computed from that day's sampled activity.
+
+### Simulation Logic Summary
+
+1. **Use Base/Arb diffs** to understand how Δactivity relates to Δfees (model coefficients)
+2. **Start from OP's current state** (TVL, baseline fees)
+3. **Draw weekly blocks** (with replacement) of (Δlog_tvl, Δlog_dex, Δlog_borrow, volatility, composition)
+4. **For each day:**
+   - TVL accumulates: `log_tvl += d_log_tvl`
+   - Fees computed fresh: `daily_fee = exp(baseline + β·activity_shock + residual)`
+5. **After 365 days:** Record (ending_tvl, cumulative_fees)
+6. **Filter by TVL bucket:** "In paths where TVL reached $750M, what was the fee distribution?"
+
+### Reverse Inference: Activity Patterns → TVL Growth
+
+The simulation enables a second question beyond fees:
+
+> "In simulations where TVL hit $750M+, what activity patterns were sampled?"
+
+This is **reverse inference**:
+- Were growth paths dominated by high-ETH-volume weeks? → Prioritize speculation/meme activity
+- Were growth paths dominated by low-volatility accumulation? → Prioritize sticky capital
+- Were growth paths correlated with BTC-heavy composition? → Focus on BTC integrations
+
+**Product/business implications:**
+- The activity regimes that produce TVL growth inform where to allocate resources
+- If "high ETH churn" weeks drive growth, prioritize DEX liquidity programs
+- If "stable accumulation" weeks drive growth, prioritize yield opportunities
+
+This turns Monte Carlo from a forecasting tool into a **strategy discovery** tool.
