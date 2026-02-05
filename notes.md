@@ -667,3 +667,50 @@ The answer comes from:
 ### Interpretation for Presentation
 
 "If OP experienced Base/Arb-like market dynamics and TVL reached $750M, annual fees would be ~375 ETH. This is only 11% higher than the median outcome (338 ETH), because **fees are driven by activity, not TVL level**. The paths that reach high TVL happen to sample high-activity weeks, which is why fees are slightly higher — not because high TVL causes higher fees."
+
+## Scale Problem: Transaction Count as Missing Variable
+
+### Observed December 2025 Revenue
+
+| Chain | TVL | Monthly Revenue |
+|-------|-----|-----------------|
+| Base | $4.4B | $15.52M |
+| Arbitrum | $2.83B | $6.5M |
+| Optimism | $285M | $569K |
+
+Base generates **2.4x Arbitrum's revenue** with only **1.5x the TVL**. This suggests a missing scale factor beyond what our activity-based model captures.
+
+### Transaction Count Data Added
+
+New data source: `data/arb_op_base_n_tx_2025.csv`
+
+| Chain | Daily Transactions (Jan 1, 2025) |
+|-------|----------------------------------|
+| Base | **13.4M** |
+| Arbitrum | 1.6M |
+| Optimism | 667K |
+
+**Base has 8x Arbitrum and 20x Optimism in transaction count.**
+
+### Why This Matters
+
+Current model uses:
+- d_log_total_dex_vol
+- d_log_total_borrow_vol
+- composition (ETH share)
+- volatility
+
+These capture **value moved**, not **number of transactions**. If Base has more transactions per dollar (smaller average trade size, more retail activity), our model underestimates the fee differential.
+
+Transaction count captures:
+- **Smaller average trade sizes** (more retail vs. whale activity)
+- **Non-DEX activity** (mints, transfers, contract calls)
+- **General chain utilization** beyond DeFi
+
+### Next Step
+
+Integrate `d_log_n_tx` as a feature in the panel regression. Hypothesis: Transaction count will have independent explanatory power for fees, and including it will increase R² significantly.
+
+This separates:
+- **Value throughput:** How many dollars flow through the chain (DEX vol, borrow vol)
+- **Transaction throughput:** How many discrete operations occur (n_tx)
