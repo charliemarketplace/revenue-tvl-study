@@ -184,6 +184,17 @@ def load_eth_ohlc() -> pd.DataFrame:
     return df[["date", "eth_open", "eth_high", "eth_low"]]
 
 
+def load_transaction_counts() -> pd.DataFrame:
+    """Load daily transaction count data."""
+    df = pd.read_csv(DATA_DIR / "arb_op_base_n_tx_2025.csv")
+    df["date"] = df["block_date"].apply(parse_date)
+    df = df.rename(columns={"chain": "chain_raw"})
+    # Normalize chain names to match other data sources
+    chain_map = {"arbitrum": "arbitrum", "base": "base", "optimism": "optimism"}
+    df["chain"] = df["chain_raw"].map(chain_map)
+    return df[["chain", "date", "n_tx"]]
+
+
 def build_panel() -> pd.DataFrame:
     """Build raw panel by joining all data sources."""
     print("Loading fees...")
@@ -204,6 +215,9 @@ def build_panel() -> pd.DataFrame:
     print("Loading ETH OHLC...")
     eth_ohlc = load_eth_ohlc()
 
+    print("Loading transaction counts...")
+    n_tx = load_transaction_counts()
+
     # Start with fees as base (defines our date range)
     panel = fees.copy()
 
@@ -221,6 +235,9 @@ def build_panel() -> pd.DataFrame:
 
     # Merge ETH OHLC (same for all chains)
     panel = panel.merge(eth_ohlc, on=["date"], how="left")
+
+    # Merge transaction counts
+    panel = panel.merge(n_tx, on=["chain", "date"], how="left")
 
     # Sort
     panel = panel.sort_values(["chain", "date"]).reset_index(drop=True)
@@ -277,6 +294,7 @@ def compute_model_ready(df: pd.DataFrame) -> pd.DataFrame:
         "borrow_vol_eth",
         "borrow_vol_stable",
         "total_borrow_vol",
+        "n_tx",
     ]
     for col in fill_cols:
         df[col] = df.groupby("chain")[col].ffill()
@@ -288,6 +306,11 @@ def compute_model_ready(df: pd.DataFrame) -> pd.DataFrame:
     df["log_total_dex_vol"] = np.log(df["total_dex_vol"] + eps)
     df["log_total_borrow_vol"] = np.log(df["total_borrow_vol"] + eps)
     df["log_stablecoin_supply"] = np.log(df["stablecoin_supply"] + eps)
+    df["log_n_tx"] = np.log(df["n_tx"] + eps)
+    # Decomposed DEX volumes
+    df["log_dex_vol_btc"] = np.log(df["dex_vol_btc"] + eps)
+    df["log_dex_vol_eth"] = np.log(df["dex_vol_eth"] + eps)
+    df["log_dex_vol_stable"] = np.log(df["dex_vol_stable"] + eps)
 
     # Compute differences within each chain
     diff_cols = {
@@ -300,6 +323,11 @@ def compute_model_ready(df: pd.DataFrame) -> pd.DataFrame:
         "d_dex_eth_share": "dex_eth_share",
         "d_borrow_btc_share": "borrow_btc_share",
         "d_borrow_eth_share": "borrow_eth_share",
+        "d_log_n_tx": "log_n_tx",
+        # Decomposed DEX volumes
+        "d_log_dex_vol_btc": "log_dex_vol_btc",
+        "d_log_dex_vol_eth": "log_dex_vol_eth",
+        "d_log_dex_vol_stable": "log_dex_vol_stable",
     }
 
     for new_col, src_col in diff_cols.items():
@@ -348,6 +376,7 @@ def main():
         "d_borrow_btc_share",
         "d_borrow_eth_share",
         "eth_volatility",
+        "d_log_n_tx",
     ]
     for col in model_cols:
         missing = model_ready[col].isna().sum()
