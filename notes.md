@@ -247,3 +247,470 @@ Preferred narrative flow:
 - Slide titles state the point, not the topic ("DEX volume drives 50% of fee variance" not "Analysis")
 - Visuals should be self-evident with title as the takeaway
 - One-sentence and one-paragraph takeaways prepared upfront
+
+## Model Estimation Results
+
+### Link 1 Breaks: ΔTVL Does NOT Predict Δactivity
+
+The two-link model assumption failed at Link 1:
+
+| Model | R² | d_log_tvl coef | p-value |
+|-------|-----|----------------|---------|
+| ΔTVL → ΔDEX vol | 0.11 | -0.73 | 0.56 |
+| ΔTVL → ΔBorrow vol | 0.06 | 0.38 | 0.71 |
+
+**TVL changes don't predict activity changes.** Volatility drives activity (coef ~5.5, p<0.001), not TVL.
+
+### Link 2 Works: Δactivity → Δfees (R² = 0.51)
+
+| Predictor | Coef | p-value | Interpretation |
+|-----------|------|---------|----------------|
+| d_log_total_dex_vol | **0.95** | <0.001 | 1% ↑ DEX vol → 0.95% ↑ fees |
+| d_log_total_borrow_vol | 0.13 | 0.12 | Not significant |
+| d_dex_eth_share | **2.97** | 0.003 | ETH-heavy trading → more fees |
+| eth_volatility | **3.46** | <0.001 | Volatile days = more fees |
+
+**DEX volume dominates fee variance** (41% of R² alone via Shapley-lite).
+
+### Fixed Effects Are Zero
+
+Chain FE coefficient ≈ 0 (p > 0.9) across all models. Base and Arbitrum behave identically after controlling for activity and volatility. Good for generalization to OP.
+
+### Autocorrelation: Fees Mean-Revert
+
+Durbin-Watson = 2.65 (negative autocorrelation). Adding AR(1) term:
+- Lagged fees coef = **-0.22** (p<0.001)
+- Fees partially correct after spikes
+- DW improves to 2.33
+
+Core finding (DEX vol dominates) robust to AR(1) specification.
+
+### TVL Trajectories Are Divergent
+
+| Chain | 2025 TVL Change | Activity Intensity (DEX/TVL) |
+|-------|-----------------|------------------------------|
+| Arbitrum | -1.6% | 22% daily |
+| Base | +40.1% | 32% daily |
+| Optimism | **-62.9%** | **10% daily** |
+
+OP's problem isn't fee capture—it's **low activity intensity**. OP captures 0.077 ETH per $1M DEX (highest!), but only turns over 10% of TVL daily (half of peers).
+
+## Key Insight: TVL Is an Outcome, Not a Driver
+
+The original framing "conditional on TVL, what fees?" is flawed because:
+
+1. **TVL doesn't cause activity** — both respond to market conditions
+2. **Activity intensity varies** — same TVL can mean very different DEX volumes
+3. **TVL trajectories diverge** — OP shrinking, Base growing, but fee dynamics are the same
+
+### Reframed Question
+
+> "If OP reaches $750M TVL **with peer-like activity intensity**, what fees?"
+
+This requires assuming an activity intensity scenario, not just a TVL target.
+
+### Scenario Analysis Approach
+
+Instead of Monte Carlo on TVL paths, use:
+
+```
+Daily fees = TVL × activity_intensity × fee_yield_per_dex
+```
+
+| Scenario | TVL | Intensity | DEX Vol | Fees (ETH/day) |
+|----------|-----|-----------|---------|----------------|
+| Current OP | $440M | 10% | $44M | 3.4 |
+| OP at $750M (same) | $750M | 10% | $75M | 5.8 |
+| OP at $750M (Base-like) | $750M | 32% | $240M | 18.5 |
+| OP at $750M (Arb-like) | $750M | 22% | $165M | 12.7 |
+
+### Presentation Implication
+
+The "link break" is a finding, not a failure. Present it as:
+
+1. **Hypothesis:** TVL drives activity drives fees
+2. **Finding:** Link 1 doesn't hold — TVL and activity co-move with volatility but TVL doesn't predict activity
+3. **Implication:** Growing TVL alone won't increase fees; need to grow *active* TVL
+4. **Recommendation:** Prioritize DEX liquidity depth (POL), not idle capital accumulation
+
+## Modeling Challenge: TVL as Outcome
+
+### Monte Carlo Still Needed
+
+Monte Carlo remains important for modeling upside/downside uncertainty. The question is what to simulate.
+
+### Bayesian Framing Considered
+
+Proposed structure:
+- **Prior:** P(activity | TVL level) from empirical data
+- **Likelihood:** fees = f(activity) from Link 2 model
+- **Posterior:** P(fees | TVL target)
+
+Problem: Need to define what "conditioning on TVL" means when TVL is an outcome.
+
+### Activity Intensity Rejected
+
+"Activity intensity" (DEX vol / TVL) is too simple—it mostly measures memecoin/altcoin churn. OP isn't "low intensity"; it's **conservative** (disproportionately BTC/ETH/stables which naturally have lower turnover).
+
+### DEX Volume Data Clarification
+
+- Our Dune data: ETH volume includes ETH leg of MEME/ETH swaps (captures speculation indirectly)
+- DefiLlama filtered view: More restrictive token allowlist
+- Decision: Focus on BTC/ETH/stable buy volumes, not DefiLlama totals
+
+Composition tells the story:
+- **ETH buy volume** = includes speculation demand
+- **Stable buy volume** = risk-off flows
+- **BTC buy volume** = long-term holding
+
+### TVL Distribution Problem
+
+Target TVL levels vs. observed data:
+
+| Target | Base Coverage | Arb Coverage | OP Coverage |
+|--------|---------------|--------------|-------------|
+| $500M | Never (min $2.2B) | Never (min $1.9B) | 295 days |
+| $750M | Never | Never | 18 days |
+| $1B | Never | Never | 0 days |
+
+**Base and Arbitrum have never operated at target TVL levels.** Can't directly sample "what did Base look like at $750M?"—it never happened.
+
+### The Core Conceptual Problem
+
+Original idea: Use diffs to simulate paths, accumulate to TVL targets via Brownian bridge.
+
+But if TVL is an outcome (not a driver), **what does it mean to accumulate changes to TVL?**
+
+TVL, activity, and fees all respond to underlying market conditions. Simulating a "path to $750M TVL" implies TVL is controllable or targeted, but it's actually an emergent outcome of:
+- Market conditions (volatility, sentiment)
+- Protocol decisions (incentives, liquidity programs)
+- User behavior (speculation vs. holding)
+
+### Open Question
+
+How to build a projection framework that:
+1. Conditions on TVL targets (per task requirements)
+2. Acknowledges TVL is non-causal
+3. Captures upside/downside via Monte Carlo
+4. Uses the diffs-based model we've estimated
+
+Possible directions:
+- Model fees directly with TVL as a covariate (not causal, just correlated)
+- Simulate activity paths, let TVL be a derived outcome
+- Use separate volume elasticities (ETH, BTC, stable) instead of aggregate intensity
+
+## Block Bootstrap Monte Carlo
+
+### Chosen Approach
+
+Sample daily diffs from Base/Arb joint distribution, apply to OP starting state, let TVL be an **outcome** of each simulation (not a target). Then filter simulations by ending TVL to answer "if TVL reached $750M, what fees?"
+
+```
+for sim in range(N_sims):
+    state = op_current  # (log_tvl, log_eth_vol, log_btc_vol, log_stable_vol, log_fees)
+    for week in range(horizon // 7):
+        week_shocks = sample_week(base_arb_diffs)
+        for shock in week_shocks:
+            state = state + shock
+    # Record ending (tvl, cumulative_fees)
+# Group by ending TVL bucket → fee distribution per bucket
+```
+
+### Why Weekly Blocks
+
+i.i.d. day sampling breaks temporal structure:
+- Fees mean-revert (AR(1) = -0.22) — **not weak**
+- Half-life of a fee shock ≈ 3 days: `log(0.5) / log(0.78) ≈ 2.8 days`
+- A week captures most of the mean-reversion dynamics
+- Volatility also clusters (high vol days come in runs)
+
+Weekly blocks preserve within-week AR structure. ~104 non-overlapping weeks available (52 per chain).
+
+### Block Boundary Issue
+
+The transition between sampled weeks won't perfectly respect cross-week AR. Acceptable because:
+- Most mean-reversion happens within 3 days (captured by the block)
+- We're modeling shocks to a different chain anyway (not exact replication)
+- Alternative (parametric VAR) adds complexity without clear benefit
+
+### Interpretation
+
+This approach answers: "If OP experienced Base/Arb-like market dynamics, where might TVL and fees end up?"
+
+TVL outcomes will vary across simulations. Filtering by ending TVL bucket gives:
+- P(fees | TVL ended near $500M)
+- P(fees | TVL ended near $750M)
+- P(fees | TVL ended near $1B)
+
+The width of each distribution reflects genuine uncertainty—same TVL can come from different paths with different fee outcomes.
+
+### Model-Based vs Pure Bootstrap
+
+**Pure bootstrap** samples (Δtvl, Δactivity, Δfees) tuples directly—doesn't use estimated coefficients.
+
+**Model-based simulation** (chosen approach):
+1. Sample weekly blocks of (Δlog_tvl, Δlog_eth_vol, Δlog_btc_vol, Δlog_stable_vol, volatility)
+2. Apply Link 2 coefficients to compute predicted Δlog_fees
+3. Add residual noise (sampled from model residuals, block-sampled to preserve AR)
+4. Accumulate paths
+
+**Why model-based is better:**
+- Actually uses the estimated elasticities (the whole point of the panel model)
+- Enables counterfactuals: "what if OP had Base-like composition?"
+- Separates signal (coefficients) from noise (residuals)
+- Residuals can be block-sampled independently to preserve their AR structure
+
+**Simulation flow:**
+```
+Sample weekly block of activity shocks (Δtvl, Δeth_vol, Δbtc_vol, Δstable_vol, vol)
+    ↓
+predicted_Δlog_fees = β₁·Δlog_eth_vol + β₂·Δlog_btc_vol + β₃·Δlog_stable_vol + β₄·vol + ...
+    ↓
+simulated_Δlog_fees = predicted + sampled_residual
+    ↓
+Accumulate: log_fees_t = log_fees_{t-1} + simulated_Δlog_fees
+    ↓
+After horizon: record (ending_tvl, cumulative_fees)
+```
+
+Sampling with replacement makes sense—some weeks have multi-day TVL growth, others chaotic mean-zero changes, others multi-day drops. The variety of "regimes" creates the distribution of outcomes.
+
+### Stock vs Flow in Simulation
+
+**Critical distinction:**
+- **TVL (stock):** Accumulates diffs. `log_tvl_t = log_tvl_{t-1} + d_log_tvl`. Path-dependent.
+- **Fees (flow):** Do NOT accumulate diffs. Each day's fee = `exp(baseline + deviation)`. Path-independent.
+
+**Why fees don't accumulate:**
+- Fees are earned fresh each day from that day's activity
+- AR(1) = -0.22 means fees mean-revert, but this doesn't mean we chain fee levels
+- If we accumulated: `log_fees_t = log_fees_{t-1} + d_log_fees`, the path would drift explosively (std grows as sqrt(T))
+- Instead: `daily_fee_t = exp(baseline_log_fees + predicted_deviation_t + residual_t)`
+
+The model coefficients tell us **how fees respond to activity shocks**, not how fees evolve as a persistent state.
+
+**Annual fees = sum of 365 independent daily fees**, each computed from that day's sampled activity.
+
+### Simulation Logic Summary
+
+1. **Use Base/Arb diffs** to understand how Δactivity relates to Δfees (model coefficients)
+2. **Start from OP's current state** (TVL, baseline fees)
+3. **Draw weekly blocks** (with replacement) of (Δlog_tvl, Δlog_dex, Δlog_borrow, volatility, composition)
+4. **For each day:**
+   - TVL accumulates: `log_tvl += d_log_tvl`
+   - Fees computed fresh: `daily_fee = exp(baseline + β·activity_shock + residual)`
+5. **After 365 days:** Record (ending_tvl, cumulative_fees)
+6. **Filter by TVL bucket:** "In paths where TVL reached $750M, what was the fee distribution?"
+
+### Reverse Inference: Activity Patterns → TVL Growth
+
+The simulation enables a second question beyond fees:
+
+> "In simulations where TVL hit $750M+, what activity patterns were sampled?"
+
+This is **reverse inference**:
+- Were growth paths dominated by high-ETH-volume weeks? → Prioritize speculation/meme activity
+- Were growth paths dominated by low-volatility accumulation? → Prioritize sticky capital
+- Were growth paths correlated with BTC-heavy composition? → Focus on BTC integrations
+
+**Product/business implications:**
+- The activity regimes that produce TVL growth inform where to allocate resources
+- If "high ETH churn" weeks drive growth, prioritize DEX liquidity programs
+- If "stable accumulation" weeks drive growth, prioritize yield opportunities
+
+This turns Monte Carlo from a forecasting tool into a **strategy discovery** tool.
+
+### TVL vs Fees: The Asymmetry
+
+**TVL: Raw accumulation (no model)**
+```
+log_tvl_t = log_tvl_{t-1} + d_log_tvl_from_block
+ending_tvl = exp(Σ d_log_tvl over 365 days)
+```
+- `d_log_tvl` sampled directly from Base/Arb blocks
+- No coefficients, no transformation
+- Preserves raw historical TVL dynamics and correlation with activity
+
+**Fees: Model-based computation**
+```
+features = [d_log_dex, d_log_borrow, composition, volatility]
+deviation = β·features + residual
+daily_fee = exp(baseline_log_fees + deviation)
+annual_fees = Σ daily_fee over 365 days
+```
+- Uses estimated coefficients from panel regression
+- Model transforms activity → fee deviation
+- Baseline prevents drift; fees fluctuate, don't accumulate
+
+**Why no TVL model?**
+1. TVL is the **conditioning variable** — we filter by where it ends up
+2. Preserves **joint distribution** of (TVL, activity) as observed
+3. A TVL model would impose structure that might not transfer to OP
+4. The correlation between TVL and activity is preserved by sampling them together in blocks
+
+**Key implication:** When a simulation reaches $750M TVL, it's because it sampled blocks with net positive TVL growth. Those same blocks also had specific activity patterns. This is the "reverse inference" — we learn what activity regimes produce TVL growth.
+
+## Core Pitch Summary
+
+### The Setup
+
+OP is not like Base or Arbitrum — fundamentally different scale:
+- OP TVL: ~$300M (vs Base $3.7B, Arb $2.8B)
+- OP daily fees: ~0.6 ETH (vs Base/Arb ~50-100 ETH)
+
+**The question:** What fees would OP see if it hits $500M / $750M / $1B TVL?
+
+### The Finding
+
+ΔTVL does **not cause** Δactivity.
+
+Instead: ΔTVL **correlates with** Δactivity, and Δactivity **causes** Δfees.
+
+```
+Market conditions
+    ├──→ ΔTVL        (outcome)
+    └──→ Δactivity   (outcome)
+              └──→ Δfees (via model coefficients)
+```
+
+### The Method
+
+1. **Estimate coefficients:** Panel regression on Base/Arb gives us activity → fee elasticities
+2. **Sample dynamics:** Weekly blocks of (ΔTVL, Δactivity) from Base/Arb, preserving their joint distribution
+3. **Apply model:** Activity diffs → fee diffs via estimated coefficients
+4. **Accumulate TVL:** Let TVL be an outcome of the sampled path
+5. **Filter by target:** "In simulations where TVL reached $750M, what was the fee distribution?"
+
+### Why This Works
+
+- We don't pretend TVL causes fees
+- We use the **correlation** between TVL and activity (preserved by joint sampling)
+- We use the **causation** from activity to fees (estimated coefficients)
+- Filtering by ending TVL answers the conditional question without assuming causation
+
+## Fee Baseline Logic
+
+### The Role of Baseline
+
+```
+daily_fee = exp(baseline_log_fees + deviation)
+```
+
+The baseline is OP's **current fee-generating capacity**. The deviation comes from Base/Arb activity shocks via the model.
+
+### Why Baseline Matters Less Over Time
+
+Base/Arb activity diffs are much larger than OP's typical activity:
+- Base/Arb d_log_dex_vol std: ~0.8
+- Model coefficient: 0.95
+- → Fee deviation std from DEX alone: ~0.76
+
+Over a year, the **cumulative effect of activity shocks dominates the baseline**. The baseline sets the starting point; the sampled dynamics determine the trajectory.
+
+### Recommended Baseline: December 2025 Median
+
+```python
+baseline_log_fees = median(OP December 2025 log_fees)
+                  = -0.38 → 0.68 ETH/day
+```
+
+**Why December:**
+- Reflects OP's **current** state (recent, out-of-sample)
+- Not inflated by historical periods when OP had higher TVL/activity
+- Conservative anchor — deviations from Base/Arb activity will push fees up
+
+**Why median:**
+- Robust to outliers (extreme fee days)
+- Represents "typical" operations
+
+### The Interpretation
+
+"Starting from OP's current fee level (~0.68 ETH/day), if OP experienced Base/Arb-like market dynamics, and those dynamics resulted in TVL reaching $750M, what would annual fees be?"
+
+The answer comes from:
+1. Which blocks were sampled (determines both TVL path and activity path)
+2. How activity maps to fees (model coefficients)
+3. Sum of 365 daily fees (each = baseline + that day's deviation)
+
+## Final Simulation Results
+
+### Configuration
+- Fee baseline: December 2025 median = 0.65 ETH/day
+- Starting TVL: $292M
+- Horizon: 365 days
+- Simulations: 10,000
+- Sampling: Weekly blocks with replacement from Base/Arb
+
+### Results by Ending TVL Bucket
+
+| TVL Bucket | % of Sims | Median Annual Fees (ETH) | P10 | P90 |
+|------------|-----------|--------------------------|-----|-----|
+| <$400M | 62.4% | 338 | 306 | 423 |
+| $400-500M | 15.4% | 353 | 308 | 451 |
+| $500-750M | 16.5% | 361 | 308 | 481 |
+| $750M-1B | 4.2% | 375 | 309 | 494 |
+| >$1B | 1.5% | 387 | 310 | 522 |
+
+### Key Findings
+
+1. **Fees are similar across TVL buckets:** 338 ETH (<$400M) vs 387 ETH (>$1B) — only 15% difference despite 3x TVL difference. Confirms TVL doesn't drive fees.
+
+2. **Most paths stay near current TVL:** 62% end below $400M. Base/Arb dynamics applied to OP's starting point don't often produce explosive growth.
+
+3. **Reaching $750M+ is rare:** Only 5.7% of simulations. These paths sampled more high-growth weeks by chance.
+
+4. **Conditional fee projections:**
+   - If TVL reaches $500-750M → expect ~360 ETH/year (~1.0 ETH/day)
+   - If TVL reaches $750M-1B → expect ~375 ETH/year (~1.0 ETH/day)
+   - If TVL reaches >$1B → expect ~390 ETH/year (~1.1 ETH/day)
+
+### Interpretation for Presentation
+
+"If OP experienced Base/Arb-like market dynamics and TVL reached $750M, annual fees would be ~375 ETH. This is only 11% higher than the median outcome (338 ETH), because **fees are driven by activity, not TVL level**. The paths that reach high TVL happen to sample high-activity weeks, which is why fees are slightly higher — not because high TVL causes higher fees."
+
+## Scale Problem: Transaction Count as Missing Variable
+
+### Observed December 2025 Revenue
+
+| Chain | TVL | Monthly Revenue |
+|-------|-----|-----------------|
+| Base | $4.4B | $15.52M |
+| Arbitrum | $2.83B | $6.5M |
+| Optimism | $285M | $569K |
+
+Base generates **2.4x Arbitrum's revenue** with only **1.5x the TVL**. This suggests a missing scale factor beyond what our activity-based model captures.
+
+### Transaction Count Data Added
+
+New data source: `data/arb_op_base_n_tx_2025.csv`
+
+| Chain | Daily Transactions (Jan 1, 2025) |
+|-------|----------------------------------|
+| Base | **13.4M** |
+| Arbitrum | 1.6M |
+| Optimism | 667K |
+
+**Base has 8x Arbitrum and 20x Optimism in transaction count.**
+
+### Why This Matters
+
+Current model uses:
+- d_log_total_dex_vol
+- d_log_total_borrow_vol
+- composition (ETH share)
+- volatility
+
+These capture **value moved**, not **number of transactions**. If Base has more transactions per dollar (smaller average trade size, more retail activity), our model underestimates the fee differential.
+
+Transaction count captures:
+- **Smaller average trade sizes** (more retail vs. whale activity)
+- **Non-DEX activity** (mints, transfers, contract calls)
+- **General chain utilization** beyond DeFi
+
+### Next Step
+
+Integrate `d_log_n_tx` as a feature in the panel regression. Hypothesis: Transaction count will have independent explanatory power for fees, and including it will increase R² significantly.
+
+This separates:
+- **Value throughput:** How many dollars flow through the chain (DEX vol, borrow vol)
+- **Transaction throughput:** How many discrete operations occur (n_tx)
