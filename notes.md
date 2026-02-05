@@ -443,3 +443,34 @@ TVL outcomes will vary across simulations. Filtering by ending TVL bucket gives:
 - P(fees | TVL ended near $1B)
 
 The width of each distribution reflects genuine uncertainty—same TVL can come from different paths with different fee outcomes.
+
+### Model-Based vs Pure Bootstrap
+
+**Pure bootstrap** samples (Δtvl, Δactivity, Δfees) tuples directly—doesn't use estimated coefficients.
+
+**Model-based simulation** (chosen approach):
+1. Sample weekly blocks of (Δlog_tvl, Δlog_eth_vol, Δlog_btc_vol, Δlog_stable_vol, volatility)
+2. Apply Link 2 coefficients to compute predicted Δlog_fees
+3. Add residual noise (sampled from model residuals, block-sampled to preserve AR)
+4. Accumulate paths
+
+**Why model-based is better:**
+- Actually uses the estimated elasticities (the whole point of the panel model)
+- Enables counterfactuals: "what if OP had Base-like composition?"
+- Separates signal (coefficients) from noise (residuals)
+- Residuals can be block-sampled independently to preserve their AR structure
+
+**Simulation flow:**
+```
+Sample weekly block of activity shocks (Δtvl, Δeth_vol, Δbtc_vol, Δstable_vol, vol)
+    ↓
+predicted_Δlog_fees = β₁·Δlog_eth_vol + β₂·Δlog_btc_vol + β₃·Δlog_stable_vol + β₄·vol + ...
+    ↓
+simulated_Δlog_fees = predicted + sampled_residual
+    ↓
+Accumulate: log_fees_t = log_fees_{t-1} + simulated_Δlog_fees
+    ↓
+After horizon: record (ending_tvl, cumulative_fees)
+```
+
+Sampling with replacement makes sense—some weeks have multi-day TVL growth, others chaotic mean-zero changes, others multi-day drops. The variety of "regimes" creates the distribution of outcomes.
