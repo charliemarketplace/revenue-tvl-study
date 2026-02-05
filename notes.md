@@ -247,3 +247,88 @@ Preferred narrative flow:
 - Slide titles state the point, not the topic ("DEX volume drives 50% of fee variance" not "Analysis")
 - Visuals should be self-evident with title as the takeaway
 - One-sentence and one-paragraph takeaways prepared upfront
+
+## Model Estimation Results
+
+### Link 1 Breaks: ΔTVL Does NOT Predict Δactivity
+
+The two-link model assumption failed at Link 1:
+
+| Model | R² | d_log_tvl coef | p-value |
+|-------|-----|----------------|---------|
+| ΔTVL → ΔDEX vol | 0.11 | -0.73 | 0.56 |
+| ΔTVL → ΔBorrow vol | 0.06 | 0.38 | 0.71 |
+
+**TVL changes don't predict activity changes.** Volatility drives activity (coef ~5.5, p<0.001), not TVL.
+
+### Link 2 Works: Δactivity → Δfees (R² = 0.51)
+
+| Predictor | Coef | p-value | Interpretation |
+|-----------|------|---------|----------------|
+| d_log_total_dex_vol | **0.95** | <0.001 | 1% ↑ DEX vol → 0.95% ↑ fees |
+| d_log_total_borrow_vol | 0.13 | 0.12 | Not significant |
+| d_dex_eth_share | **2.97** | 0.003 | ETH-heavy trading → more fees |
+| eth_volatility | **3.46** | <0.001 | Volatile days = more fees |
+
+**DEX volume dominates fee variance** (41% of R² alone via Shapley-lite).
+
+### Fixed Effects Are Zero
+
+Chain FE coefficient ≈ 0 (p > 0.9) across all models. Base and Arbitrum behave identically after controlling for activity and volatility. Good for generalization to OP.
+
+### Autocorrelation: Fees Mean-Revert
+
+Durbin-Watson = 2.65 (negative autocorrelation). Adding AR(1) term:
+- Lagged fees coef = **-0.22** (p<0.001)
+- Fees partially correct after spikes
+- DW improves to 2.33
+
+Core finding (DEX vol dominates) robust to AR(1) specification.
+
+### TVL Trajectories Are Divergent
+
+| Chain | 2025 TVL Change | Activity Intensity (DEX/TVL) |
+|-------|-----------------|------------------------------|
+| Arbitrum | -1.6% | 22% daily |
+| Base | +40.1% | 32% daily |
+| Optimism | **-62.9%** | **10% daily** |
+
+OP's problem isn't fee capture—it's **low activity intensity**. OP captures 0.077 ETH per $1M DEX (highest!), but only turns over 10% of TVL daily (half of peers).
+
+## Key Insight: TVL Is an Outcome, Not a Driver
+
+The original framing "conditional on TVL, what fees?" is flawed because:
+
+1. **TVL doesn't cause activity** — both respond to market conditions
+2. **Activity intensity varies** — same TVL can mean very different DEX volumes
+3. **TVL trajectories diverge** — OP shrinking, Base growing, but fee dynamics are the same
+
+### Reframed Question
+
+> "If OP reaches $750M TVL **with peer-like activity intensity**, what fees?"
+
+This requires assuming an activity intensity scenario, not just a TVL target.
+
+### Scenario Analysis Approach
+
+Instead of Monte Carlo on TVL paths, use:
+
+```
+Daily fees = TVL × activity_intensity × fee_yield_per_dex
+```
+
+| Scenario | TVL | Intensity | DEX Vol | Fees (ETH/day) |
+|----------|-----|-----------|---------|----------------|
+| Current OP | $440M | 10% | $44M | 3.4 |
+| OP at $750M (same) | $750M | 10% | $75M | 5.8 |
+| OP at $750M (Base-like) | $750M | 32% | $240M | 18.5 |
+| OP at $750M (Arb-like) | $750M | 22% | $165M | 12.7 |
+
+### Presentation Implication
+
+The "link break" is a finding, not a failure. Present it as:
+
+1. **Hypothesis:** TVL drives activity drives fees
+2. **Finding:** Link 1 doesn't hold — TVL and activity co-move with volatility but TVL doesn't predict activity
+3. **Implication:** Growing TVL alone won't increase fees; need to grow *active* TVL
+4. **Recommendation:** Prioritize DEX liquidity depth (POL), not idle capital accumulation
