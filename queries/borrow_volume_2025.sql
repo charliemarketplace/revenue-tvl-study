@@ -1,10 +1,11 @@
+-- https://dune.com/queries/6655723
 SELECT 
     blockchain, 
     DATE_TRUNC('day', block_time) as block_date,
     token_address,
     symbol,
     sum(amount) as token_borrow_volume,
-    sum(usd_amount) as token_borrow_volume_usd
+    sum(amount_usd) as token_borrow_volume_usd
 FROM lending.borrow
 WHERE blockchain IN ('arbitrum', 'optimism', 'base')
     AND transaction_type = 'borrow'
@@ -26,4 +27,5 @@ WHERE blockchain IN ('arbitrum', 'optimism', 'base')
         0x0b2c639c533813f4aa9d7837caf62653d097ff85,  -- usdc
         0x94b008aa00579c1307b0ef2c499ad98a8ce58e58   -- usdt
     )
-GROUP BY 1, 2, 3, 4
+GROUP BY blockchain, 2, token_address, symbol
+order by block_date asc, blockchain
