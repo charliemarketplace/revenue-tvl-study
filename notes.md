@@ -714,3 +714,103 @@ Integrate `d_log_n_tx` as a feature in the panel regression. Hypothesis: Transac
 This separates:
 - **Value throughput:** How many dollars flow through the chain (DEX vol, borrow vol)
 - **Transaction throughput:** How many discrete operations occur (n_tx)
+
+## Transaction Count Integration Results
+
+### Model with n_tx (R² = 0.578, up from 0.51)
+
+| Predictor | Coef | p-value |
+|-----------|------|---------|
+| d_log_total_dex_vol | 0.66 | <0.001 |
+| **d_log_n_tx** | **1.98** | <0.001 |
+| d_dex_eth_share | 1.74 | 0.042 |
+| eth_volatility | 3.09 | <0.001 |
+| d_log_total_borrow_vol | 0.08 | 0.148 |
+
+**Key finding:** 1% increase in transactions → 2% increase in fees. Transaction count has nearly equal explanatory power to DEX volume (40.3% vs 41.3% alone).
+
+### Decomposed DEX Volume Model (R² = 0.585)
+
+Further decomposing DEX volume by asset type:
+
+| Predictor | Coef | p-value |
+|-----------|------|---------|
+| **d_log_dex_vol_eth** | **0.62** | 0.001 |
+| d_log_dex_vol_btc | 0.10 | 0.567 |
+| d_log_dex_vol_stable | 0.10 | 0.426 |
+| **d_log_n_tx** | **1.89** | <0.001 |
+| **eth_volatility** | **3.06** | <0.001 |
+
+**ETH trading dominates.** BTC and stablecoin volumes are not significant predictors.
+
+Holdout validation improved to 0.73 correlation (vs 0.70 aggregate).
+
+### Stablecoin Supply vs Volume
+
+- **Stablecoin supply** (stock): Changes slowly (std=0.056), not predictive (p=0.90)
+- **Stablecoin DEX volume** (flow): High variability (std=0.55), but not significant once ETH vol and n_tx are controlled
+
+Stablecoin supply is like TVL—an enabling condition, not a driver.
+
+## Monte Carlo: Activity Patterns for $750M+ TVL
+
+### Probability of Reaching TVL Targets (10k sims, 365-day horizon)
+
+| TVL Bucket | % of Paths |
+|------------|------------|
+| <$400M | 62% |
+| $400-500M | 16% |
+| $500-750M | 16% |
+| $750M-1B | 4% |
+| >$1B | 1.5% |
+
+Base-only sampling doubles probability of reaching $750M+ (10.5% vs 5.3%).
+
+### Activity Patterns in Paths Reaching $750M+
+
+| Metric | Paths → $750M+ | ALL Paths | Required Growth |
+|--------|---------------|-----------|-----------------|
+| Δlog(ETH vol) | +0.62 | -0.62 | **1.9x** |
+| Δlog(BTC vol) | +0.72 | -0.15 | **2.1x** |
+| Δlog(Stable vol) | +0.72 | +0.00 | **2.1x** |
+| Δlog(n_tx) | +0.47 | +0.16 | **1.6x** |
+
+**Key insight:** Paths reaching $750M+ require ~2x growth in DEX volumes and ~1.6x growth in transaction count. The average path has *shrinking* ETH volume.
+
+### Fee Forecasts: Cumulative vs ARR at Destination
+
+For paths reaching $750M+ TVL:
+
+| Metric | P10 | P50 | P90 |
+|--------|-----|-----|-----|
+| Cumulative fees (ETH/yr) | 307 | 356 | 442 |
+| Final week ARR (ETH/yr) | 218 | 288 | 441 |
+| Avg daily (ETH/day) | 0.8 | 1.0 | 1.2 |
+| Final daily (ETH/day) | 0.6 | 0.8 | 1.2 |
+
+**Reference:** OP Dec 2025 actual = 0.7 ETH/day (22 ETH/month)
+
+### Why Cumulative ≈ Final ARR?
+
+The model predicts fee **deviations** from baseline, not fee **levels**. Since activity deviations are mean-zero:
+- Fees fluctuate around baseline (~0.65 ETH/day)
+- Reaching $750M TVL doesn't increase the *level* of fees
+- The ~30% fee increase (0.7 → 1.0 ETH/day) comes from activity patterns, not TVL itself
+
+### Model Limitation
+
+The model is in **differences**—it captures how changes in activity relate to changes in fees. It doesn't capture the **level effect** (bigger chain = more fees at same % change).
+
+To model "ARR once at $750M" would require:
+1. A level-based model (fees ~ TVL + activity levels), or
+2. Scaling OP's baseline to what Base/Arb looked like at $750M (but they've never been that small)
+
+## December 2025 Actual Fees
+
+| Chain | Monthly (ETH) | Daily Avg |
+|-------|---------------|-----------|
+| Base | 942 | 30.4 ETH/day |
+| Arbitrum | 387 | 12.5 ETH/day |
+| Optimism | 22 | 0.7 ETH/day |
+
+Base generates 42x more fees than OP, 2.4x more than Arbitrum.
