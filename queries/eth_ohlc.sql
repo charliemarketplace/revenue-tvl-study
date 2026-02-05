@@ -1,3 +1,4 @@
+-- https://dune.com/queries/6655853
 with hourly_price AS (
 SELECT 
     blockchain, 
