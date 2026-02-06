@@ -5,7 +5,7 @@ Model-based Monte Carlo simulation using block bootstrap.
 
 Approach:
 1. Sample weekly blocks of activity shocks from Base/Arb
-2. Apply Link 2 coefficients to compute predicted Δlog_fees
+2. Apply fee model coefficients to compute predicted Δlog_fees
 3. Add residual noise (block-sampled to preserve AR structure)
 4. Accumulate paths, let TVL be an outcome
 5. Group by ending TVL bucket → fee distributions
@@ -29,6 +29,17 @@ BLOCK_SIZE = 7  # Weekly blocks
 N_SIMULATIONS = 100000
 HORIZON_DAYS = 365  # 1 year forward
 
+# Feature columns (must match 02_estimate_model.py)
+FEATURE_COLS = [
+    "d_log_dex_vol_btc",
+    "d_log_dex_vol_eth",
+    "d_log_dex_vol_stable",
+    "d_log_borrow_vol_stable",
+    "d_log_stablecoin_supply",
+    "d_log_n_tx",
+    "eth_volatility",
+]
+
 # TVL buckets for conditioning (in millions USD)
 TVL_BUCKETS = [
     (0, 400, "<$400M"),
@@ -46,27 +57,16 @@ def load_data():
     return df
 
 
-def estimate_link2(train_df):
+def estimate_fee_model(train_df):
     """
-    Re-estimate Link 2 model and return coefficients + residuals.
+    Estimate fee model and return coefficients + residuals.
 
     Returns model, coefficients as array, and residuals.
     """
-    feature_cols = [
-        "d_log_total_dex_vol",
-        "d_log_total_borrow_vol",
-        "d_log_n_tx",
-        "d_dex_btc_share",
-        "d_dex_eth_share",
-        "d_borrow_btc_share",
-        "d_borrow_eth_share",
-        "eth_volatility",
-    ]
-
     train_df = train_df.copy()
     train_df["chain_base"] = (train_df["chain"] == "base").astype(int)
 
-    X = train_df[feature_cols + ["chain_base"]].copy()
+    X = train_df[FEATURE_COLS + ["chain_base"]].copy()
     X = sm.add_constant(X)
     y = train_df["d_log_fees"]
 
@@ -77,10 +77,10 @@ def estimate_link2(train_df):
     model = OLS(y, X).fit(cov_type="HAC", cov_kwds={"maxlags": 5})
 
     # Extract coefficients in order: const, features, chain_base
-    coef_order = ["const"] + feature_cols + ["chain_base"]
+    coef_order = ["const"] + FEATURE_COLS + ["chain_base"]
     coefficients = np.array([model.params[c] for c in coef_order])
 
-    return model, coefficients, model.resid.values, feature_cols
+    return model, coefficients, model.resid.values
 
 
 def prepare_block_arrays(df, block_size=BLOCK_SIZE):
@@ -89,20 +89,18 @@ def prepare_block_arrays(df, block_size=BLOCK_SIZE):
 
     Returns:
         blocks: list of (n_days, n_features) arrays
-        block_residual_indices: list of arrays mapping blocks to residual indices
     """
     # Columns needed for simulation
-    # Order matters: must match the feature extraction in run_simulations_vectorized
+    # Order: d_log_tvl (for TVL accumulation), then model features
     shock_cols = [
-        "d_log_tvl",           # index 0
-        "d_log_total_dex_vol", # index 1
-        "d_log_total_borrow_vol", # index 2
-        "d_log_n_tx",          # index 3
-        "d_dex_btc_share",     # index 4
-        "d_dex_eth_share",     # index 5
-        "d_borrow_btc_share",  # index 6
-        "d_borrow_eth_share",  # index 7
-        "eth_volatility",      # index 8
+        "d_log_tvl",              # index 0 - for TVL accumulation
+        "d_log_dex_vol_btc",      # index 1
+        "d_log_dex_vol_eth",      # index 2
+        "d_log_dex_vol_stable",   # index 3
+        "d_log_borrow_vol_stable",# index 4
+        "d_log_stablecoin_supply",# index 5
+        "d_log_n_tx",             # index 6
+        "eth_volatility",         # index 7
     ]
 
     blocks = []
@@ -188,17 +186,16 @@ def run_simulations_vectorized(n_sims, starting_state, blocks, coefficients, res
                 log_tvl += block[day, 0]  # d_log_tvl
 
                 # Build feature vector for fee prediction
-                # Order must match model: dex_vol, borrow_vol, n_tx, btc_share, eth_share, borrow_btc, borrow_eth, volatility
+                # Order: const, features (indices 1-7), chain_base
                 features = np.array([
                     1.0,              # const
-                    block[day, 1],    # d_log_total_dex_vol
-                    block[day, 2],    # d_log_total_borrow_vol
-                    block[day, 3],    # d_log_n_tx
-                    block[day, 4],    # d_dex_btc_share
-                    block[day, 5],    # d_dex_eth_share
-                    block[day, 6],    # d_borrow_btc_share
-                    block[day, 7],    # d_borrow_eth_share
-                    block[day, 8],    # eth_volatility
+                    block[day, 1],    # d_log_dex_vol_btc
+                    block[day, 2],    # d_log_dex_vol_eth
+                    block[day, 3],    # d_log_dex_vol_stable
+                    block[day, 4],    # d_log_borrow_vol_stable
+                    block[day, 5],    # d_log_stablecoin_supply
+                    block[day, 6],    # d_log_n_tx
+                    block[day, 7],    # eth_volatility
                     0.0,              # chain_base (OP = 0)
                 ])
 
@@ -224,14 +221,13 @@ def run_simulations_vectorized(n_sims, starting_state, blocks, coefficients, res
 
                 features = np.array([
                     1.0,              # const
-                    block[day, 1],    # d_log_total_dex_vol
-                    block[day, 2],    # d_log_total_borrow_vol
-                    block[day, 3],    # d_log_n_tx
-                    block[day, 4],    # d_dex_btc_share
-                    block[day, 5],    # d_dex_eth_share
-                    block[day, 6],    # d_borrow_btc_share
-                    block[day, 7],    # d_borrow_eth_share
-                    block[day, 8],    # eth_volatility
+                    block[day, 1],    # d_log_dex_vol_btc
+                    block[day, 2],    # d_log_dex_vol_eth
+                    block[day, 3],    # d_log_dex_vol_stable
+                    block[day, 4],    # d_log_borrow_vol_stable
+                    block[day, 5],    # d_log_stablecoin_supply
+                    block[day, 6],    # d_log_n_tx
+                    block[day, 7],    # eth_volatility
                     0.0,              # chain_base (OP = 0)
                 ])
 
@@ -311,10 +307,10 @@ def main():
     print(f"Training data: {len(train_df)} observations")
 
     # Estimate model
-    print("\nEstimating Link 2 model...")
-    model, coefficients, residuals, feature_cols = estimate_link2(train_df)
+    print("\nEstimating fee model...")
+    model, coefficients, residuals = estimate_fee_model(train_df)
     print(f"Model R²: {model.rsquared:.4f}")
-    print(f"Coefficients: {dict(zip(['const'] + feature_cols + ['chain_base'], coefficients))}")
+    print(f"Coefficients: {dict(zip(['const'] + FEATURE_COLS + ['chain_base'], coefficients))}")
 
     # Create weekly blocks as numpy arrays
     print("\nCreating weekly blocks...")

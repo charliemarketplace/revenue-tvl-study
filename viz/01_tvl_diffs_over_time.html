@@ -1,0 +1,3739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily TVL Changes - Arbitrum vs Base</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #f5f5f5;
+        }
+        #chart-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        #chart { width: 100%; height: 500px; }
+    </style>
+</head>
+<body>
+    <div id="chart-container">
+        <div id="chart"></div>
+    </div>
+
+    <script>
+        const rawData = [
+  {
+    "date": "2025-01-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.019607
+  },
+  {
+    "date": "2025-01-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.017644
+  },
+  {
+    "date": "2025-01-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.027073
+  },
+  {
+    "date": "2025-01-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.010845
+  },
+  {
+    "date": "2025-01-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.001726
+  },
+  {
+    "date": "2025-01-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.016433
+  },
+  {
+    "date": "2025-01-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.070421
+  },
+  {
+    "date": "2025-01-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.023198
+  },
+  {
+    "date": "2025-01-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.025136
+  },
+  {
+    "date": "2025-01-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.025572
+  },
+  {
+    "date": "2025-01-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.003742
+  },
+  {
+    "date": "2025-01-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.005045
+  },
+  {
+    "date": "2025-01-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.025914
+  },
+  {
+    "date": "2025-01-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.011795
+  },
+  {
+    "date": "2025-01-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.041414
+  },
+  {
+    "date": "2025-01-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.019295
+  },
+  {
+    "date": "2025-01-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.042286
+  },
+  {
+    "date": "2025-01-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.032084
+  },
+  {
+    "date": "2025-01-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.026842
+  },
+  {
+    "date": "2025-01-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.013532
+  },
+  {
+    "date": "2025-01-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.031889
+  },
+  {
+    "date": "2025-01-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.011976
+  },
+  {
+    "date": "2025-01-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.017235
+  },
+  {
+    "date": "2025-01-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.000391
+  },
+  {
+    "date": "2025-01-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.004583
+  },
+  {
+    "date": "2025-01-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.010174
+  },
+  {
+    "date": "2025-01-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.022909
+  },
+  {
+    "date": "2025-01-29T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.009629
+  },
+  {
+    "date": "2025-01-30T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.010213
+  },
+  {
+    "date": "2025-01-31T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.020025
+  },
+  {
+    "date": "2025-02-01T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.006966
+  },
+  {
+    "date": "2025-02-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.031435
+  },
+  {
+    "date": "2025-02-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.076027
+  },
+  {
+    "date": "2025-02-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.007755
+  },
+  {
+    "date": "2025-02-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.035554
+  },
+  {
+    "date": "2025-02-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.02144
+  },
+  {
+    "date": "2025-02-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.000989
+  },
+  {
+    "date": "2025-02-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.006243
+  },
+  {
+    "date": "2025-02-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.003619
+  },
+  {
+    "date": "2025-02-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.004746
+  },
+  {
+    "date": "2025-02-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.008691
+  },
+  {
+    "date": "2025-02-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.006762
+  },
+  {
+    "date": "2025-02-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.022686
+  },
+  {
+    "date": "2025-02-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.013523
+  },
+  {
+    "date": "2025-02-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.008193
+  },
+  {
+    "date": "2025-02-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.002127
+  },
+  {
+    "date": "2025-02-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.005837
+  },
+  {
+    "date": "2025-02-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.008772
+  },
+  {
+    "date": "2025-02-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.014811
+  },
+  {
+    "date": "2025-02-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.013439
+  },
+  {
+    "date": "2025-02-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.019095
+  },
+  {
+    "date": "2025-02-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.018128
+  },
+  {
+    "date": "2025-02-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.021818
+  },
+  {
+    "date": "2025-02-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.01297
+  },
+  {
+    "date": "2025-02-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.077281
+  },
+  {
+    "date": "2025-02-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.012793
+  },
+  {
+    "date": "2025-02-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.045412
+  },
+  {
+    "date": "2025-02-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.003187
+  },
+  {
+    "date": "2025-03-01T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.013942
+  },
+  {
+    "date": "2025-03-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.004863
+  },
+  {
+    "date": "2025-03-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.072648
+  },
+  {
+    "date": "2025-03-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.088989
+  },
+  {
+    "date": "2025-03-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.00773
+  },
+  {
+    "date": "2025-03-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.02435
+  },
+  {
+    "date": "2025-03-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.014838
+  },
+  {
+    "date": "2025-03-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.00935
+  },
+  {
+    "date": "2025-03-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.015229
+  },
+  {
+    "date": "2025-03-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.05989
+  },
+  {
+    "date": "2025-03-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.036134
+  },
+  {
+    "date": "2025-03-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.028645
+  },
+  {
+    "date": "2025-03-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.012905
+  },
+  {
+    "date": "2025-03-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.007797
+  },
+  {
+    "date": "2025-03-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.015898
+  },
+  {
+    "date": "2025-03-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.007617
+  },
+  {
+    "date": "2025-03-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.016695
+  },
+  {
+    "date": "2025-03-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.008361
+  },
+  {
+    "date": "2025-03-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.013685
+  },
+  {
+    "date": "2025-03-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.030653
+  },
+  {
+    "date": "2025-03-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.026954
+  },
+  {
+    "date": "2025-03-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.002493
+  },
+  {
+    "date": "2025-03-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.010017
+  },
+  {
+    "date": "2025-03-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.01157
+  },
+  {
+    "date": "2025-03-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.018453
+  },
+  {
+    "date": "2025-03-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.000885
+  },
+  {
+    "date": "2025-03-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.014902
+  },
+  {
+    "date": "2025-03-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.003149
+  },
+  {
+    "date": "2025-03-29T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.026911
+  },
+  {
+    "date": "2025-03-30T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.014644
+  },
+  {
+    "date": "2025-03-31T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.009308
+  },
+  {
+    "date": "2025-04-01T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.007036
+  },
+  {
+    "date": "2025-04-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.01333
+  },
+  {
+    "date": "2025-04-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.054699
+  },
+  {
+    "date": "2025-04-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.022893
+  },
+  {
+    "date": "2025-04-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.013422
+  },
+  {
+    "date": "2025-04-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.004093
+  },
+  {
+    "date": "2025-04-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.078317
+  },
+  {
+    "date": "2025-04-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.007495
+  },
+  {
+    "date": "2025-04-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.031888
+  },
+  {
+    "date": "2025-04-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.061149
+  },
+  {
+    "date": "2025-04-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.039878
+  },
+  {
+    "date": "2025-04-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.02222
+  },
+  {
+    "date": "2025-04-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.027051
+  },
+  {
+    "date": "2025-04-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.011895
+  },
+  {
+    "date": "2025-04-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.004741
+  },
+  {
+    "date": "2025-04-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.007516
+  },
+  {
+    "date": "2025-04-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.003906
+  },
+  {
+    "date": "2025-04-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.01039
+  },
+  {
+    "date": "2025-04-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.008254
+  },
+  {
+    "date": "2025-04-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.010295
+  },
+  {
+    "date": "2025-04-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.002893
+  },
+  {
+    "date": "2025-04-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.004009
+  },
+  {
+    "date": "2025-04-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.053852
+  },
+  {
+    "date": "2025-04-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.011252
+  },
+  {
+    "date": "2025-04-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.005889
+  },
+  {
+    "date": "2025-04-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.013481
+  },
+  {
+    "date": "2025-04-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.007613
+  },
+  {
+    "date": "2025-04-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.014785
+  },
+  {
+    "date": "2025-04-29T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.000299
+  },
+  {
+    "date": "2025-04-30T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.003463
+  },
+  {
+    "date": "2025-05-01T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.000566
+  },
+  {
+    "date": "2025-05-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.011031
+  },
+  {
+    "date": "2025-05-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.001897
+  },
+  {
+    "date": "2025-05-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.011332
+  },
+  {
+    "date": "2025-05-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.005074
+  },
+  {
+    "date": "2025-05-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.002722
+  },
+  {
+    "date": "2025-05-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.006049
+  },
+  {
+    "date": "2025-05-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.021607
+  },
+  {
+    "date": "2025-05-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.080993
+  },
+  {
+    "date": "2025-05-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.023382
+  },
+  {
+    "date": "2025-05-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.048996
+  },
+  {
+    "date": "2025-05-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.004957
+  },
+  {
+    "date": "2025-05-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.016233
+  },
+  {
+    "date": "2025-05-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.035298
+  },
+  {
+    "date": "2025-05-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.020221
+  },
+  {
+    "date": "2025-05-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.017219
+  },
+  {
+    "date": "2025-05-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.000258
+  },
+  {
+    "date": "2025-05-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.013652
+  },
+  {
+    "date": "2025-05-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.006032
+  },
+  {
+    "date": "2025-05-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.020434
+  },
+  {
+    "date": "2025-05-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.005629
+  },
+  {
+    "date": "2025-05-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.011553
+  },
+  {
+    "date": "2025-05-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.021496
+  },
+  {
+    "date": "2025-05-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.034665
+  },
+  {
+    "date": "2025-05-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.01264
+  },
+  {
+    "date": "2025-05-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.004569
+  },
+  {
+    "date": "2025-05-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.017438
+  },
+  {
+    "date": "2025-05-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.01125
+  },
+  {
+    "date": "2025-05-29T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.009309
+  },
+  {
+    "date": "2025-05-30T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.019918
+  },
+  {
+    "date": "2025-05-31T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.024811
+  },
+  {
+    "date": "2025-06-01T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.008469
+  },
+  {
+    "date": "2025-06-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.009457
+  },
+  {
+    "date": "2025-06-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.003383
+  },
+  {
+    "date": "2025-06-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.002111
+  },
+  {
+    "date": "2025-06-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.005062
+  },
+  {
+    "date": "2025-06-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.047204
+  },
+  {
+    "date": "2025-06-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.023851
+  },
+  {
+    "date": "2025-06-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.012101
+  },
+  {
+    "date": "2025-06-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.003465
+  },
+  {
+    "date": "2025-06-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.045466
+  },
+  {
+    "date": "2025-06-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.016917
+  },
+  {
+    "date": "2025-06-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.005018
+  },
+  {
+    "date": "2025-06-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.054387
+  },
+  {
+    "date": "2025-06-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.010063
+  },
+  {
+    "date": "2025-06-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.004531
+  },
+  {
+    "date": "2025-06-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.008585
+  },
+  {
+    "date": "2025-06-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.00731
+  },
+  {
+    "date": "2025-06-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.015481
+  },
+  {
+    "date": "2025-06-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.009282
+  },
+  {
+    "date": "2025-06-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.003104
+  },
+  {
+    "date": "2025-06-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.026179
+  },
+  {
+    "date": "2025-06-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.027759
+  },
+  {
+    "date": "2025-06-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.011625
+  },
+  {
+    "date": "2025-06-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.048097
+  },
+  {
+    "date": "2025-06-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.01497
+  },
+  {
+    "date": "2025-06-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.003486
+  },
+  {
+    "date": "2025-06-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.003732
+  },
+  {
+    "date": "2025-06-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.00435
+  },
+  {
+    "date": "2025-06-29T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.011765
+  },
+  {
+    "date": "2025-06-30T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.015628
+  },
+  {
+    "date": "2025-07-01T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.005828
+  },
+  {
+    "date": "2025-07-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.022262
+  },
+  {
+    "date": "2025-07-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.025409
+  },
+  {
+    "date": "2025-07-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.025562
+  },
+  {
+    "date": "2025-07-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.016902
+  },
+  {
+    "date": "2025-07-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.002823
+  },
+  {
+    "date": "2025-07-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.006314
+  },
+  {
+    "date": "2025-07-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.006289
+  },
+  {
+    "date": "2025-07-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.012128
+  },
+  {
+    "date": "2025-07-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.00696
+  },
+  {
+    "date": "2025-07-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.021282
+  },
+  {
+    "date": "2025-07-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.005553
+  },
+  {
+    "date": "2025-07-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.009121
+  },
+  {
+    "date": "2025-07-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.009019
+  },
+  {
+    "date": "2025-07-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.013799
+  },
+  {
+    "date": "2025-07-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.014965
+  },
+  {
+    "date": "2025-07-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.026177
+  },
+  {
+    "date": "2025-07-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.010023
+  },
+  {
+    "date": "2025-07-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.012346
+  },
+  {
+    "date": "2025-07-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.013666
+  },
+  {
+    "date": "2025-07-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.025891
+  },
+  {
+    "date": "2025-07-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.00096
+  },
+  {
+    "date": "2025-07-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.005859
+  },
+  {
+    "date": "2025-07-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.016969
+  },
+  {
+    "date": "2025-07-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.012669
+  },
+  {
+    "date": "2025-07-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.014492
+  },
+  {
+    "date": "2025-07-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.004683
+  },
+  {
+    "date": "2025-07-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.022136
+  },
+  {
+    "date": "2025-07-29T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.012842
+  },
+  {
+    "date": "2025-07-30T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.00683
+  },
+  {
+    "date": "2025-07-31T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.00057
+  },
+  {
+    "date": "2025-08-01T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.022212
+  },
+  {
+    "date": "2025-08-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.032489
+  },
+  {
+    "date": "2025-08-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.010278
+  },
+  {
+    "date": "2025-08-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.025434
+  },
+  {
+    "date": "2025-08-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.037008
+  },
+  {
+    "date": "2025-08-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.014221
+  },
+  {
+    "date": "2025-08-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.024012
+  },
+  {
+    "date": "2025-08-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.047933
+  },
+  {
+    "date": "2025-08-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.007049
+  },
+  {
+    "date": "2025-08-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.035147
+  },
+  {
+    "date": "2025-08-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.013267
+  },
+  {
+    "date": "2025-08-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.004474
+  },
+  {
+    "date": "2025-08-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.033937
+  },
+  {
+    "date": "2025-08-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.035248
+  },
+  {
+    "date": "2025-08-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.039237
+  },
+  {
+    "date": "2025-08-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.010512
+  },
+  {
+    "date": "2025-08-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.00436
+  },
+  {
+    "date": "2025-08-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.004242
+  },
+  {
+    "date": "2025-08-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.012267
+  },
+  {
+    "date": "2025-08-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.031897
+  },
+  {
+    "date": "2025-08-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.032187
+  },
+  {
+    "date": "2025-08-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.007327
+  },
+  {
+    "date": "2025-08-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.067778
+  },
+  {
+    "date": "2025-08-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.001951
+  },
+  {
+    "date": "2025-08-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.024707
+  },
+  {
+    "date": "2025-08-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.037426
+  },
+  {
+    "date": "2025-08-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.01283
+  },
+  {
+    "date": "2025-08-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.012982
+  },
+  {
+    "date": "2025-08-29T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.004583
+  },
+  {
+    "date": "2025-08-30T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.025412
+  },
+  {
+    "date": "2025-08-31T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.018682
+  },
+  {
+    "date": "2025-09-01T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.013088
+  },
+  {
+    "date": "2025-09-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.017054
+  },
+  {
+    "date": "2025-09-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.026015
+  },
+  {
+    "date": "2025-09-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.025745
+  },
+  {
+    "date": "2025-09-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.006916
+  },
+  {
+    "date": "2025-09-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.017656
+  },
+  {
+    "date": "2025-09-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.006824
+  },
+  {
+    "date": "2025-09-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.006468
+  },
+  {
+    "date": "2025-09-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.00566
+  },
+  {
+    "date": "2025-09-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.002657
+  },
+  {
+    "date": "2025-09-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.014651
+  },
+  {
+    "date": "2025-09-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.022518
+  },
+  {
+    "date": "2025-09-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.024651
+  },
+  {
+    "date": "2025-09-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.001767
+  },
+  {
+    "date": "2025-09-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.001983
+  },
+  {
+    "date": "2025-09-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.013601
+  },
+  {
+    "date": "2025-09-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.014078
+  },
+  {
+    "date": "2025-09-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.011297
+  },
+  {
+    "date": "2025-09-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.002485
+  },
+  {
+    "date": "2025-09-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.01558
+  },
+  {
+    "date": "2025-09-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.001803
+  },
+  {
+    "date": "2025-09-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.008509
+  },
+  {
+    "date": "2025-09-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.034546
+  },
+  {
+    "date": "2025-09-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.002759
+  },
+  {
+    "date": "2025-09-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.003972
+  },
+  {
+    "date": "2025-09-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.054029
+  },
+  {
+    "date": "2025-09-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.032136
+  },
+  {
+    "date": "2025-09-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.014434
+  },
+  {
+    "date": "2025-09-29T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.03737
+  },
+  {
+    "date": "2025-09-30T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.030054
+  },
+  {
+    "date": "2025-10-01T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.005976
+  },
+  {
+    "date": "2025-10-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.051745
+  },
+  {
+    "date": "2025-10-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.016174
+  },
+  {
+    "date": "2025-10-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.015495
+  },
+  {
+    "date": "2025-10-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.002514
+  },
+  {
+    "date": "2025-10-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.094823
+  },
+  {
+    "date": "2025-10-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.019914
+  },
+  {
+    "date": "2025-10-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.028907
+  },
+  {
+    "date": "2025-10-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.014236
+  },
+  {
+    "date": "2025-10-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.008924
+  },
+  {
+    "date": "2025-10-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.091074
+  },
+  {
+    "date": "2025-10-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.007306
+  },
+  {
+    "date": "2025-10-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.050508
+  },
+  {
+    "date": "2025-10-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.015594
+  },
+  {
+    "date": "2025-10-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.012755
+  },
+  {
+    "date": "2025-10-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.012949
+  },
+  {
+    "date": "2025-10-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.013867
+  },
+  {
+    "date": "2025-10-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.003527
+  },
+  {
+    "date": "2025-10-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.012748
+  },
+  {
+    "date": "2025-10-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.015502
+  },
+  {
+    "date": "2025-10-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.000782
+  },
+  {
+    "date": "2025-10-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.016186
+  },
+  {
+    "date": "2025-10-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.005866
+  },
+  {
+    "date": "2025-10-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.007915
+  },
+  {
+    "date": "2025-10-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.010413
+  },
+  {
+    "date": "2025-10-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.095607
+  },
+  {
+    "date": "2025-10-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.027071
+  },
+  {
+    "date": "2025-10-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.002001
+  },
+  {
+    "date": "2025-10-29T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.021637
+  },
+  {
+    "date": "2025-10-30T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.015573
+  },
+  {
+    "date": "2025-10-31T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.019525
+  },
+  {
+    "date": "2025-11-01T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.001845
+  },
+  {
+    "date": "2025-11-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.006604
+  },
+  {
+    "date": "2025-11-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.00859
+  },
+  {
+    "date": "2025-11-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.06108
+  },
+  {
+    "date": "2025-11-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.09022
+  },
+  {
+    "date": "2025-11-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.020301
+  },
+  {
+    "date": "2025-11-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.035016
+  },
+  {
+    "date": "2025-11-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.007719
+  },
+  {
+    "date": "2025-11-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.004467
+  },
+  {
+    "date": "2025-11-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.032955
+  },
+  {
+    "date": "2025-11-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.001833
+  },
+  {
+    "date": "2025-11-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.018878
+  },
+  {
+    "date": "2025-11-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.00525
+  },
+  {
+    "date": "2025-11-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.029734
+  },
+  {
+    "date": "2025-11-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.020883
+  },
+  {
+    "date": "2025-11-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.006909
+  },
+  {
+    "date": "2025-11-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.012574
+  },
+  {
+    "date": "2025-11-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.02083
+  },
+  {
+    "date": "2025-11-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.01872
+  },
+  {
+    "date": "2025-11-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.015496
+  },
+  {
+    "date": "2025-11-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.030442
+  },
+  {
+    "date": "2025-11-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.011395
+  },
+  {
+    "date": "2025-11-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.009909
+  },
+  {
+    "date": "2025-11-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.007189
+  },
+  {
+    "date": "2025-11-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.025676
+  },
+  {
+    "date": "2025-11-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.012228
+  },
+  {
+    "date": "2025-11-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.028035
+  },
+  {
+    "date": "2025-11-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.014182
+  },
+  {
+    "date": "2025-11-29T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.012113
+  },
+  {
+    "date": "2025-11-30T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.008736
+  },
+  {
+    "date": "2025-12-01T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.006771
+  },
+  {
+    "date": "2025-12-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.038109
+  },
+  {
+    "date": "2025-12-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.077919
+  },
+  {
+    "date": "2025-12-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.039131
+  },
+  {
+    "date": "2025-12-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.009387
+  },
+  {
+    "date": "2025-12-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.024043
+  },
+  {
+    "date": "2025-12-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.004802
+  },
+  {
+    "date": "2025-12-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.002282
+  },
+  {
+    "date": "2025-12-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.016376
+  },
+  {
+    "date": "2025-12-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.016387
+  },
+  {
+    "date": "2025-12-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.007389
+  },
+  {
+    "date": "2025-12-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.008124
+  },
+  {
+    "date": "2025-12-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.022504
+  },
+  {
+    "date": "2025-12-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.003905
+  },
+  {
+    "date": "2025-12-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.012281
+  },
+  {
+    "date": "2025-12-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.024567
+  },
+  {
+    "date": "2025-12-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.002341
+  },
+  {
+    "date": "2025-12-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.033502
+  },
+  {
+    "date": "2025-12-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.000348
+  },
+  {
+    "date": "2025-12-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.03217
+  },
+  {
+    "date": "2025-12-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.004101
+  },
+  {
+    "date": "2025-12-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.005607
+  },
+  {
+    "date": "2025-12-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.008119
+  },
+  {
+    "date": "2025-12-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.009488
+  },
+  {
+    "date": "2025-12-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.000544
+  },
+  {
+    "date": "2025-12-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.007672
+  },
+  {
+    "date": "2025-12-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.000737
+  },
+  {
+    "date": "2025-12-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.004315
+  },
+  {
+    "date": "2025-12-29T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.000964
+  },
+  {
+    "date": "2025-12-30T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": -0.005821
+  },
+  {
+    "date": "2025-12-31T00:00:00.000Z",
+    "chain": "arbitrum",
+    "d_log_tvl": 0.026757
+  },
+  {
+    "date": "2025-01-02T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.02538
+  },
+  {
+    "date": "2025-01-03T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.029468
+  },
+  {
+    "date": "2025-01-04T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.029514
+  },
+  {
+    "date": "2025-01-05T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.02138
+  },
+  {
+    "date": "2025-01-06T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.019783
+  },
+  {
+    "date": "2025-01-07T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.012116
+  },
+  {
+    "date": "2025-01-08T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.071294
+  },
+  {
+    "date": "2025-01-09T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.014366
+  },
+  {
+    "date": "2025-01-10T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.031218
+  },
+  {
+    "date": "2025-01-11T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.023648
+  },
+  {
+    "date": "2025-01-12T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.011987
+  },
+  {
+    "date": "2025-01-13T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.02085
+  },
+  {
+    "date": "2025-01-14T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.017228
+  },
+  {
+    "date": "2025-01-15T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.045363
+  },
+  {
+    "date": "2025-01-16T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.062238
+  },
+  {
+    "date": "2025-01-17T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.020162
+  },
+  {
+    "date": "2025-01-18T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.006264
+  },
+  {
+    "date": "2025-01-19T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.025285
+  },
+  {
+    "date": "2025-01-20T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.022717
+  },
+  {
+    "date": "2025-01-21T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.015132
+  },
+  {
+    "date": "2025-01-22T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.011034
+  },
+  {
+    "date": "2025-01-23T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.006419
+  },
+  {
+    "date": "2025-01-24T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.015163
+  },
+  {
+    "date": "2025-01-25T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.00854
+  },
+  {
+    "date": "2025-01-26T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.006264
+  },
+  {
+    "date": "2025-01-27T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.010444
+  },
+  {
+    "date": "2025-01-28T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.039767
+  },
+  {
+    "date": "2025-01-29T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.018539
+  },
+  {
+    "date": "2025-01-30T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.020861
+  },
+  {
+    "date": "2025-01-31T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.02094
+  },
+  {
+    "date": "2025-02-01T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.001808
+  },
+  {
+    "date": "2025-02-02T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.054941
+  },
+  {
+    "date": "2025-02-03T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.084712
+  },
+  {
+    "date": "2025-02-04T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.021324
+  },
+  {
+    "date": "2025-02-05T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.021272
+  },
+  {
+    "date": "2025-02-06T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.004004
+  },
+  {
+    "date": "2025-02-07T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.01856
+  },
+  {
+    "date": "2025-02-08T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.002299
+  },
+  {
+    "date": "2025-02-09T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.004091
+  },
+  {
+    "date": "2025-02-10T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.004284
+  },
+  {
+    "date": "2025-02-11T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.014943
+  },
+  {
+    "date": "2025-02-12T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.036955
+  },
+  {
+    "date": "2025-02-13T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.017693
+  },
+  {
+    "date": "2025-02-14T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.031858
+  },
+  {
+    "date": "2025-02-15T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.018581
+  },
+  {
+    "date": "2025-02-16T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.010372
+  },
+  {
+    "date": "2025-02-17T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.005481
+  },
+  {
+    "date": "2025-02-18T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.007379
+  },
+  {
+    "date": "2025-02-19T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.003824
+  },
+  {
+    "date": "2025-02-20T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.006859
+  },
+  {
+    "date": "2025-02-21T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.00711
+  },
+  {
+    "date": "2025-02-22T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.003487
+  },
+  {
+    "date": "2025-02-23T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.030975
+  },
+  {
+    "date": "2025-02-24T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.005806
+  },
+  {
+    "date": "2025-02-25T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.067683
+  },
+  {
+    "date": "2025-02-26T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.016811
+  },
+  {
+    "date": "2025-02-27T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.041448
+  },
+  {
+    "date": "2025-02-28T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.000197
+  },
+  {
+    "date": "2025-03-01T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.010584
+  },
+  {
+    "date": "2025-03-02T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.009954
+  },
+  {
+    "date": "2025-03-03T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.073611
+  },
+  {
+    "date": "2025-03-04T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.089596
+  },
+  {
+    "date": "2025-03-05T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.008302
+  },
+  {
+    "date": "2025-03-06T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.023721
+  },
+  {
+    "date": "2025-03-07T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.027821
+  },
+  {
+    "date": "2025-03-08T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.015411
+  },
+  {
+    "date": "2025-03-09T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.00179
+  },
+  {
+    "date": "2025-03-10T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.063378
+  },
+  {
+    "date": "2025-03-11T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.053581
+  },
+  {
+    "date": "2025-03-12T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.042175
+  },
+  {
+    "date": "2025-03-13T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.011535
+  },
+  {
+    "date": "2025-03-14T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.008818
+  },
+  {
+    "date": "2025-03-15T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.033377
+  },
+  {
+    "date": "2025-03-16T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.106087
+  },
+  {
+    "date": "2025-03-17T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.01633
+  },
+  {
+    "date": "2025-03-18T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.017255
+  },
+  {
+    "date": "2025-03-19T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.011098
+  },
+  {
+    "date": "2025-03-20T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.049823
+  },
+  {
+    "date": "2025-03-21T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.065409
+  },
+  {
+    "date": "2025-03-22T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.025764
+  },
+  {
+    "date": "2025-03-23T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.006095
+  },
+  {
+    "date": "2025-03-24T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.011034
+  },
+  {
+    "date": "2025-03-25T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.023414
+  },
+  {
+    "date": "2025-03-26T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.004042
+  },
+  {
+    "date": "2025-03-27T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.00086
+  },
+  {
+    "date": "2025-03-28T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.008488
+  },
+  {
+    "date": "2025-03-29T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.031199
+  },
+  {
+    "date": "2025-03-30T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.028679
+  },
+  {
+    "date": "2025-03-31T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.001123
+  },
+  {
+    "date": "2025-04-01T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.008603
+  },
+  {
+    "date": "2025-04-02T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.005901
+  },
+  {
+    "date": "2025-04-03T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.008997
+  },
+  {
+    "date": "2025-04-04T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.005991
+  },
+  {
+    "date": "2025-04-05T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.053172
+  },
+  {
+    "date": "2025-04-06T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.01201
+  },
+  {
+    "date": "2025-04-07T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.082155
+  },
+  {
+    "date": "2025-04-08T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.070765
+  },
+  {
+    "date": "2025-04-09T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.036041
+  },
+  {
+    "date": "2025-04-10T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.073859
+  },
+  {
+    "date": "2025-04-11T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.059765
+  },
+  {
+    "date": "2025-04-12T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.037975
+  },
+  {
+    "date": "2025-04-13T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.02982
+  },
+  {
+    "date": "2025-04-14T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.019053
+  },
+  {
+    "date": "2025-04-15T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.006534
+  },
+  {
+    "date": "2025-04-16T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.000158
+  },
+  {
+    "date": "2025-04-17T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.003574
+  },
+  {
+    "date": "2025-04-18T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.0043
+  },
+  {
+    "date": "2025-04-19T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.005445
+  },
+  {
+    "date": "2025-04-20T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.01441
+  },
+  {
+    "date": "2025-04-21T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.001451
+  },
+  {
+    "date": "2025-04-22T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.001684
+  },
+  {
+    "date": "2025-04-23T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.024274
+  },
+  {
+    "date": "2025-04-24T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.04397
+  },
+  {
+    "date": "2025-04-25T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.063132
+  },
+  {
+    "date": "2025-04-26T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.032324
+  },
+  {
+    "date": "2025-04-27T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.013137
+  },
+  {
+    "date": "2025-04-28T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.007738
+  },
+  {
+    "date": "2025-04-29T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.019119
+  },
+  {
+    "date": "2025-04-30T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.006542
+  },
+  {
+    "date": "2025-05-01T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.006016
+  },
+  {
+    "date": "2025-05-02T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.026792
+  },
+  {
+    "date": "2025-05-03T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.016988
+  },
+  {
+    "date": "2025-05-04T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.005717
+  },
+  {
+    "date": "2025-05-05T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.013763
+  },
+  {
+    "date": "2025-05-06T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.01037
+  },
+  {
+    "date": "2025-05-07T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.00474
+  },
+  {
+    "date": "2025-05-08T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.03032
+  },
+  {
+    "date": "2025-05-09T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.123526
+  },
+  {
+    "date": "2025-05-10T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.01855
+  },
+  {
+    "date": "2025-05-11T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.04813
+  },
+  {
+    "date": "2025-05-12T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.011226
+  },
+  {
+    "date": "2025-05-13T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.008094
+  },
+  {
+    "date": "2025-05-14T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.042756
+  },
+  {
+    "date": "2025-05-15T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.01008
+  },
+  {
+    "date": "2025-05-16T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.006799
+  },
+  {
+    "date": "2025-05-17T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.001978
+  },
+  {
+    "date": "2025-05-18T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.021348
+  },
+  {
+    "date": "2025-05-19T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.031436
+  },
+  {
+    "date": "2025-05-20T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.012988
+  },
+  {
+    "date": "2025-05-21T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.011143
+  },
+  {
+    "date": "2025-05-22T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.021196
+  },
+  {
+    "date": "2025-05-23T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.014402
+  },
+  {
+    "date": "2025-05-24T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.032079
+  },
+  {
+    "date": "2025-05-25T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.004266
+  },
+  {
+    "date": "2025-05-26T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.016784
+  },
+  {
+    "date": "2025-05-27T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.000417
+  },
+  {
+    "date": "2025-05-28T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.029988
+  },
+  {
+    "date": "2025-05-29T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.007346
+  },
+  {
+    "date": "2025-05-30T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.025499
+  },
+  {
+    "date": "2025-05-31T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.022063
+  },
+  {
+    "date": "2025-06-01T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.004548
+  },
+  {
+    "date": "2025-06-02T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.014203
+  },
+  {
+    "date": "2025-06-03T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.011174
+  },
+  {
+    "date": "2025-06-04T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.005258
+  },
+  {
+    "date": "2025-06-05T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.007662
+  },
+  {
+    "date": "2025-06-06T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.032225
+  },
+  {
+    "date": "2025-06-07T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.036641
+  },
+  {
+    "date": "2025-06-08T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.010791
+  },
+  {
+    "date": "2025-06-09T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.001133
+  },
+  {
+    "date": "2025-06-10T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.046128
+  },
+  {
+    "date": "2025-06-11T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.017119
+  },
+  {
+    "date": "2025-06-12T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.015526
+  },
+  {
+    "date": "2025-06-13T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.035151
+  },
+  {
+    "date": "2025-06-14T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.004595
+  },
+  {
+    "date": "2025-06-15T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.009957
+  },
+  {
+    "date": "2025-06-16T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.001942
+  },
+  {
+    "date": "2025-06-17T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.020341
+  },
+  {
+    "date": "2025-06-18T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.01889
+  },
+  {
+    "date": "2025-06-19T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.011311
+  },
+  {
+    "date": "2025-06-20T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.00592
+  },
+  {
+    "date": "2025-06-21T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.040194
+  },
+  {
+    "date": "2025-06-22T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.012217
+  },
+  {
+    "date": "2025-06-23T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.017104
+  },
+  {
+    "date": "2025-06-24T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.060404
+  },
+  {
+    "date": "2025-06-25T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.015651
+  },
+  {
+    "date": "2025-06-26T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.011417
+  },
+  {
+    "date": "2025-06-27T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.005822
+  },
+  {
+    "date": "2025-06-28T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.015434
+  },
+  {
+    "date": "2025-06-29T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.006902
+  },
+  {
+    "date": "2025-06-30T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.017731
+  },
+  {
+    "date": "2025-07-01T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.004342
+  },
+  {
+    "date": "2025-07-02T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.0227
+  },
+  {
+    "date": "2025-07-03T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.042197
+  },
+  {
+    "date": "2025-07-04T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.01349
+  },
+  {
+    "date": "2025-07-05T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.019517
+  },
+  {
+    "date": "2025-07-06T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.004656
+  },
+  {
+    "date": "2025-07-07T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.010661
+  },
+  {
+    "date": "2025-07-08T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.011607
+  },
+  {
+    "date": "2025-07-09T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.014895
+  },
+  {
+    "date": "2025-07-10T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.036478
+  },
+  {
+    "date": "2025-07-11T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.037615
+  },
+  {
+    "date": "2025-07-12T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.010499
+  },
+  {
+    "date": "2025-07-13T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.006284
+  },
+  {
+    "date": "2025-07-14T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.012858
+  },
+  {
+    "date": "2025-07-15T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.000542
+  },
+  {
+    "date": "2025-07-16T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.007012
+  },
+  {
+    "date": "2025-07-17T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.033982
+  },
+  {
+    "date": "2025-07-18T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.009455
+  },
+  {
+    "date": "2025-07-19T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.007331
+  },
+  {
+    "date": "2025-07-20T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.007757
+  },
+  {
+    "date": "2025-07-21T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.01949
+  },
+  {
+    "date": "2025-07-22T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.019378
+  },
+  {
+    "date": "2025-07-23T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.00546
+  },
+  {
+    "date": "2025-07-24T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.034391
+  },
+  {
+    "date": "2025-07-25T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.006609
+  },
+  {
+    "date": "2025-07-26T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.027715
+  },
+  {
+    "date": "2025-07-27T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.002561
+  },
+  {
+    "date": "2025-07-28T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.020065
+  },
+  {
+    "date": "2025-07-29T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.029254
+  },
+  {
+    "date": "2025-07-30T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.006767
+  },
+  {
+    "date": "2025-07-31T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.006724
+  },
+  {
+    "date": "2025-08-01T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.020622
+  },
+  {
+    "date": "2025-08-02T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.029193
+  },
+  {
+    "date": "2025-08-03T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.017195
+  },
+  {
+    "date": "2025-08-04T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.025318
+  },
+  {
+    "date": "2025-08-05T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.027835
+  },
+  {
+    "date": "2025-08-06T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.013208
+  },
+  {
+    "date": "2025-08-07T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.020057
+  },
+  {
+    "date": "2025-08-08T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.044588
+  },
+  {
+    "date": "2025-08-09T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.022418
+  },
+  {
+    "date": "2025-08-10T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.02858
+  },
+  {
+    "date": "2025-08-11T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.010829
+  },
+  {
+    "date": "2025-08-12T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.014306
+  },
+  {
+    "date": "2025-08-13T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.038024
+  },
+  {
+    "date": "2025-08-14T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.023673
+  },
+  {
+    "date": "2025-08-15T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.009166
+  },
+  {
+    "date": "2025-08-16T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.017677
+  },
+  {
+    "date": "2025-08-17T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.008492
+  },
+  {
+    "date": "2025-08-18T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.006896
+  },
+  {
+    "date": "2025-08-19T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.016365
+  },
+  {
+    "date": "2025-08-20T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.025092
+  },
+  {
+    "date": "2025-08-21T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.016256
+  },
+  {
+    "date": "2025-08-22T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.016178
+  },
+  {
+    "date": "2025-08-23T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.080037
+  },
+  {
+    "date": "2025-08-24T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.008011
+  },
+  {
+    "date": "2025-08-25T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.009495
+  },
+  {
+    "date": "2025-08-26T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.0514
+  },
+  {
+    "date": "2025-08-27T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.024106
+  },
+  {
+    "date": "2025-08-28T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.014141
+  },
+  {
+    "date": "2025-08-29T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.016595
+  },
+  {
+    "date": "2025-08-30T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.023086
+  },
+  {
+    "date": "2025-08-31T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.010429
+  },
+  {
+    "date": "2025-09-01T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.002191
+  },
+  {
+    "date": "2025-09-02T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.00802
+  },
+  {
+    "date": "2025-09-03T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.01515
+  },
+  {
+    "date": "2025-09-04T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.013469
+  },
+  {
+    "date": "2025-09-05T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.015233
+  },
+  {
+    "date": "2025-09-06T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.004318
+  },
+  {
+    "date": "2025-09-07T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.005781
+  },
+  {
+    "date": "2025-09-08T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.006945
+  },
+  {
+    "date": "2025-09-09T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.010704
+  },
+  {
+    "date": "2025-09-10T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.002826
+  },
+  {
+    "date": "2025-09-11T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.017447
+  },
+  {
+    "date": "2025-09-12T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.022362
+  },
+  {
+    "date": "2025-09-13T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.020289
+  },
+  {
+    "date": "2025-09-14T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.005975
+  },
+  {
+    "date": "2025-09-15T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.001988
+  },
+  {
+    "date": "2025-09-16T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.006918
+  },
+  {
+    "date": "2025-09-17T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.002493
+  },
+  {
+    "date": "2025-09-18T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.01814
+  },
+  {
+    "date": "2025-09-19T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.002918
+  },
+  {
+    "date": "2025-09-20T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.013918
+  },
+  {
+    "date": "2025-09-21T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.005768
+  },
+  {
+    "date": "2025-09-22T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.019998
+  },
+  {
+    "date": "2025-09-23T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.018463
+  },
+  {
+    "date": "2025-09-24T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.006228
+  },
+  {
+    "date": "2025-09-25T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.004443
+  },
+  {
+    "date": "2025-09-26T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.041089
+  },
+  {
+    "date": "2025-09-27T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.024577
+  },
+  {
+    "date": "2025-09-28T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.001615
+  },
+  {
+    "date": "2025-09-29T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.021688
+  },
+  {
+    "date": "2025-09-30T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.011015
+  },
+  {
+    "date": "2025-10-01T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.001169
+  },
+  {
+    "date": "2025-10-02T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.037627
+  },
+  {
+    "date": "2025-10-03T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.02751
+  },
+  {
+    "date": "2025-10-04T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.012731
+  },
+  {
+    "date": "2025-10-05T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.000755
+  },
+  {
+    "date": "2025-10-06T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.008599
+  },
+  {
+    "date": "2025-10-07T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.035315
+  },
+  {
+    "date": "2025-10-08T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.033038
+  },
+  {
+    "date": "2025-10-09T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.006762
+  },
+  {
+    "date": "2025-10-10T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.020147
+  },
+  {
+    "date": "2025-10-11T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.115047
+  },
+  {
+    "date": "2025-10-12T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.014285
+  },
+  {
+    "date": "2025-10-13T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.066775
+  },
+  {
+    "date": "2025-10-14T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.021153
+  },
+  {
+    "date": "2025-10-15T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.020699
+  },
+  {
+    "date": "2025-10-16T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.016769
+  },
+  {
+    "date": "2025-10-17T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.009565
+  },
+  {
+    "date": "2025-10-18T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.010022
+  },
+  {
+    "date": "2025-10-19T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.012063
+  },
+  {
+    "date": "2025-10-20T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.015861
+  },
+  {
+    "date": "2025-10-21T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.008518
+  },
+  {
+    "date": "2025-10-22T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.021423
+  },
+  {
+    "date": "2025-10-23T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.000749
+  },
+  {
+    "date": "2025-10-24T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.012948
+  },
+  {
+    "date": "2025-10-25T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.019555
+  },
+  {
+    "date": "2025-10-26T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.019358
+  },
+  {
+    "date": "2025-10-27T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.029956
+  },
+  {
+    "date": "2025-10-28T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.002996
+  },
+  {
+    "date": "2025-10-29T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.014952
+  },
+  {
+    "date": "2025-10-30T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.014058
+  },
+  {
+    "date": "2025-10-31T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.012227
+  },
+  {
+    "date": "2025-11-01T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.017938
+  },
+  {
+    "date": "2025-11-02T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.008289
+  },
+  {
+    "date": "2025-11-03T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.000354
+  },
+  {
+    "date": "2025-11-04T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.048605
+  },
+  {
+    "date": "2025-11-05T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.08339
+  },
+  {
+    "date": "2025-11-06T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.03452
+  },
+  {
+    "date": "2025-11-07T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.028545
+  },
+  {
+    "date": "2025-11-08T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.031404
+  },
+  {
+    "date": "2025-11-09T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.008842
+  },
+  {
+    "date": "2025-11-10T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.040842
+  },
+  {
+    "date": "2025-11-11T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.002305
+  },
+  {
+    "date": "2025-11-12T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.027611
+  },
+  {
+    "date": "2025-11-13T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.008708
+  },
+  {
+    "date": "2025-11-14T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.035694
+  },
+  {
+    "date": "2025-11-15T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.037627
+  },
+  {
+    "date": "2025-11-16T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.017649
+  },
+  {
+    "date": "2025-11-17T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.023457
+  },
+  {
+    "date": "2025-11-18T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.022773
+  },
+  {
+    "date": "2025-11-19T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.014841
+  },
+  {
+    "date": "2025-11-20T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.008309
+  },
+  {
+    "date": "2025-11-21T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.041429
+  },
+  {
+    "date": "2025-11-22T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.026156
+  },
+  {
+    "date": "2025-11-23T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.005605
+  },
+  {
+    "date": "2025-11-24T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.018595
+  },
+  {
+    "date": "2025-11-25T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.02234
+  },
+  {
+    "date": "2025-11-26T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.009437
+  },
+  {
+    "date": "2025-11-27T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.025129
+  },
+  {
+    "date": "2025-11-28T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.007289
+  },
+  {
+    "date": "2025-11-29T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.004117
+  },
+  {
+    "date": "2025-11-30T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.023206
+  },
+  {
+    "date": "2025-12-01T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.008789
+  },
+  {
+    "date": "2025-12-02T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.044932
+  },
+  {
+    "date": "2025-12-03T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.05649
+  },
+  {
+    "date": "2025-12-04T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.032966
+  },
+  {
+    "date": "2025-12-05T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.006387
+  },
+  {
+    "date": "2025-12-06T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.026935
+  },
+  {
+    "date": "2025-12-07T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.001003
+  },
+  {
+    "date": "2025-12-08T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.012846
+  },
+  {
+    "date": "2025-12-09T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.003707
+  },
+  {
+    "date": "2025-12-10T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.024348
+  },
+  {
+    "date": "2025-12-11T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.004076
+  },
+  {
+    "date": "2025-12-12T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.000552
+  },
+  {
+    "date": "2025-12-13T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.016779
+  },
+  {
+    "date": "2025-12-14T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.003297
+  },
+  {
+    "date": "2025-12-15T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.016529
+  },
+  {
+    "date": "2025-12-16T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.025014
+  },
+  {
+    "date": "2025-12-17T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.006812
+  },
+  {
+    "date": "2025-12-18T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.01874
+  },
+  {
+    "date": "2025-12-19T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.004623
+  },
+  {
+    "date": "2025-12-20T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.038756
+  },
+  {
+    "date": "2025-12-21T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.000581
+  },
+  {
+    "date": "2025-12-22T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.007425
+  },
+  {
+    "date": "2025-12-23T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.002819
+  },
+  {
+    "date": "2025-12-24T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.010838
+  },
+  {
+    "date": "2025-12-25T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.001256
+  },
+  {
+    "date": "2025-12-26T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.009391
+  },
+  {
+    "date": "2025-12-27T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": -0.009528
+  },
+  {
+    "date": "2025-12-28T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.010888
+  },
+  {
+    "date": "2025-12-29T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.003492
+  },
+  {
+    "date": "2025-12-30T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.004038
+  },
+  {
+    "date": "2025-12-31T00:00:00.000Z",
+    "chain": "base",
+    "d_log_tvl": 0.009727
+  }
+];
+
+        // Group by chain
+        const seriesData = {};
+        rawData.forEach(row => {
+            if (row.d_log_tvl === null) return;
+            const chain = row.chain;
+            if (!seriesData[chain]) seriesData[chain] = [];
+            seriesData[chain].push([
+                new Date(row.date).getTime(),
+                row.d_log_tvl
+            ]);
+        });
+
+        const colors = {
+            'arbitrum': '#ADD8E6',
+            'base': '#00008B'
+        };
+
+        const series = Object.keys(seriesData).map(chain => ({
+            name: chain.charAt(0).toUpperCase() + chain.slice(1),
+            data: seriesData[chain],
+            color: colors[chain]
+        }));
+
+        Highcharts.chart('chart', {
+            chart: {
+                type: 'line',
+                zoomType: 'xy',
+                panning: { enabled: true, type: 'xy' },
+                panKey: 'shift',
+                backgroundColor: '#ffffff'
+            },
+            title: {
+                text: 'Daily TVL Changes (d_log_tvl)',
+                style: { fontSize: '1.5rem', fontWeight: 'bold', color: '#333' }
+            },
+            subtitle: {
+                text: 'Arbitrum vs Base - 2025 | Log-differenced TVL shows daily % changes',
+                style: { fontSize: '1rem', color: '#666' }
+            },
+            xAxis: {
+                type: 'datetime',
+                title: { text: 'Date', style: { fontSize: '1rem' } },
+                labels: { format: '{value:%b %e}', style: { fontSize: '0.875rem' } }
+            },
+            yAxis: {
+                title: { text: 'd_log(TVL)', style: { fontSize: '1rem' } },
+                labels: { format: '{value:.2f}', style: { fontSize: '0.875rem' } },
+                plotLines: [{ value: 0, color: '#999', width: 1, dashStyle: 'Dash' }]
+            },
+            tooltip: {
+                shared: true,
+                useHTML: true,
+                headerFormat: '<b>{point.x:%b %e, %Y}</b><br/>',
+                pointFormat: '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>{point.y:.4f}</b><br/>'
+            },
+            legend: { enabled: true, align: 'center', verticalAlign: 'top' },
+            plotOptions: {
+                line: { marker: { enabled: false }, lineWidth: 1.5 }
+            },
+            series: series,
+            credits: { text: 'Revenue-TVL Study', style: { fontSize: '0.75rem' } }
+        });
+    </script>
+</body>
+</html>

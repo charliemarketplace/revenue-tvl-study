@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Paths Reaching $500M+ TVL</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #f5f5f5;
+        }
+        #chart-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        #chart { width: 100%; height: 500px; }
+    </style>
+</head>
+<body>
+    <div id="chart-container">
+        <div id="chart"></div>
+    </div>
+
+    <script>
+        const rawData = [
+  {
+    "sim_id": 91145,
+    "ending_tvl_m": 532.0,
+    "cumulative_fees": 303.0,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 96610,
+    "ending_tvl_m": 579.5,
+    "cumulative_fees": 431.3,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 53818,
+    "ending_tvl_m": 646.6,
+    "cumulative_fees": 347.0,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 54259,
+    "ending_tvl_m": 573.4,
+    "cumulative_fees": 319.1,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 83979,
+    "ending_tvl_m": 652.5,
+    "cumulative_fees": 321.5,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 3191,
+    "ending_tvl_m": 675.1,
+    "cumulative_fees": 302.2,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 44620,
+    "ending_tvl_m": 540.3,
+    "cumulative_fees": 345.9,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 34598,
+    "ending_tvl_m": 660.4,
+    "cumulative_fees": 324.3,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 25035,
+    "ending_tvl_m": 736.6,
+    "cumulative_fees": 358.9,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 83242,
+    "ending_tvl_m": 564.1,
+    "cumulative_fees": 378.2,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 12216,
+    "ending_tvl_m": 657.4,
+    "cumulative_fees": 360.2,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 91544,
+    "ending_tvl_m": 612.7,
+    "cumulative_fees": 423.3,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 96463,
+    "ending_tvl_m": 654.8,
+    "cumulative_fees": 343.7,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 13440,
+    "ending_tvl_m": 731.6,
+    "cumulative_fees": 341.4,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 96488,
+    "ending_tvl_m": 580.7,
+    "cumulative_fees": 342.6,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 13213,
+    "ending_tvl_m": 621.0,
+    "cumulative_fees": 352.0,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 92189,
+    "ending_tvl_m": 726.5,
+    "cumulative_fees": 328.8,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 91499,
+    "ending_tvl_m": 731.6,
+    "cumulative_fees": 339.1,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 74054,
+    "ending_tvl_m": 531.7,
+    "cumulative_fees": 340.7,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 84880,
+    "ending_tvl_m": 522.7,
+    "cumulative_fees": 303.6,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 10819,
+    "ending_tvl_m": 593.8,
+    "cumulative_fees": 391.5,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 2529,
+    "ending_tvl_m": 779.2,
+    "cumulative_fees": 333.8,
+    "tvl_bucket": "$750M-1B"
+  },
+  {
+    "sim_id": 59787,
+    "ending_tvl_m": 1496.7,
+    "cumulative_fees": 433.2,
+    "tvl_bucket": ">$1B"
+  },
+  {
+    "sim_id": 94732,
+    "ending_tvl_m": 614.5,
+    "cumulative_fees": 314.8,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 69148,
+    "ending_tvl_m": 552.3,
+    "cumulative_fees": 430.4,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 92777,
+    "ending_tvl_m": 619.1,
+    "cumulative_fees": 352.8,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 72903,
+    "ending_tvl_m": 657.2,
+    "cumulative_fees": 415.0,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 63313,
+    "ending_tvl_m": 956.3,
+    "cumulative_fees": 371.6,
+    "tvl_bucket": "$750M-1B"
+  },
+  {
+    "sim_id": 82910,
+    "ending_tvl_m": 859.9,
+    "cumulative_fees": 330.6,
+    "tvl_bucket": "$750M-1B"
+  },
+  {
+    "sim_id": 39428,
+    "ending_tvl_m": 680.1,
+    "cumulative_fees": 345.8,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 3716,
+    "ending_tvl_m": 1408.4,
+    "cumulative_fees": 343.6,
+    "tvl_bucket": ">$1B"
+  },
+  {
+    "sim_id": 23007,
+    "ending_tvl_m": 826.8,
+    "cumulative_fees": 439.1,
+    "tvl_bucket": "$750M-1B"
+  },
+  {
+    "sim_id": 29594,
+    "ending_tvl_m": 618.5,
+    "cumulative_fees": 460.5,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 65985,
+    "ending_tvl_m": 586.7,
+    "cumulative_fees": 360.7,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 87766,
+    "ending_tvl_m": 685.5,
+    "cumulative_fees": 431.8,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 39719,
+    "ending_tvl_m": 789.3,
+    "cumulative_fees": 339.1,
+    "tvl_bucket": "$750M-1B"
+  },
+  {
+    "sim_id": 28987,
+    "ending_tvl_m": 640.8,
+    "cumulative_fees": 392.9,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 25149,
+    "ending_tvl_m": 549.3,
+    "cumulative_fees": 364.0,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 4316,
+    "ending_tvl_m": 1042.8,
+    "cumulative_fees": 360.3,
+    "tvl_bucket": ">$1B"
+  },
+  {
+    "sim_id": 48351,
+    "ending_tvl_m": 755.8,
+    "cumulative_fees": 309.5,
+    "tvl_bucket": "$750M-1B"
+  },
+  {
+    "sim_id": 88117,
+    "ending_tvl_m": 557.6,
+    "cumulative_fees": 426.9,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 95192,
+    "ending_tvl_m": 634.4,
+    "cumulative_fees": 389.6,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 16240,
+    "ending_tvl_m": 603.4,
+    "cumulative_fees": 386.3,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 35000,
+    "ending_tvl_m": 516.4,
+    "cumulative_fees": 325.4,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 57339,
+    "ending_tvl_m": 704.8,
+    "cumulative_fees": 375.7,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 29802,
+    "ending_tvl_m": 551.9,
+    "cumulative_fees": 328.2,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 82042,
+    "ending_tvl_m": 570.2,
+    "cumulative_fees": 356.2,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 29280,
+    "ending_tvl_m": 688.9,
+    "cumulative_fees": 311.8,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 73622,
+    "ending_tvl_m": 551.2,
+    "cumulative_fees": 358.3,
+    "tvl_bucket": "$500-750M"
+  },
+  {
+    "sim_id": 53101,
+    "ending_tvl_m": 627.2,
+    "cumulative_fees": 388.3,
+    "tvl_bucket": "$500-750M"
+  }
+];
+
+        const bucketColors = {
+            '$500-750M': '#ADD8E6',
+            '$750M-1B': '#5A7ABE',
+            '>$1B': '#00008B'
+        };
+
+        // Group by bucket for series
+        const seriesData = {};
+        rawData.forEach(row => {
+            const bucket = row.tvl_bucket;
+            if (!seriesData[bucket]) seriesData[bucket] = [];
+            seriesData[bucket].push({
+                x: row.ending_tvl_m,
+                y: row.cumulative_fees,
+                sim_id: row.sim_id
+            });
+        });
+
+        const series = Object.keys(seriesData).map(bucket => ({
+            name: bucket,
+            data: seriesData[bucket],
+            color: bucketColors[bucket] || '#999'
+        }));
+
+        Highcharts.chart('chart', {
+            chart: {
+                type: 'scatter',
+                zoomType: 'xy',
+                backgroundColor: '#ffffff'
+            },
+            title: {
+                text: 'Simulations Reaching $500M+ TVL',
+                style: { fontSize: '1.5rem', fontWeight: 'bold', color: '#333' }
+            },
+            subtitle: {
+                text: 'Sample of 50 paths from 100,000 simulations | Shows ending TVL vs annual fees',
+                style: { fontSize: '1rem', color: '#666' }
+            },
+            xAxis: {
+                title: { text: 'Ending TVL ($M)', style: { fontSize: '1rem' } },
+                labels: { format: '${value}M', style: { fontSize: '0.875rem' } }
+            },
+            yAxis: {
+                title: { text: 'Cumulative Annual Fees (ETH)', style: { fontSize: '1rem' } },
+                labels: { style: { fontSize: '0.875rem' } }
+            },
+            tooltip: {
+                useHTML: true,
+                headerFormat: '',
+                pointFormat: '<b>Simulation #{point.sim_id}</b><br/>' +
+                    'Ending TVL: ${point.x:.0f}M<br/>' +
+                    'Annual Fees: {point.y:.1f} ETH'
+            },
+            legend: { enabled: true, align: 'center', verticalAlign: 'top' },
+            plotOptions: {
+                scatter: {
+                    marker: { radius: 6, opacity: 0.7 }
+                }
+            },
+            series: series,
+            credits: { text: 'Revenue-TVL Study', style: { fontSize: '0.75rem' } }
+        });
+    </script>
+</body>
+</html>

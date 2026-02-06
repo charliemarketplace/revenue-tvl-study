@@ -1,0 +1,4466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Count vs Fees</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #f5f5f5;
+        }
+        #chart-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        #chart { width: 100%; height: 500px; }
+    </style>
+</head>
+<body>
+    <div id="chart-container">
+        <div id="chart"></div>
+    </div>
+
+    <script>
+        const rawData = [
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.186655,
+    "d_log_fees": 0.461217,
+    "date": "2025-01-02"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.024918,
+    "d_log_fees": 0.078605,
+    "date": "2025-01-03"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.047375,
+    "d_log_fees": -0.468672,
+    "date": "2025-01-04"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.052481,
+    "d_log_fees": -0.299512,
+    "date": "2025-01-05"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.172268,
+    "d_log_fees": 1.554832,
+    "date": "2025-01-06"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.026594,
+    "d_log_fees": 0.645656,
+    "date": "2025-01-07"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.169044,
+    "d_log_fees": -0.601589,
+    "date": "2025-01-08"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.068381,
+    "d_log_fees": -0.270023,
+    "date": "2025-01-09"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.081544,
+    "d_log_fees": -0.04259,
+    "date": "2025-01-10"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.205096,
+    "d_log_fees": -1.398485,
+    "date": "2025-01-11"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.120905,
+    "d_log_fees": -0.038881,
+    "date": "2025-01-12"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.68565,
+    "d_log_fees": 2.605034,
+    "date": "2025-01-13"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.388781,
+    "d_log_fees": -1.61667,
+    "date": "2025-01-14"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.040835,
+    "d_log_fees": 0.849679,
+    "date": "2025-01-15"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.017266,
+    "d_log_fees": -0.166017,
+    "date": "2025-01-16"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.065792,
+    "d_log_fees": -0.317568,
+    "date": "2025-01-17"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.227898,
+    "d_log_fees": 0.198966,
+    "date": "2025-01-18"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.229149,
+    "d_log_fees": 1.418444,
+    "date": "2025-01-19"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.07632,
+    "d_log_fees": 0.501668,
+    "date": "2025-01-20"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.200891,
+    "d_log_fees": -1.86787,
+    "date": "2025-01-21"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.259255,
+    "d_log_fees": -0.866084,
+    "date": "2025-01-22"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.217111,
+    "d_log_fees": 2.673865,
+    "date": "2025-01-23"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.076232,
+    "d_log_fees": -2.454549,
+    "date": "2025-01-24"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.230208,
+    "d_log_fees": -0.782799,
+    "date": "2025-01-25"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.231827,
+    "d_log_fees": -0.076125,
+    "date": "2025-01-26"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.502113,
+    "d_log_fees": 1.886922,
+    "date": "2025-01-27"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.334429,
+    "d_log_fees": -0.988655,
+    "date": "2025-01-28"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.047638,
+    "d_log_fees": 0.1553,
+    "date": "2025-01-29"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.041201,
+    "d_log_fees": -1.048563,
+    "date": "2025-01-30"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.039322,
+    "d_log_fees": 0.604877,
+    "date": "2025-01-31"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.039515,
+    "d_log_fees": -0.586403,
+    "date": "2025-02-01"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.422602,
+    "d_log_fees": 3.23318,
+    "date": "2025-02-02"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.110468,
+    "d_log_fees": 1.362981,
+    "date": "2025-02-03"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.125815,
+    "d_log_fees": -2.830642,
+    "date": "2025-02-04"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.171074,
+    "d_log_fees": -1.301591,
+    "date": "2025-02-05"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.049301,
+    "d_log_fees": 0.158063,
+    "date": "2025-02-06"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.042145,
+    "d_log_fees": 0.019277,
+    "date": "2025-02-07"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.223775,
+    "d_log_fees": -0.930341,
+    "date": "2025-02-08"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.011696,
+    "d_log_fees": 0.642977,
+    "date": "2025-02-09"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.075304,
+    "d_log_fees": -0.058126,
+    "date": "2025-02-10"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.000635,
+    "d_log_fees": -0.082595,
+    "date": "2025-02-11"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.04148,
+    "d_log_fees": 1.227169,
+    "date": "2025-02-12"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.045517,
+    "d_log_fees": -1.152439,
+    "date": "2025-02-13"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.016793,
+    "d_log_fees": -0.03855,
+    "date": "2025-02-14"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.165218,
+    "d_log_fees": -0.81759,
+    "date": "2025-02-15"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.011098,
+    "d_log_fees": 0.081014,
+    "date": "2025-02-16"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.276271,
+    "d_log_fees": 1.223984,
+    "date": "2025-02-17"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.158687,
+    "d_log_fees": -0.038427,
+    "date": "2025-02-18"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.202681,
+    "d_log_fees": -0.74338,
+    "date": "2025-02-19"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.02068,
+    "d_log_fees": 0.260676,
+    "date": "2025-02-20"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.161698,
+    "d_log_fees": 1.404858,
+    "date": "2025-02-21"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.21421,
+    "d_log_fees": -1.488949,
+    "date": "2025-02-22"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.064001,
+    "d_log_fees": -0.361946,
+    "date": "2025-02-23"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.411261,
+    "d_log_fees": 2.457075,
+    "date": "2025-02-24"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.258912,
+    "d_log_fees": 0.744417,
+    "date": "2025-02-25"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.228597,
+    "d_log_fees": -0.583574,
+    "date": "2025-02-26"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.012066,
+    "d_log_fees": -1.464798,
+    "date": "2025-02-27"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.25583,
+    "d_log_fees": 1.966779,
+    "date": "2025-02-28"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.526059,
+    "d_log_fees": -2.974313,
+    "date": "2025-03-01"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.129021,
+    "d_log_fees": 2.984523,
+    "date": "2025-03-02"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.244461,
+    "d_log_fees": -0.514047,
+    "date": "2025-03-03"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.09215,
+    "d_log_fees": 0.586331,
+    "date": "2025-03-04"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.229571,
+    "d_log_fees": -2.084493,
+    "date": "2025-03-05"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.030614,
+    "d_log_fees": -0.048618,
+    "date": "2025-03-06"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.13139,
+    "d_log_fees": 1.289141,
+    "date": "2025-03-07"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.206896,
+    "d_log_fees": -2.118735,
+    "date": "2025-03-08"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.175237,
+    "d_log_fees": 1.418506,
+    "date": "2025-03-09"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.22204,
+    "d_log_fees": 1.860656,
+    "date": "2025-03-10"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.075109,
+    "d_log_fees": -0.614393,
+    "date": "2025-03-11"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.133117,
+    "d_log_fees": -1.226415,
+    "date": "2025-03-12"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.142444,
+    "d_log_fees": -0.661498,
+    "date": "2025-03-13"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.165924,
+    "d_log_fees": -0.288734,
+    "date": "2025-03-14"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.176797,
+    "d_log_fees": -0.70061,
+    "date": "2025-03-15"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.172384,
+    "d_log_fees": 0.542778,
+    "date": "2025-03-16"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.060541,
+    "d_log_fees": 0.067628,
+    "date": "2025-03-17"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.018577,
+    "d_log_fees": -0.148803,
+    "date": "2025-03-18"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.057845,
+    "d_log_fees": 1.022709,
+    "date": "2025-03-19"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.110593,
+    "d_log_fees": -0.941937,
+    "date": "2025-03-20"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.076824,
+    "d_log_fees": -0.287848,
+    "date": "2025-03-21"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.067472,
+    "d_log_fees": -0.105019,
+    "date": "2025-03-22"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.012939,
+    "d_log_fees": -0.012178,
+    "date": "2025-03-23"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.244462,
+    "d_log_fees": 0.520217,
+    "date": "2025-03-24"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.004882,
+    "d_log_fees": -0.043918,
+    "date": "2025-03-25"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.024562,
+    "d_log_fees": 0.19333,
+    "date": "2025-03-26"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.021949,
+    "d_log_fees": -0.181051,
+    "date": "2025-03-27"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.042525,
+    "d_log_fees": 0.711925,
+    "date": "2025-03-28"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.082662,
+    "d_log_fees": -0.265332,
+    "date": "2025-03-29"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.126141,
+    "d_log_fees": -0.34777,
+    "date": "2025-03-30"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.188745,
+    "d_log_fees": 0.52407,
+    "date": "2025-03-31"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.157193,
+    "d_log_fees": -0.037406,
+    "date": "2025-04-01"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.180223,
+    "d_log_fees": 1.179413,
+    "date": "2025-04-02"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.078347,
+    "d_log_fees": -0.580356,
+    "date": "2025-04-03"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.082805,
+    "d_log_fees": -0.317056,
+    "date": "2025-04-04"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.347465,
+    "d_log_fees": -1.222454,
+    "date": "2025-04-05"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.542966,
+    "d_log_fees": 3.438731,
+    "date": "2025-04-06"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.124156,
+    "d_log_fees": 0.355487,
+    "date": "2025-04-07"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.211654,
+    "d_log_fees": -2.428861,
+    "date": "2025-04-08"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.12613,
+    "d_log_fees": 1.492366,
+    "date": "2025-04-09"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.119588,
+    "d_log_fees": -0.930099,
+    "date": "2025-04-10"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.182677,
+    "d_log_fees": -1.12671,
+    "date": "2025-04-11"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.163626,
+    "d_log_fees": -0.28489,
+    "date": "2025-04-12"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.053605,
+    "d_log_fees": 0.422789,
+    "date": "2025-04-13"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.048439,
+    "d_log_fees": -0.352,
+    "date": "2025-04-14"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.05298,
+    "d_log_fees": 0.192433,
+    "date": "2025-04-15"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.052936,
+    "d_log_fees": 0.344344,
+    "date": "2025-04-16"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.148589,
+    "d_log_fees": -0.613912,
+    "date": "2025-04-17"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.156605,
+    "d_log_fees": -0.47083,
+    "date": "2025-04-18"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.00024,
+    "d_log_fees": -0.327334,
+    "date": "2025-04-19"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.047158,
+    "d_log_fees": 0.01482,
+    "date": "2025-04-20"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.276041,
+    "d_log_fees": 0.888586,
+    "date": "2025-04-21"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.081853,
+    "d_log_fees": 1.835399,
+    "date": "2025-04-22"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.006405,
+    "d_log_fees": -0.796453,
+    "date": "2025-04-23"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.131685,
+    "d_log_fees": -1.059979,
+    "date": "2025-04-24"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.034801,
+    "d_log_fees": 0.501202,
+    "date": "2025-04-25"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.163307,
+    "d_log_fees": -0.906885,
+    "date": "2025-04-26"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.017742,
+    "d_log_fees": 0.08979,
+    "date": "2025-04-27"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.147711,
+    "d_log_fees": 0.371355,
+    "date": "2025-04-28"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.034434,
+    "d_log_fees": -0.2452,
+    "date": "2025-04-29"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.010873,
+    "d_log_fees": 0.633308,
+    "date": "2025-04-30"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.047905,
+    "d_log_fees": -0.332632,
+    "date": "2025-05-01"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.04517,
+    "d_log_fees": -0.41464,
+    "date": "2025-05-02"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.174206,
+    "d_log_fees": -0.615358,
+    "date": "2025-05-03"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.050726,
+    "d_log_fees": 0.092228,
+    "date": "2025-05-04"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.104751,
+    "d_log_fees": 0.293951,
+    "date": "2025-05-05"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.116391,
+    "d_log_fees": 0.190405,
+    "date": "2025-05-06"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.004512,
+    "d_log_fees": 0.180468,
+    "date": "2025-05-07"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.307002,
+    "d_log_fees": 1.649679,
+    "date": "2025-05-08"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.013099,
+    "d_log_fees": 0.316112,
+    "date": "2025-05-09"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.047264,
+    "d_log_fees": -0.93545,
+    "date": "2025-05-10"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.078249,
+    "d_log_fees": -0.240915,
+    "date": "2025-05-11"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.040245,
+    "d_log_fees": 0.706117,
+    "date": "2025-05-12"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.005498,
+    "d_log_fees": -0.4275,
+    "date": "2025-05-13"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.105603,
+    "d_log_fees": -0.591902,
+    "date": "2025-05-14"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.038643,
+    "d_log_fees": 0.208499,
+    "date": "2025-05-15"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.170426,
+    "d_log_fees": -0.179165,
+    "date": "2025-05-16"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.008842,
+    "d_log_fees": -0.632743,
+    "date": "2025-05-17"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.041644,
+    "d_log_fees": 0.981459,
+    "date": "2025-05-18"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.153321,
+    "d_log_fees": -0.277622,
+    "date": "2025-05-19"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.046851,
+    "d_log_fees": -0.44123,
+    "date": "2025-05-20"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.038331,
+    "d_log_fees": 1.263705,
+    "date": "2025-05-21"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.008882,
+    "d_log_fees": -0.794606,
+    "date": "2025-05-22"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.037383,
+    "d_log_fees": 0.880745,
+    "date": "2025-05-23"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.286368,
+    "d_log_fees": -1.785093,
+    "date": "2025-05-24"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.111529,
+    "d_log_fees": 1.070545,
+    "date": "2025-05-25"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.058291,
+    "d_log_fees": -0.084491,
+    "date": "2025-05-26"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.112034,
+    "d_log_fees": 0.724986,
+    "date": "2025-05-27"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.183953,
+    "d_log_fees": -1.382366,
+    "date": "2025-05-28"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.119157,
+    "d_log_fees": 0.304798,
+    "date": "2025-05-29"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.132317,
+    "d_log_fees": 0.741041,
+    "date": "2025-05-30"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.277335,
+    "d_log_fees": -1.063155,
+    "date": "2025-05-31"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.133465,
+    "d_log_fees": -0.559615,
+    "date": "2025-06-01"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.162818,
+    "d_log_fees": 0.368713,
+    "date": "2025-06-02"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.02644,
+    "d_log_fees": -0.021466,
+    "date": "2025-06-03"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.021807,
+    "d_log_fees": -0.035574,
+    "date": "2025-06-04"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.153761,
+    "d_log_fees": 1.832115,
+    "date": "2025-06-05"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.109743,
+    "d_log_fees": -1.67898,
+    "date": "2025-06-06"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.20511,
+    "d_log_fees": -0.396579,
+    "date": "2025-06-07"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.044036,
+    "d_log_fees": -0.211033,
+    "date": "2025-06-08"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.239921,
+    "d_log_fees": 0.585238,
+    "date": "2025-06-09"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.237681,
+    "d_log_fees": 1.000167,
+    "date": "2025-06-10"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.080564,
+    "d_log_fees": -0.36724,
+    "date": "2025-06-11"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.0438,
+    "d_log_fees": -0.344043,
+    "date": "2025-06-12"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.121787,
+    "d_log_fees": 1.526571,
+    "date": "2025-06-13"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.440487,
+    "d_log_fees": -2.360402,
+    "date": "2025-06-14"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.020739,
+    "d_log_fees": 0.042441,
+    "date": "2025-06-15"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.266691,
+    "d_log_fees": 0.997309,
+    "date": "2025-06-16"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.114137,
+    "d_log_fees": 0.069078,
+    "date": "2025-06-17"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.105112,
+    "d_log_fees": -0.186398,
+    "date": "2025-06-18"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.183172,
+    "d_log_fees": -0.656989,
+    "date": "2025-06-19"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.136577,
+    "d_log_fees": 1.319942,
+    "date": "2025-06-20"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.020223,
+    "d_log_fees": 0.552117,
+    "date": "2025-06-21"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.26563,
+    "d_log_fees": 0.41852,
+    "date": "2025-06-22"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.046824,
+    "d_log_fees": -0.510779,
+    "date": "2025-06-23"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.092667,
+    "d_log_fees": -1.330786,
+    "date": "2025-06-24"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.014497,
+    "d_log_fees": 0.111396,
+    "date": "2025-06-25"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.019394,
+    "d_log_fees": -0.050868,
+    "date": "2025-06-26"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.212756,
+    "d_log_fees": -0.649394,
+    "date": "2025-06-27"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.04731,
+    "d_log_fees": -0.332145,
+    "date": "2025-06-28"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.218341,
+    "d_log_fees": 0.848811,
+    "date": "2025-06-29"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.250324,
+    "d_log_fees": 0.156937,
+    "date": "2025-06-30"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.249391,
+    "d_log_fees": -0.304926,
+    "date": "2025-07-01"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.006644,
+    "d_log_fees": 1.247523,
+    "date": "2025-07-02"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.068268,
+    "d_log_fees": -0.948407,
+    "date": "2025-07-03"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.023402,
+    "d_log_fees": -0.378611,
+    "date": "2025-07-04"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.137926,
+    "d_log_fees": -0.498193,
+    "date": "2025-07-05"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.090148,
+    "d_log_fees": 0.29863,
+    "date": "2025-07-06"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.101263,
+    "d_log_fees": 0.256048,
+    "date": "2025-07-07"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.041451,
+    "d_log_fees": -0.035665,
+    "date": "2025-07-08"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.245877,
+    "d_log_fees": 1.40136,
+    "date": "2025-07-09"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.022949,
+    "d_log_fees": 0.339919,
+    "date": "2025-07-10"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.073705,
+    "d_log_fees": -0.824657,
+    "date": "2025-07-11"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.225757,
+    "d_log_fees": -1.085398,
+    "date": "2025-07-12"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.078227,
+    "d_log_fees": 0.04318,
+    "date": "2025-07-13"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.299393,
+    "d_log_fees": 0.693526,
+    "date": "2025-07-14"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.074864,
+    "d_log_fees": 0.462758,
+    "date": "2025-07-15"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.002555,
+    "d_log_fees": 0.151773,
+    "date": "2025-07-16"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.004326,
+    "d_log_fees": 0.023085,
+    "date": "2025-07-17"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.039821,
+    "d_log_fees": 0.653622,
+    "date": "2025-07-18"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.280467,
+    "d_log_fees": -1.731759,
+    "date": "2025-07-19"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.197158,
+    "d_log_fees": 0.546564,
+    "date": "2025-07-20"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.030456,
+    "d_log_fees": -0.079211,
+    "date": "2025-07-21"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.014669,
+    "d_log_fees": 0.147869,
+    "date": "2025-07-22"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.031805,
+    "d_log_fees": 0.572131,
+    "date": "2025-07-23"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.113144,
+    "d_log_fees": -0.428766,
+    "date": "2025-07-24"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.034415,
+    "d_log_fees": -0.064015,
+    "date": "2025-07-25"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.29846,
+    "d_log_fees": -1.041412,
+    "date": "2025-07-26"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.096781,
+    "d_log_fees": 0.169173,
+    "date": "2025-07-27"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.132323,
+    "d_log_fees": 0.638411,
+    "date": "2025-07-28"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.112223,
+    "d_log_fees": -0.148825,
+    "date": "2025-07-29"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.002529,
+    "d_log_fees": 0.418249,
+    "date": "2025-07-30"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.039807,
+    "d_log_fees": -0.582549,
+    "date": "2025-07-31"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.221805,
+    "d_log_fees": 1.125222,
+    "date": "2025-08-01"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.243508,
+    "d_log_fees": -1.152754,
+    "date": "2025-08-02"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.176379,
+    "d_log_fees": -0.614183,
+    "date": "2025-08-03"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.168611,
+    "d_log_fees": 0.622819,
+    "date": "2025-08-04"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.081219,
+    "d_log_fees": 0.122538,
+    "date": "2025-08-05"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.114249,
+    "d_log_fees": -0.519792,
+    "date": "2025-08-06"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.082966,
+    "d_log_fees": 0.474625,
+    "date": "2025-08-07"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.120309,
+    "d_log_fees": 0.567767,
+    "date": "2025-08-08"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.083839,
+    "d_log_fees": -0.143713,
+    "date": "2025-08-09"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.039866,
+    "d_log_fees": -0.617585,
+    "date": "2025-08-10"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.142367,
+    "d_log_fees": 0.62524,
+    "date": "2025-08-11"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.07277,
+    "d_log_fees": 0.363245,
+    "date": "2025-08-12"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.142729,
+    "d_log_fees": 0.033177,
+    "date": "2025-08-13"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.042921,
+    "d_log_fees": 1.063711,
+    "date": "2025-08-14"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.04349,
+    "d_log_fees": -1.355597,
+    "date": "2025-08-15"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.159487,
+    "d_log_fees": -1.01468,
+    "date": "2025-08-16"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.037243,
+    "d_log_fees": 0.288476,
+    "date": "2025-08-17"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.189837,
+    "d_log_fees": 0.739625,
+    "date": "2025-08-18"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.034351,
+    "d_log_fees": -0.004275,
+    "date": "2025-08-19"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.030805,
+    "d_log_fees": -0.151353,
+    "date": "2025-08-20"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.097922,
+    "d_log_fees": -0.537241,
+    "date": "2025-08-21"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.081396,
+    "d_log_fees": 2.041837,
+    "date": "2025-08-22"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.071266,
+    "d_log_fees": -2.232387,
+    "date": "2025-08-23"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.003302,
+    "d_log_fees": 1.384753,
+    "date": "2025-08-24"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.146988,
+    "d_log_fees": -0.007242,
+    "date": "2025-08-25"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.019974,
+    "d_log_fees": -0.654473,
+    "date": "2025-08-26"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.008794,
+    "d_log_fees": -0.01497,
+    "date": "2025-08-27"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.05926,
+    "d_log_fees": -0.431005,
+    "date": "2025-08-28"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.05278,
+    "d_log_fees": 0.688609,
+    "date": "2025-08-29"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.225694,
+    "d_log_fees": -1.096486,
+    "date": "2025-08-30"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.090495,
+    "d_log_fees": -0.178601,
+    "date": "2025-08-31"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.141558,
+    "d_log_fees": 0.887187,
+    "date": "2025-09-01"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.028234,
+    "d_log_fees": -0.242342,
+    "date": "2025-09-02"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.021589,
+    "d_log_fees": -0.212244,
+    "date": "2025-09-03"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.019846,
+    "d_log_fees": -0.083548,
+    "date": "2025-09-04"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.014913,
+    "d_log_fees": 0.873381,
+    "date": "2025-09-05"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.306256,
+    "d_log_fees": -1.454519,
+    "date": "2025-09-06"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.087794,
+    "d_log_fees": 0.103274,
+    "date": "2025-09-07"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.172251,
+    "d_log_fees": 0.393989,
+    "date": "2025-09-08"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.122253,
+    "d_log_fees": 0.0979,
+    "date": "2025-09-09"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.070854,
+    "d_log_fees": 0.123678,
+    "date": "2025-09-10"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.042916,
+    "d_log_fees": 0.33826,
+    "date": "2025-09-11"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.033195,
+    "d_log_fees": -0.436701,
+    "date": "2025-09-12"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.168066,
+    "d_log_fees": -0.260844,
+    "date": "2025-09-13"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.033127,
+    "d_log_fees": -0.112051,
+    "date": "2025-09-14"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.130595,
+    "d_log_fees": 0.41414,
+    "date": "2025-09-15"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.080217,
+    "d_log_fees": -0.079233,
+    "date": "2025-09-16"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.049432,
+    "d_log_fees": 1.187842,
+    "date": "2025-09-17"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.005929,
+    "d_log_fees": -1.180984,
+    "date": "2025-09-18"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.006764,
+    "d_log_fees": -0.096681,
+    "date": "2025-09-19"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.023104,
+    "d_log_fees": -0.291188,
+    "date": "2025-09-20"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.155797,
+    "d_log_fees": -0.091303,
+    "date": "2025-09-21"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.416125,
+    "d_log_fees": 3.823853,
+    "date": "2025-09-22"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.213178,
+    "d_log_fees": -1.710313,
+    "date": "2025-09-23"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.21665,
+    "d_log_fees": -1.067231,
+    "date": "2025-09-24"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.305633,
+    "d_log_fees": 1.46681,
+    "date": "2025-09-25"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.294608,
+    "d_log_fees": -1.210992,
+    "date": "2025-09-26"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.061033,
+    "d_log_fees": 0.449347,
+    "date": "2025-09-27"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.451666,
+    "d_log_fees": -1.245617,
+    "date": "2025-09-28"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.092799,
+    "d_log_fees": 0.233899,
+    "date": "2025-09-29"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.117623,
+    "d_log_fees": 0.049903,
+    "date": "2025-09-30"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.036419,
+    "d_log_fees": 0.391603,
+    "date": "2025-10-01"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.197897,
+    "d_log_fees": -0.424912,
+    "date": "2025-10-02"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.154865,
+    "d_log_fees": 0.21128,
+    "date": "2025-10-03"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.206175,
+    "d_log_fees": -0.743819,
+    "date": "2025-10-04"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.217375,
+    "d_log_fees": 0.532283,
+    "date": "2025-10-05"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.012414,
+    "d_log_fees": 0.332582,
+    "date": "2025-10-06"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.176915,
+    "d_log_fees": 0.423712,
+    "date": "2025-10-07"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.102033,
+    "d_log_fees": -0.382271,
+    "date": "2025-10-08"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.230557,
+    "d_log_fees": 0.544574,
+    "date": "2025-10-09"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.254709,
+    "d_log_fees": 3.316526,
+    "date": "2025-10-10"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.066713,
+    "d_log_fees": -2.8227,
+    "date": "2025-10-11"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.020305,
+    "d_log_fees": -0.008923,
+    "date": "2025-10-12"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.114777,
+    "d_log_fees": -0.307107,
+    "date": "2025-10-13"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.128086,
+    "d_log_fees": 0.1404,
+    "date": "2025-10-14"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.102159,
+    "d_log_fees": -0.48848,
+    "date": "2025-10-15"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.063614,
+    "d_log_fees": 0.104884,
+    "date": "2025-10-16"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.007477,
+    "d_log_fees": 0.379712,
+    "date": "2025-10-17"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.261959,
+    "d_log_fees": -1.707726,
+    "date": "2025-10-18"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.115672,
+    "d_log_fees": 0.422559,
+    "date": "2025-10-19"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.165883,
+    "d_log_fees": -0.081683,
+    "date": "2025-10-20"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.101237,
+    "d_log_fees": 0.699105,
+    "date": "2025-10-21"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.203923,
+    "d_log_fees": -0.04427,
+    "date": "2025-10-22"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.038442,
+    "d_log_fees": -0.557054,
+    "date": "2025-10-23"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.010053,
+    "d_log_fees": 0.189077,
+    "date": "2025-10-24"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.275606,
+    "d_log_fees": -0.749277,
+    "date": "2025-10-25"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.16392,
+    "d_log_fees": 0.608604,
+    "date": "2025-10-26"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.174152,
+    "d_log_fees": 0.162934,
+    "date": "2025-10-27"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.031936,
+    "d_log_fees": 0.38185,
+    "date": "2025-10-28"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.005297,
+    "d_log_fees": 0.527159,
+    "date": "2025-10-29"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.029811,
+    "d_log_fees": -0.244428,
+    "date": "2025-10-30"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.072713,
+    "d_log_fees": -0.969826,
+    "date": "2025-10-31"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.009978,
+    "d_log_fees": -0.252094,
+    "date": "2025-11-01"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.047743,
+    "d_log_fees": 0.03336,
+    "date": "2025-11-02"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.015028,
+    "d_log_fees": 1.892295,
+    "date": "2025-11-03"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.117891,
+    "d_log_fees": 1.05725,
+    "date": "2025-11-04"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.143157,
+    "d_log_fees": -2.146286,
+    "date": "2025-11-05"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.071366,
+    "d_log_fees": 0.186082,
+    "date": "2025-11-06"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.009235,
+    "d_log_fees": 0.13262,
+    "date": "2025-11-07"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.110948,
+    "d_log_fees": -0.938855,
+    "date": "2025-11-08"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.063374,
+    "d_log_fees": 0.169215,
+    "date": "2025-11-09"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.146015,
+    "d_log_fees": 0.299207,
+    "date": "2025-11-10"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.027946,
+    "d_log_fees": 0.067334,
+    "date": "2025-11-11"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.025287,
+    "d_log_fees": 0.102073,
+    "date": "2025-11-12"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.113505,
+    "d_log_fees": 0.436145,
+    "date": "2025-11-13"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.015245,
+    "d_log_fees": 0.475984,
+    "date": "2025-11-14"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.426798,
+    "d_log_fees": -1.88738,
+    "date": "2025-11-15"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.219725,
+    "d_log_fees": 1.243184,
+    "date": "2025-11-16"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.071912,
+    "d_log_fees": 0.552384,
+    "date": "2025-11-17"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.022397,
+    "d_log_fees": -0.48479,
+    "date": "2025-11-18"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.014689,
+    "d_log_fees": 0.026833,
+    "date": "2025-11-19"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.069949,
+    "d_log_fees": 0.586477,
+    "date": "2025-11-20"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.211617,
+    "d_log_fees": 1.053411,
+    "date": "2025-11-21"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.401161,
+    "d_log_fees": -2.848503,
+    "date": "2025-11-22"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.140308,
+    "d_log_fees": -0.051491,
+    "date": "2025-11-23"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.292233,
+    "d_log_fees": 0.846957,
+    "date": "2025-11-24"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.195475,
+    "d_log_fees": -0.216451,
+    "date": "2025-11-25"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.089519,
+    "d_log_fees": -0.216413,
+    "date": "2025-11-26"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.039908,
+    "d_log_fees": -0.245392,
+    "date": "2025-11-27"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.112475,
+    "d_log_fees": 0.765579,
+    "date": "2025-11-28"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.077892,
+    "d_log_fees": -1.02311,
+    "date": "2025-11-29"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.178096,
+    "d_log_fees": 0.164557,
+    "date": "2025-11-30"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.252733,
+    "d_log_fees": 1.613083,
+    "date": "2025-12-01"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.133547,
+    "d_log_fees": -0.520027,
+    "date": "2025-12-02"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.098484,
+    "d_log_fees": -0.259794,
+    "date": "2025-12-03"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.390838,
+    "d_log_fees": 0.895349,
+    "date": "2025-12-04"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.077907,
+    "d_log_fees": -0.380888,
+    "date": "2025-12-05"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.178953,
+    "d_log_fees": -1.347142,
+    "date": "2025-12-06"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.170491,
+    "d_log_fees": 0.668301,
+    "date": "2025-12-07"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.003353,
+    "d_log_fees": -0.400869,
+    "date": "2025-12-08"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.08997,
+    "d_log_fees": 0.453653,
+    "date": "2025-12-09"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.008465,
+    "d_log_fees": 0.698107,
+    "date": "2025-12-10"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.00607,
+    "d_log_fees": -0.908964,
+    "date": "2025-12-11"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.19211,
+    "d_log_fees": 0.140116,
+    "date": "2025-12-12"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.047169,
+    "d_log_fees": -1.037881,
+    "date": "2025-12-13"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.271347,
+    "d_log_fees": 0.010632,
+    "date": "2025-12-14"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.42602,
+    "d_log_fees": 1.586272,
+    "date": "2025-12-15"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.008559,
+    "d_log_fees": -0.878961,
+    "date": "2025-12-16"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.183249,
+    "d_log_fees": 0.946187,
+    "date": "2025-12-17"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.047779,
+    "d_log_fees": -0.231846,
+    "date": "2025-12-18"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.062977,
+    "d_log_fees": -0.711752,
+    "date": "2025-12-19"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.358365,
+    "d_log_fees": -0.872134,
+    "date": "2025-12-20"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.10888,
+    "d_log_fees": 0.323449,
+    "date": "2025-12-21"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.210655,
+    "d_log_fees": 0.693946,
+    "date": "2025-12-22"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.048646,
+    "d_log_fees": 0.295234,
+    "date": "2025-12-23"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.035276,
+    "d_log_fees": 1.160605,
+    "date": "2025-12-24"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.155294,
+    "d_log_fees": 0.877857,
+    "date": "2025-12-25"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.043222,
+    "d_log_fees": -2.414402,
+    "date": "2025-12-26"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.203098,
+    "d_log_fees": -0.963551,
+    "date": "2025-12-27"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.025202,
+    "d_log_fees": -0.101493,
+    "date": "2025-12-28"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.247492,
+    "d_log_fees": 0.651304,
+    "date": "2025-12-29"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": 0.020544,
+    "d_log_fees": -0.159229,
+    "date": "2025-12-30"
+  },
+  {
+    "chain": "arbitrum",
+    "d_log_n_tx": -0.055362,
+    "d_log_fees": -0.1665,
+    "date": "2025-12-31"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.069709,
+    "d_log_fees": 0.744165,
+    "date": "2025-01-02"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.007314,
+    "d_log_fees": -0.038072,
+    "date": "2025-01-03"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.055056,
+    "d_log_fees": -0.364531,
+    "date": "2025-01-04"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.113342,
+    "d_log_fees": -0.227438,
+    "date": "2025-01-05"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.13026,
+    "d_log_fees": 0.68226,
+    "date": "2025-01-06"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.064269,
+    "d_log_fees": -0.163098,
+    "date": "2025-01-07"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.009546,
+    "d_log_fees": -0.013862,
+    "date": "2025-01-08"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.028264,
+    "d_log_fees": -0.094156,
+    "date": "2025-01-09"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.070775,
+    "d_log_fees": -0.060809,
+    "date": "2025-01-10"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.080287,
+    "d_log_fees": -0.784692,
+    "date": "2025-01-11"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.0178,
+    "d_log_fees": -0.084217,
+    "date": "2025-01-12"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.202855,
+    "d_log_fees": 0.994236,
+    "date": "2025-01-13"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.126059,
+    "d_log_fees": -0.102563,
+    "date": "2025-01-14"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.039895,
+    "d_log_fees": 0.356225,
+    "date": "2025-01-15"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.055555,
+    "d_log_fees": -0.198748,
+    "date": "2025-01-16"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.034232,
+    "d_log_fees": -0.20139,
+    "date": "2025-01-17"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.042135,
+    "d_log_fees": 0.062365,
+    "date": "2025-01-18"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.077579,
+    "d_log_fees": 0.337357,
+    "date": "2025-01-19"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.06183,
+    "d_log_fees": 0.071917,
+    "date": "2025-01-20"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.084057,
+    "d_log_fees": -0.550605,
+    "date": "2025-01-21"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.089342,
+    "d_log_fees": -0.353388,
+    "date": "2025-01-22"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.178892,
+    "d_log_fees": 0.618447,
+    "date": "2025-01-23"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.122761,
+    "d_log_fees": -0.559406,
+    "date": "2025-01-24"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.055766,
+    "d_log_fees": -0.522694,
+    "date": "2025-01-25"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.104248,
+    "d_log_fees": 0.583913,
+    "date": "2025-01-26"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.051868,
+    "d_log_fees": 0.684226,
+    "date": "2025-01-27"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.083126,
+    "d_log_fees": -0.323775,
+    "date": "2025-01-28"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.06987,
+    "d_log_fees": -0.596505,
+    "date": "2025-01-29"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.031204,
+    "d_log_fees": -0.007069,
+    "date": "2025-01-30"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.021647,
+    "d_log_fees": 0.439506,
+    "date": "2025-01-31"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.127002,
+    "d_log_fees": -0.480496,
+    "date": "2025-02-01"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.012922,
+    "d_log_fees": 0.564012,
+    "date": "2025-02-02"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.004993,
+    "d_log_fees": 0.886455,
+    "date": "2025-02-03"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.040853,
+    "d_log_fees": -1.043364,
+    "date": "2025-02-04"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.093215,
+    "d_log_fees": -0.499466,
+    "date": "2025-02-05"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.068481,
+    "d_log_fees": 0.172612,
+    "date": "2025-02-06"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.058432,
+    "d_log_fees": -0.132744,
+    "date": "2025-02-07"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.003955,
+    "d_log_fees": -0.508977,
+    "date": "2025-02-08"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.010682,
+    "d_log_fees": 0.071106,
+    "date": "2025-02-09"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.008132,
+    "d_log_fees": 0.265262,
+    "date": "2025-02-10"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.034278,
+    "d_log_fees": 0.310425,
+    "date": "2025-02-11"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.051547,
+    "d_log_fees": 0.001488,
+    "date": "2025-02-12"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.048492,
+    "d_log_fees": -0.127609,
+    "date": "2025-02-13"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.089944,
+    "d_log_fees": -0.230178,
+    "date": "2025-02-14"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.105502,
+    "d_log_fees": -0.801249,
+    "date": "2025-02-15"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.079563,
+    "d_log_fees": 0.166494,
+    "date": "2025-02-16"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.024343,
+    "d_log_fees": 0.550324,
+    "date": "2025-02-17"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.010344,
+    "d_log_fees": 0.371589,
+    "date": "2025-02-18"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.00983,
+    "d_log_fees": -0.389482,
+    "date": "2025-02-19"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.112554,
+    "d_log_fees": 0.19677,
+    "date": "2025-02-20"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.021918,
+    "d_log_fees": 0.671601,
+    "date": "2025-02-21"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.091489,
+    "d_log_fees": -1.018875,
+    "date": "2025-02-22"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.013192,
+    "d_log_fees": -0.12384,
+    "date": "2025-02-23"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.06243,
+    "d_log_fees": 1.209479,
+    "date": "2025-02-24"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.055101,
+    "d_log_fees": -0.034184,
+    "date": "2025-02-25"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.064836,
+    "d_log_fees": -0.309766,
+    "date": "2025-02-26"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.011727,
+    "d_log_fees": -0.523899,
+    "date": "2025-02-27"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.126265,
+    "d_log_fees": 0.723435,
+    "date": "2025-02-28"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.054738,
+    "d_log_fees": -1.102797,
+    "date": "2025-03-01"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.126105,
+    "d_log_fees": 1.084325,
+    "date": "2025-03-02"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.022103,
+    "d_log_fees": -0.139184,
+    "date": "2025-03-03"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.066136,
+    "d_log_fees": 0.132315,
+    "date": "2025-03-04"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.024592,
+    "d_log_fees": -0.606836,
+    "date": "2025-03-05"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.051126,
+    "d_log_fees": -0.073693,
+    "date": "2025-03-06"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.093679,
+    "d_log_fees": 0.520185,
+    "date": "2025-03-07"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.052539,
+    "d_log_fees": -0.538294,
+    "date": "2025-03-08"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.083483,
+    "d_log_fees": 0.176415,
+    "date": "2025-03-09"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.060511,
+    "d_log_fees": 0.823863,
+    "date": "2025-03-10"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.029468,
+    "d_log_fees": -0.146608,
+    "date": "2025-03-11"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.016323,
+    "d_log_fees": -0.131524,
+    "date": "2025-03-12"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.008537,
+    "d_log_fees": -0.345346,
+    "date": "2025-03-13"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.015957,
+    "d_log_fees": -0.022379,
+    "date": "2025-03-14"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.070629,
+    "d_log_fees": -0.455881,
+    "date": "2025-03-15"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.072067,
+    "d_log_fees": 0.002853,
+    "date": "2025-03-16"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.089534,
+    "d_log_fees": 0.322252,
+    "date": "2025-03-17"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.073667,
+    "d_log_fees": -0.017304,
+    "date": "2025-03-18"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.041219,
+    "d_log_fees": 0.241168,
+    "date": "2025-03-19"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.059828,
+    "d_log_fees": -0.431781,
+    "date": "2025-03-20"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.018652,
+    "d_log_fees": -0.324475,
+    "date": "2025-03-21"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.095463,
+    "d_log_fees": -0.471478,
+    "date": "2025-03-22"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.048305,
+    "d_log_fees": 0.304217,
+    "date": "2025-03-23"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.00713,
+    "d_log_fees": 0.600359,
+    "date": "2025-03-24"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.041495,
+    "d_log_fees": -0.097485,
+    "date": "2025-03-25"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.014267,
+    "d_log_fees": -0.15954,
+    "date": "2025-03-26"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.021982,
+    "d_log_fees": -0.138364,
+    "date": "2025-03-27"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.014535,
+    "d_log_fees": 0.36233,
+    "date": "2025-03-28"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.040665,
+    "d_log_fees": -0.429516,
+    "date": "2025-03-29"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.017492,
+    "d_log_fees": 0.126578,
+    "date": "2025-03-30"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.079497,
+    "d_log_fees": 0.248358,
+    "date": "2025-03-31"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.115557,
+    "d_log_fees": -0.053948,
+    "date": "2025-04-01"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.086435,
+    "d_log_fees": 0.642629,
+    "date": "2025-04-02"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.035219,
+    "d_log_fees": -0.747607,
+    "date": "2025-04-03"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.078866,
+    "d_log_fees": 0.013636,
+    "date": "2025-04-04"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.161226,
+    "d_log_fees": -0.778601,
+    "date": "2025-04-05"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.201526,
+    "d_log_fees": 1.685393,
+    "date": "2025-04-06"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.058323,
+    "d_log_fees": 0.535991,
+    "date": "2025-04-07"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.09114,
+    "d_log_fees": -1.230841,
+    "date": "2025-04-08"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.010235,
+    "d_log_fees": 0.656956,
+    "date": "2025-04-09"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.053191,
+    "d_log_fees": -0.396125,
+    "date": "2025-04-10"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.014024,
+    "d_log_fees": -0.124694,
+    "date": "2025-04-11"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.04596,
+    "d_log_fees": -0.407628,
+    "date": "2025-04-12"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.019108,
+    "d_log_fees": 0.24738,
+    "date": "2025-04-13"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.042258,
+    "d_log_fees": -0.045607,
+    "date": "2025-04-14"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.106307,
+    "d_log_fees": -0.135669,
+    "date": "2025-04-15"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.002686,
+    "d_log_fees": 0.692904,
+    "date": "2025-04-16"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.091192,
+    "d_log_fees": -0.104465,
+    "date": "2025-04-17"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.163457,
+    "d_log_fees": -0.558249,
+    "date": "2025-04-18"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.068879,
+    "d_log_fees": -0.567925,
+    "date": "2025-04-19"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.12996,
+    "d_log_fees": 0.075174,
+    "date": "2025-04-20"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.011989,
+    "d_log_fees": 0.513521,
+    "date": "2025-04-21"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.026171,
+    "d_log_fees": 0.802276,
+    "date": "2025-04-22"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.01794,
+    "d_log_fees": 0.260444,
+    "date": "2025-04-23"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.032608,
+    "d_log_fees": -0.840167,
+    "date": "2025-04-24"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.018429,
+    "d_log_fees": 0.21505,
+    "date": "2025-04-25"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.007884,
+    "d_log_fees": -0.519319,
+    "date": "2025-04-26"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.07047,
+    "d_log_fees": -0.125458,
+    "date": "2025-04-27"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.06337,
+    "d_log_fees": 0.59436,
+    "date": "2025-04-28"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.011336,
+    "d_log_fees": -0.181514,
+    "date": "2025-04-29"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.043126,
+    "d_log_fees": 0.033372,
+    "date": "2025-04-30"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.092385,
+    "d_log_fees": 0.175912,
+    "date": "2025-05-01"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.118006,
+    "d_log_fees": -0.381783,
+    "date": "2025-05-02"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.089217,
+    "d_log_fees": -0.525306,
+    "date": "2025-05-03"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.096662,
+    "d_log_fees": -0.032955,
+    "date": "2025-05-04"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.039781,
+    "d_log_fees": 0.378237,
+    "date": "2025-05-05"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.043528,
+    "d_log_fees": 0.099305,
+    "date": "2025-05-06"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.075838,
+    "d_log_fees": -0.073845,
+    "date": "2025-05-07"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.291208,
+    "d_log_fees": 0.864624,
+    "date": "2025-05-08"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.009223,
+    "d_log_fees": 0.062533,
+    "date": "2025-05-09"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.062936,
+    "d_log_fees": -0.349828,
+    "date": "2025-05-10"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.012194,
+    "d_log_fees": -0.182395,
+    "date": "2025-05-11"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.090108,
+    "d_log_fees": 0.366648,
+    "date": "2025-05-12"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.059834,
+    "d_log_fees": -0.022242,
+    "date": "2025-05-13"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.058841,
+    "d_log_fees": 0.062771,
+    "date": "2025-05-14"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.126808,
+    "d_log_fees": -0.367024,
+    "date": "2025-05-15"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.073888,
+    "d_log_fees": -0.374853,
+    "date": "2025-05-16"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.095768,
+    "d_log_fees": -0.154009,
+    "date": "2025-05-17"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.091573,
+    "d_log_fees": 0.676364,
+    "date": "2025-05-18"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.049163,
+    "d_log_fees": -0.068971,
+    "date": "2025-05-19"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.104648,
+    "d_log_fees": -0.181764,
+    "date": "2025-05-20"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.205997,
+    "d_log_fees": 0.619196,
+    "date": "2025-05-21"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.157386,
+    "d_log_fees": -0.626427,
+    "date": "2025-05-22"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.016921,
+    "d_log_fees": 0.242231,
+    "date": "2025-05-23"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.266267,
+    "d_log_fees": -0.981749,
+    "date": "2025-05-24"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.070666,
+    "d_log_fees": 0.288016,
+    "date": "2025-05-25"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.175657,
+    "d_log_fees": 0.243452,
+    "date": "2025-05-26"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.055955,
+    "d_log_fees": 0.059332,
+    "date": "2025-05-27"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.195594,
+    "d_log_fees": 0.438069,
+    "date": "2025-05-28"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.157478,
+    "d_log_fees": 0.41978,
+    "date": "2025-05-29"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.191323,
+    "d_log_fees": -0.515183,
+    "date": "2025-05-30"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.270946,
+    "d_log_fees": -0.693546,
+    "date": "2025-05-31"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.047381,
+    "d_log_fees": 0.015098,
+    "date": "2025-06-01"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.044881,
+    "d_log_fees": 0.152956,
+    "date": "2025-06-02"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.284005,
+    "d_log_fees": 0.17711,
+    "date": "2025-06-03"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.162129,
+    "d_log_fees": 0.095657,
+    "date": "2025-06-04"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.185449,
+    "d_log_fees": 0.368725,
+    "date": "2025-06-05"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.09365,
+    "d_log_fees": -0.705189,
+    "date": "2025-06-06"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.212797,
+    "d_log_fees": -0.204527,
+    "date": "2025-06-07"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.062562,
+    "d_log_fees": 0.109586,
+    "date": "2025-06-08"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.12872,
+    "d_log_fees": 0.593376,
+    "date": "2025-06-09"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.039311,
+    "d_log_fees": 0.127072,
+    "date": "2025-06-10"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.040935,
+    "d_log_fees": -0.070586,
+    "date": "2025-06-11"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.13217,
+    "d_log_fees": 0.057724,
+    "date": "2025-06-12"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.101283,
+    "d_log_fees": 0.308297,
+    "date": "2025-06-13"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.0957,
+    "d_log_fees": -1.16421,
+    "date": "2025-06-14"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.242377,
+    "d_log_fees": -0.305391,
+    "date": "2025-06-15"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.362303,
+    "d_log_fees": 1.090429,
+    "date": "2025-06-16"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.098723,
+    "d_log_fees": -0.121606,
+    "date": "2025-06-17"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.12448,
+    "d_log_fees": 0.057549,
+    "date": "2025-06-18"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.234991,
+    "d_log_fees": -0.340821,
+    "date": "2025-06-19"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.183084,
+    "d_log_fees": 0.3889,
+    "date": "2025-06-20"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.031841,
+    "d_log_fees": 0.049383,
+    "date": "2025-06-21"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.258154,
+    "d_log_fees": 0.238885,
+    "date": "2025-06-22"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.017693,
+    "d_log_fees": -0.27521,
+    "date": "2025-06-23"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.081484,
+    "d_log_fees": -0.266749,
+    "date": "2025-06-24"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.103549,
+    "d_log_fees": -0.07759,
+    "date": "2025-06-25"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.068511,
+    "d_log_fees": -0.033047,
+    "date": "2025-06-26"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.027203,
+    "d_log_fees": -0.465079,
+    "date": "2025-06-27"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.075554,
+    "d_log_fees": -0.664127,
+    "date": "2025-06-28"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.069493,
+    "d_log_fees": 0.781371,
+    "date": "2025-06-29"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.167572,
+    "d_log_fees": 0.103377,
+    "date": "2025-06-30"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.106355,
+    "d_log_fees": -0.102815,
+    "date": "2025-07-01"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.164938,
+    "d_log_fees": 0.420274,
+    "date": "2025-07-02"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.061312,
+    "d_log_fees": 0.04154,
+    "date": "2025-07-03"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.007546,
+    "d_log_fees": -0.39948,
+    "date": "2025-07-04"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.013149,
+    "d_log_fees": -0.543966,
+    "date": "2025-07-05"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.119918,
+    "d_log_fees": 0.337862,
+    "date": "2025-07-06"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.071816,
+    "d_log_fees": 0.172168,
+    "date": "2025-07-07"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.077578,
+    "d_log_fees": -0.280596,
+    "date": "2025-07-08"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.028121,
+    "d_log_fees": 0.250897,
+    "date": "2025-07-09"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.126808,
+    "d_log_fees": 0.741363,
+    "date": "2025-07-10"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.005627,
+    "d_log_fees": -0.325975,
+    "date": "2025-07-11"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.023569,
+    "d_log_fees": -1.218724,
+    "date": "2025-07-12"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.023074,
+    "d_log_fees": 0.059318,
+    "date": "2025-07-13"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.046425,
+    "d_log_fees": 0.667172,
+    "date": "2025-07-14"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.038688,
+    "d_log_fees": 0.29416,
+    "date": "2025-07-15"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.030734,
+    "d_log_fees": 0.497617,
+    "date": "2025-07-16"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.136781,
+    "d_log_fees": -0.020399,
+    "date": "2025-07-17"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.081022,
+    "d_log_fees": -0.356442,
+    "date": "2025-07-18"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.037883,
+    "d_log_fees": -0.620179,
+    "date": "2025-07-19"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.036864,
+    "d_log_fees": 0.494423,
+    "date": "2025-07-20"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.091227,
+    "d_log_fees": -0.164304,
+    "date": "2025-07-21"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.002722,
+    "d_log_fees": 0.423768,
+    "date": "2025-07-22"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.00728,
+    "d_log_fees": 0.206214,
+    "date": "2025-07-23"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.003529,
+    "d_log_fees": -0.399658,
+    "date": "2025-07-24"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.007233,
+    "d_log_fees": -0.400497,
+    "date": "2025-07-25"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.020628,
+    "d_log_fees": 0.160443,
+    "date": "2025-07-26"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.035902,
+    "d_log_fees": 0.797155,
+    "date": "2025-07-27"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.022051,
+    "d_log_fees": -0.258799,
+    "date": "2025-07-28"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.030056,
+    "d_log_fees": -0.132938,
+    "date": "2025-07-29"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.024207,
+    "d_log_fees": -0.201493,
+    "date": "2025-07-30"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.08958,
+    "d_log_fees": 0.530442,
+    "date": "2025-07-31"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.051003,
+    "d_log_fees": -0.351882,
+    "date": "2025-08-01"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.046215,
+    "d_log_fees": -0.501648,
+    "date": "2025-08-02"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.163364,
+    "d_log_fees": -0.443358,
+    "date": "2025-08-03"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.00427,
+    "d_log_fees": 0.451492,
+    "date": "2025-08-04"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.006991,
+    "d_log_fees": 0.110092,
+    "date": "2025-08-05"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.078512,
+    "d_log_fees": -0.035285,
+    "date": "2025-08-06"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.046192,
+    "d_log_fees": 0.402836,
+    "date": "2025-08-07"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.084532,
+    "d_log_fees": 0.038802,
+    "date": "2025-08-08"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.061918,
+    "d_log_fees": -0.078929,
+    "date": "2025-08-09"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.106026,
+    "d_log_fees": -0.364266,
+    "date": "2025-08-10"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.028414,
+    "d_log_fees": 0.700232,
+    "date": "2025-08-11"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.039347,
+    "d_log_fees": -0.153692,
+    "date": "2025-08-12"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.064369,
+    "d_log_fees": 0.006428,
+    "date": "2025-08-13"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.050048,
+    "d_log_fees": 0.197959,
+    "date": "2025-08-14"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.106354,
+    "d_log_fees": -0.633925,
+    "date": "2025-08-15"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.023372,
+    "d_log_fees": -0.590701,
+    "date": "2025-08-16"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.032048,
+    "d_log_fees": 0.228515,
+    "date": "2025-08-17"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.060993,
+    "d_log_fees": 0.321048,
+    "date": "2025-08-18"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.045335,
+    "d_log_fees": 0.159357,
+    "date": "2025-08-19"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.01021,
+    "d_log_fees": 0.188363,
+    "date": "2025-08-20"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.035749,
+    "d_log_fees": -0.481419,
+    "date": "2025-08-21"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.046568,
+    "d_log_fees": 0.643563,
+    "date": "2025-08-22"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.027139,
+    "d_log_fees": -0.908704,
+    "date": "2025-08-23"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.010817,
+    "d_log_fees": 0.269207,
+    "date": "2025-08-24"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.25047,
+    "d_log_fees": 0.523354,
+    "date": "2025-08-25"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.078429,
+    "d_log_fees": -0.434712,
+    "date": "2025-08-26"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.189806,
+    "d_log_fees": 0.433673,
+    "date": "2025-08-27"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.181963,
+    "d_log_fees": -0.703224,
+    "date": "2025-08-28"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.022099,
+    "d_log_fees": 0.056317,
+    "date": "2025-08-29"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.090533,
+    "d_log_fees": -0.729985,
+    "date": "2025-08-30"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.009831,
+    "d_log_fees": -0.002748,
+    "date": "2025-08-31"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.137811,
+    "d_log_fees": 0.487322,
+    "date": "2025-09-01"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.031271,
+    "d_log_fees": 0.042199,
+    "date": "2025-09-02"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.005118,
+    "d_log_fees": 0.078635,
+    "date": "2025-09-03"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.006641,
+    "d_log_fees": -0.120778,
+    "date": "2025-09-04"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.015046,
+    "d_log_fees": 0.85122,
+    "date": "2025-09-05"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.070838,
+    "d_log_fees": -0.882331,
+    "date": "2025-09-06"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.051065,
+    "d_log_fees": -0.469974,
+    "date": "2025-09-07"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.056144,
+    "d_log_fees": 1.08306,
+    "date": "2025-09-08"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.039054,
+    "d_log_fees": 0.077169,
+    "date": "2025-09-09"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.050729,
+    "d_log_fees": -0.186109,
+    "date": "2025-09-10"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.049948,
+    "d_log_fees": -0.230153,
+    "date": "2025-09-11"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.005065,
+    "d_log_fees": 0.078863,
+    "date": "2025-09-12"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.061892,
+    "d_log_fees": -0.469118,
+    "date": "2025-09-13"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.005838,
+    "d_log_fees": 0.105371,
+    "date": "2025-09-14"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.059954,
+    "d_log_fees": 0.891307,
+    "date": "2025-09-15"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.117986,
+    "d_log_fees": -0.609308,
+    "date": "2025-09-16"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.027395,
+    "d_log_fees": 0.429659,
+    "date": "2025-09-17"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.059571,
+    "d_log_fees": 0.076882,
+    "date": "2025-09-18"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.056268,
+    "d_log_fees": -0.319348,
+    "date": "2025-09-19"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.040767,
+    "d_log_fees": -0.512907,
+    "date": "2025-09-20"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.124451,
+    "d_log_fees": 0.391382,
+    "date": "2025-09-21"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.049885,
+    "d_log_fees": 0.709449,
+    "date": "2025-09-22"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.099786,
+    "d_log_fees": -0.460225,
+    "date": "2025-09-23"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.063385,
+    "d_log_fees": -0.040233,
+    "date": "2025-09-24"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.051384,
+    "d_log_fees": 0.522031,
+    "date": "2025-09-25"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.086078,
+    "d_log_fees": -0.578662,
+    "date": "2025-09-26"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.026729,
+    "d_log_fees": -0.55048,
+    "date": "2025-09-27"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.027732,
+    "d_log_fees": -0.053469,
+    "date": "2025-09-28"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.000715,
+    "d_log_fees": 0.207375,
+    "date": "2025-09-29"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.042307,
+    "d_log_fees": 0.529058,
+    "date": "2025-09-30"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.034259,
+    "d_log_fees": -0.27651,
+    "date": "2025-10-01"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.003754,
+    "d_log_fees": -0.078414,
+    "date": "2025-10-02"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.034268,
+    "d_log_fees": 0.03576,
+    "date": "2025-10-03"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.058969,
+    "d_log_fees": -0.436383,
+    "date": "2025-10-04"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.124072,
+    "d_log_fees": 0.832038,
+    "date": "2025-10-05"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.071748,
+    "d_log_fees": 0.004379,
+    "date": "2025-10-06"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.171462,
+    "d_log_fees": -0.065468,
+    "date": "2025-10-07"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.054031,
+    "d_log_fees": -0.179037,
+    "date": "2025-10-08"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.008485,
+    "d_log_fees": 0.360545,
+    "date": "2025-10-09"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.019745,
+    "d_log_fees": 2.088966,
+    "date": "2025-10-10"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.05784,
+    "d_log_fees": -2.029471,
+    "date": "2025-10-11"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.03564,
+    "d_log_fees": 0.11328,
+    "date": "2025-10-12"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.009007,
+    "d_log_fees": -0.129894,
+    "date": "2025-10-13"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.076693,
+    "d_log_fees": 0.204874,
+    "date": "2025-10-14"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.028599,
+    "d_log_fees": 0.361383,
+    "date": "2025-10-15"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.228403,
+    "d_log_fees": -0.514759,
+    "date": "2025-10-16"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.010086,
+    "d_log_fees": 0.256866,
+    "date": "2025-10-17"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.102801,
+    "d_log_fees": -1.278033,
+    "date": "2025-10-18"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.024834,
+    "d_log_fees": 0.240271,
+    "date": "2025-10-19"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.044984,
+    "d_log_fees": 0.686402,
+    "date": "2025-10-20"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.031761,
+    "d_log_fees": 0.643273,
+    "date": "2025-10-21"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.098555,
+    "d_log_fees": -0.236712,
+    "date": "2025-10-22"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.016579,
+    "d_log_fees": -0.532613,
+    "date": "2025-10-23"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.118623,
+    "d_log_fees": 0.906885,
+    "date": "2025-10-24"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.082544,
+    "d_log_fees": -0.062594,
+    "date": "2025-10-25"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.000925,
+    "d_log_fees": -0.030526,
+    "date": "2025-10-26"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.056918,
+    "d_log_fees": -0.169076,
+    "date": "2025-10-27"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.060026,
+    "d_log_fees": 0.022456,
+    "date": "2025-10-28"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.030049,
+    "d_log_fees": -0.185118,
+    "date": "2025-10-29"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.015906,
+    "d_log_fees": 2.7e-05,
+    "date": "2025-10-30"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.0105,
+    "d_log_fees": -0.246916,
+    "date": "2025-10-31"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.047856,
+    "d_log_fees": -0.374952,
+    "date": "2025-11-01"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.00015,
+    "d_log_fees": -0.185409,
+    "date": "2025-11-02"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.049135,
+    "d_log_fees": 0.641862,
+    "date": "2025-11-03"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.056721,
+    "d_log_fees": 0.888102,
+    "date": "2025-11-04"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.122772,
+    "d_log_fees": -0.181468,
+    "date": "2025-11-05"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.05363,
+    "d_log_fees": -0.751061,
+    "date": "2025-11-06"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.1189,
+    "d_log_fees": -0.319593,
+    "date": "2025-11-07"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.080109,
+    "d_log_fees": -0.631632,
+    "date": "2025-11-08"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.134633,
+    "d_log_fees": 0.326988,
+    "date": "2025-11-09"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.026401,
+    "d_log_fees": 0.042264,
+    "date": "2025-11-10"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.036306,
+    "d_log_fees": 0.486934,
+    "date": "2025-11-11"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.049218,
+    "d_log_fees": 0.140284,
+    "date": "2025-11-12"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.051828,
+    "d_log_fees": 0.272927,
+    "date": "2025-11-13"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.013797,
+    "d_log_fees": 0.192205,
+    "date": "2025-11-14"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.14271,
+    "d_log_fees": -1.570297,
+    "date": "2025-11-15"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.106351,
+    "d_log_fees": 0.887446,
+    "date": "2025-11-16"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.031088,
+    "d_log_fees": 0.315775,
+    "date": "2025-11-17"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.065542,
+    "d_log_fees": -0.009952,
+    "date": "2025-11-18"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.008885,
+    "d_log_fees": -0.169609,
+    "date": "2025-11-19"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.092151,
+    "d_log_fees": 1.41589,
+    "date": "2025-11-20"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.07563,
+    "d_log_fees": -0.211923,
+    "date": "2025-11-21"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.123271,
+    "d_log_fees": -1.942315,
+    "date": "2025-11-22"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.065532,
+    "d_log_fees": -0.252277,
+    "date": "2025-11-23"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.070611,
+    "d_log_fees": 0.437693,
+    "date": "2025-11-24"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.04271,
+    "d_log_fees": -0.171932,
+    "date": "2025-11-25"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.008408,
+    "d_log_fees": -0.014989,
+    "date": "2025-11-26"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.02672,
+    "d_log_fees": -0.054855,
+    "date": "2025-11-27"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.128917,
+    "d_log_fees": -0.159176,
+    "date": "2025-11-28"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.074649,
+    "d_log_fees": -0.49776,
+    "date": "2025-11-29"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.02933,
+    "d_log_fees": -0.094986,
+    "date": "2025-11-30"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.092049,
+    "d_log_fees": 1.192319,
+    "date": "2025-12-01"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.067658,
+    "d_log_fees": -0.321196,
+    "date": "2025-12-02"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.072142,
+    "d_log_fees": 0.226623,
+    "date": "2025-12-03"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.033798,
+    "d_log_fees": -0.067889,
+    "date": "2025-12-04"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.044168,
+    "d_log_fees": -0.132154,
+    "date": "2025-12-05"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.033397,
+    "d_log_fees": -0.894614,
+    "date": "2025-12-06"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.009889,
+    "d_log_fees": 0.88386,
+    "date": "2025-12-07"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.071263,
+    "d_log_fees": -0.016848,
+    "date": "2025-12-08"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.078151,
+    "d_log_fees": 0.000704,
+    "date": "2025-12-09"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.008926,
+    "d_log_fees": 0.233848,
+    "date": "2025-12-10"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.085516,
+    "d_log_fees": -0.222503,
+    "date": "2025-12-11"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.0227,
+    "d_log_fees": -0.088741,
+    "date": "2025-12-12"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.228865,
+    "d_log_fees": -0.986568,
+    "date": "2025-12-13"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.084941,
+    "d_log_fees": 0.64677,
+    "date": "2025-12-14"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.12055,
+    "d_log_fees": 0.503277,
+    "date": "2025-12-15"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.008526,
+    "d_log_fees": 0.016936,
+    "date": "2025-12-16"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.04982,
+    "d_log_fees": 0.330464,
+    "date": "2025-12-17"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.03813,
+    "d_log_fees": 0.194672,
+    "date": "2025-12-18"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.017156,
+    "d_log_fees": -0.320167,
+    "date": "2025-12-19"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.302465,
+    "d_log_fees": -0.929629,
+    "date": "2025-12-20"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.089352,
+    "d_log_fees": 0.108997,
+    "date": "2025-12-21"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.12378,
+    "d_log_fees": 0.575324,
+    "date": "2025-12-22"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.085644,
+    "d_log_fees": -0.273611,
+    "date": "2025-12-23"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.108934,
+    "d_log_fees": -0.313828,
+    "date": "2025-12-24"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.014657,
+    "d_log_fees": -0.005078,
+    "date": "2025-12-25"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.015217,
+    "d_log_fees": 0.005062,
+    "date": "2025-12-26"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.113254,
+    "d_log_fees": -0.460883,
+    "date": "2025-12-27"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.054798,
+    "d_log_fees": 0.551918,
+    "date": "2025-12-28"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.153736,
+    "d_log_fees": 0.637689,
+    "date": "2025-12-29"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": -0.030743,
+    "d_log_fees": -0.346025,
+    "date": "2025-12-30"
+  },
+  {
+    "chain": "base",
+    "d_log_n_tx": 0.030443,
+    "d_log_fees": -0.34443,
+    "date": "2025-12-31"
+  }
+];
+
+        const colors = {
+            'arbitrum': '#ADD8E6',
+            'base': '#00008B'
+        };
+
+        // Group by chain
+        const seriesData = {};
+        rawData.forEach(row => {
+            const chain = row.chain;
+            if (!seriesData[chain]) seriesData[chain] = [];
+            seriesData[chain].push({
+                x: row.d_log_n_tx,
+                y: row.d_log_fees,
+                date: row.date
+            });
+        });
+
+        const series = Object.keys(seriesData).map(chain => ({
+            name: chain.charAt(0).toUpperCase() + chain.slice(1),
+            data: seriesData[chain],
+            color: colors[chain]
+        }));
+
+        Highcharts.chart('chart', {
+            chart: {
+                type: 'scatter',
+                zoomType: 'xy',
+                backgroundColor: '#ffffff'
+            },
+            title: {
+                text: 'Transaction Count vs Fee Changes',
+                style: { fontSize: '1.5rem', fontWeight: 'bold', color: '#333' }
+            },
+            subtitle: {
+                text: 'd_log(n_tx) vs d_log(fees) | Coefficient: 1.83 (p<0.001)',
+                style: { fontSize: '1rem', color: '#666' }
+            },
+            xAxis: {
+                title: { text: 'd_log(Transaction Count)', style: { fontSize: '1rem' } },
+                labels: { format: '{value:.2f}', style: { fontSize: '0.875rem' } },
+                plotLines: [{ value: 0, color: '#999', width: 1, dashStyle: 'Dash' }]
+            },
+            yAxis: {
+                title: { text: 'd_log(Fees)', style: { fontSize: '1rem' } },
+                labels: { format: '{value:.2f}', style: { fontSize: '0.875rem' } },
+                plotLines: [{ value: 0, color: '#999', width: 1, dashStyle: 'Dash' }]
+            },
+            tooltip: {
+                useHTML: true,
+                headerFormat: '',
+                pointFormat: '<b>{series.name}</b><br/>Date: {point.date}<br/>d_log(n_tx): {point.x:.4f}<br/>d_log(fees): {point.y:.4f}'
+            },
+            legend: { enabled: true, align: 'center', verticalAlign: 'top' },
+            plotOptions: {
+                scatter: {
+                    marker: { radius: 4, opacity: 0.6 }
+                }
+            },
+            series: series,
+            credits: { text: 'Revenue-TVL Study', style: { fontSize: '0.75rem' } }
+        });
+    </script>
+</body>
+</html>

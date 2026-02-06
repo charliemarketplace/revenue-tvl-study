@@ -814,3 +814,143 @@ To model "ARR once at $750M" would require:
 | Optimism | 22 | 0.7 ETH/day |
 
 Base generates 42x more fees than OP, 2.4x more than Arbitrum.
+
+## Simplified Reduced-Form Model (Feb 2026 Update)
+
+### Model Specification Change
+
+Dropped the two-link model in favor of a single reduced-form specification:
+
+```
+d_log(fees) ~ d_log(dex_vol_btc) + d_log(dex_vol_eth) + d_log(dex_vol_stable)
+            + d_log(borrow_vol_stable) + d_log(stablecoin_supply) + d_log(n_tx)
+            + eth_volatility + chain_fe
+```
+
+**Rationale:** Including all activity variables directly avoids the TVL-to-activity link that didn't hold. Dropping TVL, borrow_vol_btc, and borrow_vol_eth reduces multicollinearity risk while keeping the key drivers.
+
+### Model Results (R-sq = 0.589)
+
+| Predictor | Coef | p-value | Interpretation |
+|-----------|------|---------|----------------|
+| d_log_dex_vol_eth | **0.611** | 0.001 | 1% ETH DEX vol increase -> 0.6% fee increase |
+| d_log_n_tx | **1.831** | <0.001 | 1% more transactions -> 1.8% fee increase |
+| eth_volatility | **2.988** | <0.001 | Volatile days = more fees |
+| d_log_dex_vol_btc | 0.057 | 0.747 | Not significant |
+| d_log_dex_vol_stable | 0.101 | 0.425 | Not significant |
+| d_log_borrow_vol_stable | 0.086 | 0.145 | Not significant |
+| d_log_stablecoin_supply | 0.001 | 0.997 | Not significant |
+| chain_base | 0.001 | 0.947 | No chain fixed effect |
+
+**Key findings:**
+1. **Transaction count is the strongest predictor** (1.83 elasticity) - more transactions = more fees
+2. **ETH DEX volume matters most** among trading activity (0.61 elasticity)
+3. **BTC and stablecoin volumes are not significant** once ETH vol and n_tx are controlled
+4. **Borrow activity doesn't independently drive fees** after controlling for other activity
+5. **No chain fixed effects** - Base and Arbitrum behave identically after controlling for activity
+
+### Multicollinearity Warning
+
+VIF check flagged high correlation:
+- d_log_dex_vol_btc: VIF = 12.6
+- d_log_dex_vol_eth: VIF = 12.2
+
+BTC and ETH DEX volumes move together. The ETH coefficient absorbs most of the explanatory power, making the BTC coefficient unstable. This is expected - hot market days see all assets trading up.
+
+### Feature Importance (Incremental R-sq)
+
+Each feature alone + chain FE:
+| Feature | R-sq Alone |
+|---------|------------|
+| d_log_dex_vol_eth | 0.505 |
+| d_log_dex_vol_btc | 0.471 |
+| d_log_n_tx | 0.403 |
+| d_log_dex_vol_stable | 0.348 |
+| d_log_borrow_vol_stable | 0.206 |
+| eth_volatility | 0.142 |
+| d_log_stablecoin_supply | 0.001 |
+
+ETH DEX volume has highest standalone explanatory power (50.5%), followed closely by BTC (47.1%) - confirming multicollinearity. Transaction count explains 40% alone.
+
+### Out-of-Sample Validation (Optimism)
+
+| Metric | Value |
+|--------|-------|
+| Observations | 364 |
+| MAE | 0.340 |
+| RMSE | 0.474 |
+| Correlation | 0.724 |
+| Within 1 std | 79.4% |
+| Within 2 std | 95.9% |
+
+Model generalizes well to OP holdout - 72% correlation between predicted and actual fee changes.
+
+## Monte Carlo Simulation Results (100k Simulations)
+
+### Configuration
+- Starting TVL: $292M (OP current)
+- Fee baseline: 0.65 ETH/day (Dec 2025 median)
+- Horizon: 365 days
+- Block size: 7 days (weekly)
+- Simulations: 100,000
+
+### Overall Results
+
+**Ending TVL Distribution:**
+| Percentile | TVL |
+|------------|-----|
+| P10 | $185M |
+| P25 | $248M |
+| P50 | $345M |
+| P75 | $479M |
+| P90 | $641M |
+
+**Annual Fees Distribution:**
+| Percentile | Fees (ETH) |
+|------------|------------|
+| P10 | 307 |
+| P25 | 319 |
+| P50 | 336 |
+| P75 | 365 |
+| P90 | 398 |
+
+### Results by Ending TVL Bucket
+
+| TVL Bucket | % of Sims | Median Fees (ETH/yr) | P10 | P90 | Daily (ETH) |
+|------------|-----------|---------------------|-----|-----|-------------|
+| <$400M | 62.1% | 334 | 307 | 389 | 0.9 |
+| $400-500M | 15.6% | 337 | 306 | 401 | 0.9 |
+| $500-750M | 16.9% | 343 | 307 | 411 | 0.9 |
+| $750M-1B | 4.0% | 351 | 307 | 427 | 1.0 |
+| >$1B | 1.5% | 362 | 312 | 443 | 1.0 |
+
+### Key Insights
+
+1. **Most paths stay near current TVL:** 62% end below $400M. Base/Arb dynamics don't guarantee growth.
+
+2. **Reaching $750M+ is rare:** Only 5.5% of simulations reach $750M+. Requires consistently sampling high-growth weeks.
+
+3. **Fees are remarkably stable across TVL buckets:**
+   - <$400M: 334 ETH/year
+   - >$1B: 362 ETH/year
+   - Only 8% difference despite 3x+ TVL difference!
+
+4. **Fee projections by TVL target:**
+   - If TVL reaches $500-750M: expect ~343 ETH/year (~0.9 ETH/day)
+   - If TVL reaches $750M-1B: expect ~351 ETH/year (~1.0 ETH/day)
+   - If TVL reaches >$1B: expect ~362 ETH/year (~1.0 ETH/day)
+
+5. **The baseline dominates:** Since the model predicts *deviations* from baseline (0.65 ETH/day), and activity shocks are mean-zero, annual fees cluster around 365 * 0.65 = 237 ETH baseline + activity contributions.
+
+### Interpretation
+
+"If OP experienced Base/Arb-like market dynamics and TVL reached $750M, annual fees would be ~351 ETH (vs 334 ETH median). This is only 5% higher because **fees are driven by activity patterns, not TVL level**. The paths that reach high TVL happen to sample weeks with positive TVL shocks, which correlate with higher activity - but the fee uplift is modest."
+
+### Business Implication
+
+Growing TVL alone won't dramatically increase fees. The paths that reach $1B TVL only see 8% higher fees than paths staying at <$400M. To meaningfully increase fees, OP needs:
+1. **More transactions** (strongest lever, 1.83 elasticity)
+2. **More ETH trading activity** (0.61 elasticity)
+3. **Volatile market conditions** (exogenous, 2.99 coefficient)
+
+TVL growth is a *correlated outcome* of the same conditions that drive fees, not a *cause* of higher fees.

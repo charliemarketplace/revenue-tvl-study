@@ -311,6 +311,8 @@ def compute_model_ready(df: pd.DataFrame) -> pd.DataFrame:
     df["log_dex_vol_btc"] = np.log(df["dex_vol_btc"] + eps)
     df["log_dex_vol_eth"] = np.log(df["dex_vol_eth"] + eps)
     df["log_dex_vol_stable"] = np.log(df["dex_vol_stable"] + eps)
+    # Decomposed borrow volumes
+    df["log_borrow_vol_stable"] = np.log(df["borrow_vol_stable"] + eps)
 
     # Compute differences within each chain
     diff_cols = {
@@ -328,6 +330,8 @@ def compute_model_ready(df: pd.DataFrame) -> pd.DataFrame:
         "d_log_dex_vol_btc": "log_dex_vol_btc",
         "d_log_dex_vol_eth": "log_dex_vol_eth",
         "d_log_dex_vol_stable": "log_dex_vol_stable",
+        # Decomposed borrow volumes
+        "d_log_borrow_vol_stable": "log_borrow_vol_stable",
     }
 
     for new_col, src_col in diff_cols.items():

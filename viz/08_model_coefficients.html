@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Coefficients</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #f5f5f5;
+        }
+        #chart-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        #chart { width: 100%; height: 500px; }
+    </style>
+</head>
+<body>
+    <div id="chart-container">
+        <div id="chart"></div>
+    </div>
+
+    <script>
+        const rawData = [
+  {
+    "feature": "d_log_n_tx",
+    "coef": 1.8313,
+    "pvalue": 0.0001,
+    "significant": true
+  },
+  {
+    "feature": "d_log_dex_vol_eth",
+    "coef": 0.611,
+    "pvalue": 0.001,
+    "significant": true
+  },
+  {
+    "feature": "eth_volatility",
+    "coef": 2.9881,
+    "pvalue": 0.0001,
+    "significant": true
+  },
+  {
+    "feature": "d_log_dex_vol_stable",
+    "coef": 0.1011,
+    "pvalue": 0.425,
+    "significant": false
+  },
+  {
+    "feature": "d_log_borrow_vol_stable",
+    "coef": 0.0859,
+    "pvalue": 0.145,
+    "significant": false
+  },
+  {
+    "feature": "d_log_dex_vol_btc",
+    "coef": 0.0568,
+    "pvalue": 0.747,
+    "significant": false
+  },
+  {
+    "feature": "d_log_stablecoin_supply",
+    "coef": 0.0013,
+    "pvalue": 0.997,
+    "significant": false
+  }
+];
+
+        // Sort by coefficient magnitude
+        const sorted = rawData.sort((a, b) => Math.abs(b.coef) - Math.abs(a.coef));
+
+        const categories = sorted.map(d => d.feature);
+        const coefficients = sorted.map(d => ({
+            y: d.coef,
+            color: d.significant ? '#00008B' : '#CCCCCC'
+        }));
+
+        Highcharts.chart('chart', {
+            chart: {
+                type: 'bar',
+                backgroundColor: '#ffffff'
+            },
+            title: {
+                text: 'Model Coefficients (Elasticities)',
+                style: { fontSize: '1.5rem', fontWeight: 'bold', color: '#333' }
+            },
+            subtitle: {
+                text: 'Dark blue = statistically significant (p<0.05) | Grey = not significant',
+                style: { fontSize: '1rem', color: '#666' }
+            },
+            xAxis: {
+                categories: categories,
+                title: { text: null },
+                labels: { style: { fontSize: '0.875rem' } }
+            },
+            yAxis: {
+                title: { text: 'Coefficient (Elasticity)', style: { fontSize: '1rem' } },
+                labels: { style: { fontSize: '0.875rem' } },
+                plotLines: [{ value: 0, color: '#999', width: 1, dashStyle: 'Dash' }]
+            },
+            tooltip: {
+                useHTML: true,
+                formatter: function() {
+                    const item = sorted.find(d => d.feature === this.x);
+                    return '<b>' + this.x + '</b><br/>' +
+                        'Coefficient: ' + this.y.toFixed(4) + '<br/>' +
+                        'p-value: ' + item.pvalue.toFixed(4) + '<br/>' +
+                        'Significant: ' + (item.significant ? 'Yes' : 'No');
+                }
+            },
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: true,
+                        format: '{y:.2f}'
+                    }
+                }
+            },
+            series: [{
+                name: 'Coefficient',
+                data: coefficients
+            }],
+            legend: { enabled: false },
+            credits: { text: 'Revenue-TVL Study', style: { fontSize: '0.75rem' } }
+        });
+    </script>
+</body>
+</html>

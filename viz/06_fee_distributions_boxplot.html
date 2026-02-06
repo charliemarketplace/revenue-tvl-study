@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fee Distributions by TVL Bucket</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #f5f5f5;
+        }
+        #chart-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        #chart { width: 100%; height: 500px; }
+    </style>
+</head>
+<body>
+    <div id="chart-container">
+        <div id="chart"></div>
+    </div>
+
+    <script>
+        const rawData = [
+  {
+    "bucket": "<$400M",
+    "n": 62068,
+    "min": 273.1,
+    "p10": 307.4,
+    "p25": 318.5,
+    "median": 334.2,
+    "p75": 359.3,
+    "p90": 389.2,
+    "max": 951.4,
+    "mean": 343.4
+  },
+  {
+    "bucket": "$400-500M",
+    "n": 15597,
+    "min": 275.8,
+    "p10": 306.3,
+    "p25": 317.8,
+    "median": 337.4,
+    "p75": 367.8,
+    "p90": 400.7,
+    "max": 882.5,
+    "mean": 348.4
+  },
+  {
+    "bucket": "$500-750M",
+    "n": 16917,
+    "min": 274.7,
+    "p10": 306.9,
+    "p25": 319.8,
+    "median": 342.8,
+    "p75": 375.1,
+    "p90": 411.4,
+    "max": 869.7,
+    "mean": 353.5
+  },
+  {
+    "bucket": "$750M-1B",
+    "n": 3968,
+    "min": 273.7,
+    "p10": 307.1,
+    "p25": 322.9,
+    "median": 351.0,
+    "p75": 386.8,
+    "p90": 427.1,
+    "max": 864.2,
+    "mean": 361.9
+  },
+  {
+    "bucket": ">$1B",
+    "n": 1450,
+    "min": 282.6,
+    "p10": 312.5,
+    "p25": 331.2,
+    "median": 361.9,
+    "p75": 398.1,
+    "p90": 442.7,
+    "max": 870.8,
+    "mean": 372.3
+  }
+];
+
+        // Prepare box plot data: [min, p25, median, p75, max]
+        const categories = rawData.map(d => d.bucket);
+        const boxData = rawData.map((d, i) => ({
+            low: d.p10,
+            q1: d.p25,
+            median: d.median,
+            q3: d.p75,
+            high: d.p90,
+            mean: d.mean,
+            n: d.n
+        }));
+
+        Highcharts.chart('chart', {
+            chart: {
+                type: 'boxplot',
+                backgroundColor: '#ffffff'
+            },
+            title: {
+                text: 'Annual Fee Distributions by Ending TVL',
+                style: { fontSize: '1.5rem', fontWeight: 'bold', color: '#333' }
+            },
+            subtitle: {
+                text: 'From 100,000 Monte Carlo simulations | Box: P10-P25-Median-P75-P90',
+                style: { fontSize: '1rem', color: '#666' }
+            },
+            xAxis: {
+                categories: categories,
+                title: { text: 'Ending TVL Bucket', style: { fontSize: '1rem' } },
+                labels: { style: { fontSize: '0.875rem' } }
+            },
+            yAxis: {
+                title: { text: 'Cumulative Annual Fees (ETH)', style: { fontSize: '1rem' } },
+                labels: { style: { fontSize: '0.875rem' } }
+            },
+            tooltip: {
+                useHTML: true,
+                headerFormat: '<b>{point.key}</b><br/>',
+                pointFormat: 'Simulations: {point.n}<br/>' +
+                    'P90: {point.high:.1f} ETH<br/>' +
+                    'P75: {point.q3:.1f} ETH<br/>' +
+                    'Median: {point.median:.1f} ETH<br/>' +
+                    'Mean: {point.mean:.1f} ETH<br/>' +
+                    'P25: {point.q1:.1f} ETH<br/>' +
+                    'P10: {point.low:.1f} ETH'
+            },
+            plotOptions: {
+                boxplot: {
+                    fillColor: '#ADD8E6',
+                    lineWidth: 2,
+                    medianColor: '#00008B',
+                    medianWidth: 3,
+                    stemColor: '#666',
+                    stemWidth: 1,
+                    whiskerColor: '#666',
+                    whiskerLength: '50%',
+                    whiskerWidth: 2
+                }
+            },
+            series: [{
+                name: 'Fee Distribution',
+                data: boxData
+            }],
+            legend: { enabled: false },
+            credits: { text: 'Revenue-TVL Study', style: { fontSize: '0.75rem' } }
+        });
+    </script>
+</body>
+</html>

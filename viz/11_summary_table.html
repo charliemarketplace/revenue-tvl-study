@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulation Summary Table</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #f5f5f5;
+        }
+        .table-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+        h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        .subtitle {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        th {
+            background-color: #00008B;
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        tr:hover {
+            background-color: #e8f4f8;
+        }
+        .number {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+        .highlight {
+            background-color: #ADD8E6 !important;
+            font-weight: 600;
+        }
+        .credits {
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: 1rem;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="table-container">
+        <h1>Monte Carlo Simulation Summary</h1>
+        <p class="subtitle">100,000 simulations over 365 days | Starting from OP Mainnet current state</p>
+        <table id="summary-table">
+            <thead>
+                <tr>
+                    <th>TVL Bucket</th>
+                    <th class="number"># Sims</th>
+                    <th class="number">% of Sims</th>
+                    <th class="number">Median TVL ($M)</th>
+                    <th class="number">Median Fees (ETH)</th>
+                    <th class="number">P10 Fees</th>
+                    <th class="number">P90 Fees</th>
+                    <th class="number">Daily Avg (ETH)</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+            </tbody>
+        </table>
+        <p class="credits">Revenue-TVL Study</p>
+    </div>
+
+    <script>
+        const rawData = [
+  {
+    "TVL Bucket": "<$400M",
+    "N Sims": 62068,
+    "Pct": "62.1%",
+    "Median TVL ($M)": 271,
+    "Annual Fees (ETH)": 334,
+    "P10": 307,
+    "P90": 389,
+    "Daily (ETH)": 0.9
+  },
+  {
+    "TVL Bucket": "$400-500M",
+    "N Sims": 15597,
+    "Pct": "15.6%",
+    "Median TVL ($M)": 444,
+    "Annual Fees (ETH)": 337,
+    "P10": 306,
+    "P90": 401,
+    "Daily (ETH)": 0.9
+  },
+  {
+    "TVL Bucket": "$500-750M",
+    "N Sims": 16917,
+    "Pct": "16.9%",
+    "Median TVL ($M)": 583,
+    "Annual Fees (ETH)": 343,
+    "P10": 307,
+    "P90": 411,
+    "Daily (ETH)": 0.9
+  },
+  {
+    "TVL Bucket": "$750M-1B",
+    "N Sims": 3968,
+    "Pct": "4.0%",
+    "Median TVL ($M)": 834,
+    "Annual Fees (ETH)": 351,
+    "P10": 307,
+    "P90": 427,
+    "Daily (ETH)": 1.0
+  },
+  {
+    "TVL Bucket": ">$1B",
+    "N Sims": 1450,
+    "Pct": "1.5%",
+    "Median TVL ($M)": 1130,
+    "Annual Fees (ETH)": 362,
+    "P10": 312,
+    "P90": 443,
+    "Daily (ETH)": 1.0
+  }
+];
+
+        const tbody = document.getElementById('table-body');
+
+        rawData.forEach((row, idx) => {
+            const tr = document.createElement('tr');
+
+            // Highlight rows with higher TVL
+            const bucket = row["TVL Bucket"];
+            if (bucket === '$750M-1B' || bucket === '>$1B') {
+                tr.classList.add('highlight');
+            }
+
+            tr.innerHTML = `
+                <td>${row["TVL Bucket"]}</td>
+                <td class="number">${row["N Sims"].toLocaleString()}</td>
+                <td class="number">${row["Pct"]}</td>
+                <td class="number">$${row["Median TVL ($M)"]}M</td>
+                <td class="number">${row["Annual Fees (ETH)"]}</td>
+                <td class="number">${row["P10"]}</td>
+                <td class="number">${row["P90"]}</td>
+                <td class="number">${row["Daily (ETH)"]}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    </script>
+</body>
+</html>

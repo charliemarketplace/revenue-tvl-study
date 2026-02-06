@@ -1,0 +1,3738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TVL Over Time - Arbitrum vs Base</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #f5f5f5;
+        }
+        #chart-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        #chart { width: 100%; height: 500px; }
+    </style>
+</head>
+<body>
+    <div id="chart-container">
+        <div id="chart"></div>
+    </div>
+
+    <script>
+        const rawData = [
+  {
+    "date": "2025-01-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2999994766
+  },
+  {
+    "date": "2025-01-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3053396009
+  },
+  {
+    "date": "2025-01-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3137188941
+  },
+  {
+    "date": "2025-01-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3171397240
+  },
+  {
+    "date": "2025-01-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3176876097
+  },
+  {
+    "date": "2025-01-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3229514377
+  },
+  {
+    "date": "2025-01-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3009913231
+  },
+  {
+    "date": "2025-01-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2940892198
+  },
+  {
+    "date": "2025-01-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2867890986
+  },
+  {
+    "date": "2025-01-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2942174424
+  },
+  {
+    "date": "2025-01-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2953204409
+  },
+  {
+    "date": "2025-01-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2938342188
+  },
+  {
+    "date": "2025-01-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2863174885
+  },
+  {
+    "date": "2025-01-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2897146307
+  },
+  {
+    "date": "2025-01-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3019648874
+  },
+  {
+    "date": "2025-01-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2961944076
+  },
+  {
+    "date": "2025-01-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3089878925
+  },
+  {
+    "date": "2025-01-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2992315907
+  },
+  {
+    "date": "2025-01-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2913065996
+  },
+  {
+    "date": "2025-01-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2952752798
+  },
+  {
+    "date": "2025-01-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3048430805
+  },
+  {
+    "date": "2025-01-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3012139496
+  },
+  {
+    "date": "2025-01-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3064504056
+  },
+  {
+    "date": "2025-01-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3063306542
+  },
+  {
+    "date": "2025-01-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3049299510
+  },
+  {
+    "date": "2025-01-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3018433281
+  },
+  {
+    "date": "2025-01-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2950068615
+  },
+  {
+    "date": "2025-01-29T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2921799442
+  },
+  {
+    "date": "2025-01-30T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2951791930
+  },
+  {
+    "date": "2025-01-31T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3011498097
+  },
+  {
+    "date": "2025-02-01T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3032547937
+  },
+  {
+    "date": "2025-02-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2938702641
+  },
+  {
+    "date": "2025-02-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2723562942
+  },
+  {
+    "date": "2025-02-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2744766612
+  },
+  {
+    "date": "2025-02-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2648892934
+  },
+  {
+    "date": "2025-02-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2706299345
+  },
+  {
+    "date": "2025-02-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2703623352
+  },
+  {
+    "date": "2025-02-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2686797547
+  },
+  {
+    "date": "2025-02-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2696538737
+  },
+  {
+    "date": "2025-02-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2709366105
+  },
+  {
+    "date": "2025-02-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2733015021
+  },
+  {
+    "date": "2025-02-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2714596216
+  },
+  {
+    "date": "2025-02-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2776883880
+  },
+  {
+    "date": "2025-02-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2739584381
+  },
+  {
+    "date": "2025-02-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2762121796
+  },
+  {
+    "date": "2025-02-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2768004449
+  },
+  {
+    "date": "2025-02-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2751895270
+  },
+  {
+    "date": "2025-02-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2776141662
+  },
+  {
+    "date": "2025-02-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2735327279
+  },
+  {
+    "date": "2025-02-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2772336148
+  },
+  {
+    "date": "2025-02-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2825783638
+  },
+  {
+    "date": "2025-02-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2775019279
+  },
+  {
+    "date": "2025-02-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2836230747
+  },
+  {
+    "date": "2025-02-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2873256689
+  },
+  {
+    "date": "2025-02-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2659571909
+  },
+  {
+    "date": "2025-02-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2625765016
+  },
+  {
+    "date": "2025-02-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2509190091
+  },
+  {
+    "date": "2025-02-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2501206252
+  },
+  {
+    "date": "2025-03-01T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2466576332
+  },
+  {
+    "date": "2025-03-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2478600442
+  },
+  {
+    "date": "2025-03-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2665368818
+  },
+  {
+    "date": "2025-03-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2438426511
+  },
+  {
+    "date": "2025-03-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2457347603
+  },
+  {
+    "date": "2025-03-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2517917677
+  },
+  {
+    "date": "2025-03-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2480832798
+  },
+  {
+    "date": "2025-03-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2457745645
+  },
+  {
+    "date": "2025-03-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2495462265
+  },
+  {
+    "date": "2025-03-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2350397085
+  },
+  {
+    "date": "2025-03-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2266983666
+  },
+  {
+    "date": "2025-03-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2332860829
+  },
+  {
+    "date": "2025-03-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2363162649
+  },
+  {
+    "date": "2025-03-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2344809018
+  },
+  {
+    "date": "2025-03-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2382384414
+  },
+  {
+    "date": "2025-03-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2400599394
+  },
+  {
+    "date": "2025-03-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2360853172
+  },
+  {
+    "date": "2025-03-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2380675941
+  },
+  {
+    "date": "2025-03-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2413479038
+  },
+  {
+    "date": "2025-03-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2488604383
+  },
+  {
+    "date": "2025-03-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2422421309
+  },
+  {
+    "date": "2025-03-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2416389952
+  },
+  {
+    "date": "2025-03-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2392306046
+  },
+  {
+    "date": "2025-03-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2420144954
+  },
+  {
+    "date": "2025-03-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2465218848
+  },
+  {
+    "date": "2025-03-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2467402481
+  },
+  {
+    "date": "2025-03-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2430905648
+  },
+  {
+    "date": "2025-03-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2423262539
+  },
+  {
+    "date": "2025-03-29T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2358920051
+  },
+  {
+    "date": "2025-03-30T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2324627826
+  },
+  {
+    "date": "2025-03-31T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2303089618
+  },
+  {
+    "date": "2025-04-01T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2319351830
+  },
+  {
+    "date": "2025-04-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2350475777
+  },
+  {
+    "date": "2025-04-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2225359954
+  },
+  {
+    "date": "2025-04-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2174993567
+  },
+  {
+    "date": "2025-04-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2145995113
+  },
+  {
+    "date": "2025-04-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2137229431
+  },
+  {
+    "date": "2025-04-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 1976234520
+  },
+  {
+    "date": "2025-04-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 1961478038
+  },
+  {
+    "date": "2025-04-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 1899916226
+  },
+  {
+    "date": "2025-04-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2019720714
+  },
+  {
+    "date": "2025-04-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 1940763093
+  },
+  {
+    "date": "2025-04-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 1984368772
+  },
+  {
+    "date": "2025-04-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2038781417
+  },
+  {
+    "date": "2025-04-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2014673792
+  },
+  {
+    "date": "2025-04-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2024247232
+  },
+  {
+    "date": "2025-04-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2009090936
+  },
+  {
+    "date": "2025-04-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2016954020
+  },
+  {
+    "date": "2025-04-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2038019779
+  },
+  {
+    "date": "2025-04-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2021266494
+  },
+  {
+    "date": "2025-04-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2042183801
+  },
+  {
+    "date": "2025-04-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2036284893
+  },
+  {
+    "date": "2025-04-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2028137037
+  },
+  {
+    "date": "2025-04-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2140349937
+  },
+  {
+    "date": "2025-04-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2164569233
+  },
+  {
+    "date": "2025-04-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2151860446
+  },
+  {
+    "date": "2025-04-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2181065540
+  },
+  {
+    "date": "2025-04-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2197732314
+  },
+  {
+    "date": "2025-04-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2165477692
+  },
+  {
+    "date": "2025-04-29T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2164831324
+  },
+  {
+    "date": "2025-04-30T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2157346708
+  },
+  {
+    "date": "2025-05-01T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2156125211
+  },
+  {
+    "date": "2025-05-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2180041845
+  },
+  {
+    "date": "2025-05-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2184182254
+  },
+  {
+    "date": "2025-05-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2159571483
+  },
+  {
+    "date": "2025-05-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2148640807
+  },
+  {
+    "date": "2025-05-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2142800316
+  },
+  {
+    "date": "2025-05-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2155801958
+  },
+  {
+    "date": "2025-05-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2109721115
+  },
+  {
+    "date": "2025-05-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2287703028
+  },
+  {
+    "date": "2025-05-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2341825384
+  },
+  {
+    "date": "2025-05-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2459422392
+  },
+  {
+    "date": "2025-05-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2447260093
+  },
+  {
+    "date": "2025-05-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2407854802
+  },
+  {
+    "date": "2025-05-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2494365181
+  },
+  {
+    "date": "2025-05-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2444434307
+  },
+  {
+    "date": "2025-05-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2402704082
+  },
+  {
+    "date": "2025-05-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2403325204
+  },
+  {
+    "date": "2025-05-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2370738117
+  },
+  {
+    "date": "2025-05-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2385080997
+  },
+  {
+    "date": "2025-05-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2434319535
+  },
+  {
+    "date": "2025-05-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2448059798
+  },
+  {
+    "date": "2025-05-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2476507264
+  },
+  {
+    "date": "2025-05-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2530318919
+  },
+  {
+    "date": "2025-05-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2444108044
+  },
+  {
+    "date": "2025-05-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2475197195
+  },
+  {
+    "date": "2025-05-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2463913072
+  },
+  {
+    "date": "2025-05-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2507256389
+  },
+  {
+    "date": "2025-05-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2535622096
+  },
+  {
+    "date": "2025-05-29T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2512127811
+  },
+  {
+    "date": "2025-05-30T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2462585557
+  },
+  {
+    "date": "2025-05-31T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2402239091
+  },
+  {
+    "date": "2025-06-01T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2422670186
+  },
+  {
+    "date": "2025-06-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2445690380
+  },
+  {
+    "date": "2025-06-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2453978611
+  },
+  {
+    "date": "2025-06-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2448803732
+  },
+  {
+    "date": "2025-06-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2436438409
+  },
+  {
+    "date": "2025-06-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2324101521
+  },
+  {
+    "date": "2025-06-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2380199014
+  },
+  {
+    "date": "2025-06-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2409176646
+  },
+  {
+    "date": "2025-06-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2400843329
+  },
+  {
+    "date": "2025-06-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2512518367
+  },
+  {
+    "date": "2025-06-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2555383264
+  },
+  {
+    "date": "2025-06-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2542592552
+  },
+  {
+    "date": "2025-06-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2408002684
+  },
+  {
+    "date": "2025-06-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2432357933
+  },
+  {
+    "date": "2025-06-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2421361241
+  },
+  {
+    "date": "2025-06-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2400663405
+  },
+  {
+    "date": "2025-06-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2418275938
+  },
+  {
+    "date": "2025-06-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2381127631
+  },
+  {
+    "date": "2025-06-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2403332775
+  },
+  {
+    "date": "2025-06-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2410804361
+  },
+  {
+    "date": "2025-06-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2348511998
+  },
+  {
+    "date": "2025-06-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2284217266
+  },
+  {
+    "date": "2025-06-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2257817287
+  },
+  {
+    "date": "2025-06-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2369065418
+  },
+  {
+    "date": "2025-06-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2404796529
+  },
+  {
+    "date": "2025-06-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2413193077
+  },
+  {
+    "date": "2025-06-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2422216270
+  },
+  {
+    "date": "2025-06-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2432776589
+  },
+  {
+    "date": "2025-06-29T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2461567500
+  },
+  {
+    "date": "2025-06-30T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2500339909
+  },
+  {
+    "date": "2025-07-01T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2485810429
+  },
+  {
+    "date": "2025-07-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2431083526
+  },
+  {
+    "date": "2025-07-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2493646598
+  },
+  {
+    "date": "2025-07-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2558212050
+  },
+  {
+    "date": "2025-07-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2515336680
+  },
+  {
+    "date": "2025-07-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2522448120
+  },
+  {
+    "date": "2025-07-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2538425962
+  },
+  {
+    "date": "2025-07-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2522512498
+  },
+  {
+    "date": "2025-07-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2553292150
+  },
+  {
+    "date": "2025-07-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2535584096
+  },
+  {
+    "date": "2025-07-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2590124059
+  },
+  {
+    "date": "2025-07-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2604545741
+  },
+  {
+    "date": "2025-07-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2580898870
+  },
+  {
+    "date": "2025-07-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2604281717
+  },
+  {
+    "date": "2025-07-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2640468274
+  },
+  {
+    "date": "2025-07-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2680279089
+  },
+  {
+    "date": "2025-07-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2751368141
+  },
+  {
+    "date": "2025-07-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2779085150
+  },
+  {
+    "date": "2025-07-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2813608494
+  },
+  {
+    "date": "2025-07-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2852321854
+  },
+  {
+    "date": "2025-07-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2927135826
+  },
+  {
+    "date": "2025-07-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2929947961
+  },
+  {
+    "date": "2025-07-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2912831418
+  },
+  {
+    "date": "2025-07-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2863821199
+  },
+  {
+    "date": "2025-07-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2900333948
+  },
+  {
+    "date": "2025-07-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2942670590
+  },
+  {
+    "date": "2025-07-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2928922786
+  },
+  {
+    "date": "2025-07-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2994479691
+  },
+  {
+    "date": "2025-07-29T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2956269651
+  },
+  {
+    "date": "2025-07-30T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2936146245
+  },
+  {
+    "date": "2025-07-31T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2934474439
+  },
+  {
+    "date": "2025-08-01T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2870013463
+  },
+  {
+    "date": "2025-08-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2778268600
+  },
+  {
+    "date": "2025-08-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2749860526
+  },
+  {
+    "date": "2025-08-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2820698391
+  },
+  {
+    "date": "2025-08-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2927042030
+  },
+  {
+    "date": "2025-08-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2885710959
+  },
+  {
+    "date": "2025-08-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2955839893
+  },
+  {
+    "date": "2025-08-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3100973584
+  },
+  {
+    "date": "2025-08-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3079191870
+  },
+  {
+    "date": "2025-08-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3189341319
+  },
+  {
+    "date": "2025-08-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3147307467
+  },
+  {
+    "date": "2025-08-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3161420065
+  },
+  {
+    "date": "2025-08-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3270549081
+  },
+  {
+    "date": "2025-08-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3387884130
+  },
+  {
+    "date": "2025-08-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3257528423
+  },
+  {
+    "date": "2025-08-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3223464494
+  },
+  {
+    "date": "2025-08-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3237550965
+  },
+  {
+    "date": "2025-08-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3223845864
+  },
+  {
+    "date": "2025-08-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3184541494
+  },
+  {
+    "date": "2025-08-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3084568382
+  },
+  {
+    "date": "2025-08-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3185466698
+  },
+  {
+    "date": "2025-08-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3162213083
+  },
+  {
+    "date": "2025-08-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3383971556
+  },
+  {
+    "date": "2025-08-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3390578782
+  },
+  {
+    "date": "2025-08-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3307834732
+  },
+  {
+    "date": "2025-08-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3186324647
+  },
+  {
+    "date": "2025-08-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3227467987
+  },
+  {
+    "date": "2025-08-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3185840481
+  },
+  {
+    "date": "2025-08-29T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3200473155
+  },
+  {
+    "date": "2025-08-30T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3120168331
+  },
+  {
+    "date": "2025-08-31T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3179008574
+  },
+  {
+    "date": "2025-09-01T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3137672084
+  },
+  {
+    "date": "2025-09-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3084614739
+  },
+  {
+    "date": "2025-09-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3165912751
+  },
+  {
+    "date": "2025-09-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3248478323
+  },
+  {
+    "date": "2025-09-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3226087832
+  },
+  {
+    "date": "2025-09-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3283553315
+  },
+  {
+    "date": "2025-09-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3261223409
+  },
+  {
+    "date": "2025-09-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3282384575
+  },
+  {
+    "date": "2025-09-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3301016615
+  },
+  {
+    "date": "2025-09-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3309798447
+  },
+  {
+    "date": "2025-09-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3358648390
+  },
+  {
+    "date": "2025-09-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3435136125
+  },
+  {
+    "date": "2025-09-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3520868232
+  },
+  {
+    "date": "2025-09-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3527096402
+  },
+  {
+    "date": "2025-09-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3520109199
+  },
+  {
+    "date": "2025-09-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3472554923
+  },
+  {
+    "date": "2025-09-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3521787493
+  },
+  {
+    "date": "2025-09-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3561797369
+  },
+  {
+    "date": "2025-09-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3552958481
+  },
+  {
+    "date": "2025-09-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3498030881
+  },
+  {
+    "date": "2025-09-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3504342468
+  },
+  {
+    "date": "2025-09-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3474650501
+  },
+  {
+    "date": "2025-09-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3356665014
+  },
+  {
+    "date": "2025-09-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3347415759
+  },
+  {
+    "date": "2025-09-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3360737209
+  },
+  {
+    "date": "2025-09-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3183977258
+  },
+  {
+    "date": "2025-09-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3287957803
+  },
+  {
+    "date": "2025-09-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3240840459
+  },
+  {
+    "date": "2025-09-29T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3364240625
+  },
+  {
+    "date": "2025-09-30T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3466883976
+  },
+  {
+    "date": "2025-10-01T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3446228969
+  },
+  {
+    "date": "2025-10-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3629249584
+  },
+  {
+    "date": "2025-10-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3688426113
+  },
+  {
+    "date": "2025-10-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3746023849
+  },
+  {
+    "date": "2025-10-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3736616669
+  },
+  {
+    "date": "2025-10-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 4108277820
+  },
+  {
+    "date": "2025-10-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 4190908638
+  },
+  {
+    "date": "2025-10-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 4071497299
+  },
+  {
+    "date": "2025-10-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 4129873035
+  },
+  {
+    "date": "2025-10-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 4093183470
+  },
+  {
+    "date": "2025-10-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3736872767
+  },
+  {
+    "date": "2025-10-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3709670361
+  },
+  {
+    "date": "2025-10-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3901852373
+  },
+  {
+    "date": "2025-10-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3963173352
+  },
+  {
+    "date": "2025-10-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3912943638
+  },
+  {
+    "date": "2025-10-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3862602207
+  },
+  {
+    "date": "2025-10-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3809408948
+  },
+  {
+    "date": "2025-10-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3795997314
+  },
+  {
+    "date": "2025-10-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3844698160
+  },
+  {
+    "date": "2025-10-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3904762321
+  },
+  {
+    "date": "2025-10-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3907817246
+  },
+  {
+    "date": "2025-10-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3845074885
+  },
+  {
+    "date": "2025-10-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3822585328
+  },
+  {
+    "date": "2025-10-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3852961702
+  },
+  {
+    "date": "2025-10-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3893290803
+  },
+  {
+    "date": "2025-10-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3538304749
+  },
+  {
+    "date": "2025-10-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3635398619
+  },
+  {
+    "date": "2025-10-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3628130994
+  },
+  {
+    "date": "2025-10-29T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3550472035
+  },
+  {
+    "date": "2025-10-30T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3495607702
+  },
+  {
+    "date": "2025-10-31T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3428017666
+  },
+  {
+    "date": "2025-11-01T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3434348238
+  },
+  {
+    "date": "2025-11-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3457105376
+  },
+  {
+    "date": "2025-11-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3486928227
+  },
+  {
+    "date": "2025-11-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3280319818
+  },
+  {
+    "date": "2025-11-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2997327729
+  },
+  {
+    "date": "2025-11-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3058797584
+  },
+  {
+    "date": "2025-11-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2953542950
+  },
+  {
+    "date": "2025-11-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2976428258
+  },
+  {
+    "date": "2025-11-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2963160760
+  },
+  {
+    "date": "2025-11-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3062439342
+  },
+  {
+    "date": "2025-11-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3068058445
+  },
+  {
+    "date": "2025-11-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3010683388
+  },
+  {
+    "date": "2025-11-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2994919807
+  },
+  {
+    "date": "2025-11-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2907178496
+  },
+  {
+    "date": "2025-11-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2847096607
+  },
+  {
+    "date": "2025-11-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2866836478
+  },
+  {
+    "date": "2025-11-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2831013696
+  },
+  {
+    "date": "2025-11-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2772652713
+  },
+  {
+    "date": "2025-11-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2825044563
+  },
+  {
+    "date": "2025-11-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2781606435
+  },
+  {
+    "date": "2025-11-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2698204836
+  },
+  {
+    "date": "2025-11-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2667633177
+  },
+  {
+    "date": "2025-11-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2641329853
+  },
+  {
+    "date": "2025-11-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2660386794
+  },
+  {
+    "date": "2025-11-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2729579979
+  },
+  {
+    "date": "2025-11-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2696405988
+  },
+  {
+    "date": "2025-11-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2773068001
+  },
+  {
+    "date": "2025-11-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2812675655
+  },
+  {
+    "date": "2025-11-29T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2846953035
+  },
+  {
+    "date": "2025-11-30T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2822189658
+  },
+  {
+    "date": "2025-12-01T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2803143870
+  },
+  {
+    "date": "2025-12-02T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2698328924
+  },
+  {
+    "date": "2025-12-03T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2916988601
+  },
+  {
+    "date": "2025-12-04T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3033395095
+  },
+  {
+    "date": "2025-12-05T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3005053284
+  },
+  {
+    "date": "2025-12-06T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2933665614
+  },
+  {
+    "date": "2025-12-07T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2947785902
+  },
+  {
+    "date": "2025-12-08T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2954521348
+  },
+  {
+    "date": "2025-12-09T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3003303812
+  },
+  {
+    "date": "2025-12-10T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3052923197
+  },
+  {
+    "date": "2025-12-11T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3030449174
+  },
+  {
+    "date": "2025-12-12T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 3005930469
+  },
+  {
+    "date": "2025-12-13T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2939039066
+  },
+  {
+    "date": "2025-12-14T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2950539364
+  },
+  {
+    "date": "2025-12-15T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2914525643
+  },
+  {
+    "date": "2025-12-16T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2843798200
+  },
+  {
+    "date": "2025-12-17T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2850462028
+  },
+  {
+    "date": "2025-12-18T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2756548899
+  },
+  {
+    "date": "2025-12-19T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2755588601
+  },
+  {
+    "date": "2025-12-20T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2845678563
+  },
+  {
+    "date": "2025-12-21T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2834032814
+  },
+  {
+    "date": "2025-12-22T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2849969097
+  },
+  {
+    "date": "2025-12-23T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2873201467
+  },
+  {
+    "date": "2025-12-24T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2846068762
+  },
+  {
+    "date": "2025-12-25T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2844520995
+  },
+  {
+    "date": "2025-12-26T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2822782180
+  },
+  {
+    "date": "2025-12-27T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2820701601
+  },
+  {
+    "date": "2025-12-28T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2832898510
+  },
+  {
+    "date": "2025-12-29T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2835630356
+  },
+  {
+    "date": "2025-12-30T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2819172968
+  },
+  {
+    "date": "2025-12-31T00:00:00.000Z",
+    "chain": "arbitrum",
+    "tvl_usd": 2895623982
+  },
+  {
+    "date": "2025-01-02T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3297383734
+  },
+  {
+    "date": "2025-01-03T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3395996614
+  },
+  {
+    "date": "2025-01-04T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3497721514
+  },
+  {
+    "date": "2025-01-05T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3573307359
+  },
+  {
+    "date": "2025-01-06T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3503311506
+  },
+  {
+    "date": "2025-01-07T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3546016354
+  },
+  {
+    "date": "2025-01-08T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3302009477
+  },
+  {
+    "date": "2025-01-09T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3254910568
+  },
+  {
+    "date": "2025-01-10T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3154867469
+  },
+  {
+    "date": "2025-01-11T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3230364477
+  },
+  {
+    "date": "2025-01-12T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3191874189
+  },
+  {
+    "date": "2025-01-13T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3126014150
+  },
+  {
+    "date": "2025-01-14T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3072619247
+  },
+  {
+    "date": "2025-01-15T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3215211863
+  },
+  {
+    "date": "2025-01-16T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3421679320
+  },
+  {
+    "date": "2025-01-17T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3353383073
+  },
+  {
+    "date": "2025-01-18T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3374456062
+  },
+  {
+    "date": "2025-01-19T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3290202142
+  },
+  {
+    "date": "2025-01-20T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3216299637
+  },
+  {
+    "date": "2025-01-21T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3265340135
+  },
+  {
+    "date": "2025-01-22T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3301571021
+  },
+  {
+    "date": "2025-01-23T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3280446914
+  },
+  {
+    "date": "2025-01-24T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3330566113
+  },
+  {
+    "date": "2025-01-25T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3359131204
+  },
+  {
+    "date": "2025-01-26T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3338154212
+  },
+  {
+    "date": "2025-01-27T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3303471099
+  },
+  {
+    "date": "2025-01-28T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3174678809
+  },
+  {
+    "date": "2025-01-29T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3116366951
+  },
+  {
+    "date": "2025-01-30T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3182060670
+  },
+  {
+    "date": "2025-01-31T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3249394826
+  },
+  {
+    "date": "2025-02-01T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3243525394
+  },
+  {
+    "date": "2025-02-02T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3070129979
+  },
+  {
+    "date": "2025-02-03T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2820765025
+  },
+  {
+    "date": "2025-02-04T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2881561428
+  },
+  {
+    "date": "2025-02-05T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2820913159
+  },
+  {
+    "date": "2025-02-06T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2832231267
+  },
+  {
+    "date": "2025-02-07T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2780150336
+  },
+  {
+    "date": "2025-02-08T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2786548844
+  },
+  {
+    "date": "2025-02-09T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2775173511
+  },
+  {
+    "date": "2025-02-10T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2787086684
+  },
+  {
+    "date": "2025-02-11T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2829045855
+  },
+  {
+    "date": "2025-02-12T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2726406703
+  },
+  {
+    "date": "2025-02-13T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2775073581
+  },
+  {
+    "date": "2025-02-14T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2864904179
+  },
+  {
+    "date": "2025-02-15T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2918634000
+  },
+  {
+    "date": "2025-02-16T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2888518726
+  },
+  {
+    "date": "2025-02-17T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2872730805
+  },
+  {
+    "date": "2025-02-18T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2851610607
+  },
+  {
+    "date": "2025-02-19T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2840726813
+  },
+  {
+    "date": "2025-02-20T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2860278568
+  },
+  {
+    "date": "2025-02-21T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2880686487
+  },
+  {
+    "date": "2025-02-22T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2870658501
+  },
+  {
+    "date": "2025-02-23T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2960969080
+  },
+  {
+    "date": "2025-02-24T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2943826297
+  },
+  {
+    "date": "2025-02-25T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2751172122
+  },
+  {
+    "date": "2025-02-26T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2705307675
+  },
+  {
+    "date": "2025-02-27T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2595470673
+  },
+  {
+    "date": "2025-02-28T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2594959534
+  },
+  {
+    "date": "2025-03-01T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2567638086
+  },
+  {
+    "date": "2025-03-02T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2593324741
+  },
+  {
+    "date": "2025-03-03T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2791423992
+  },
+  {
+    "date": "2025-03-04T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2552199742
+  },
+  {
+    "date": "2025-03-05T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2573475446
+  },
+  {
+    "date": "2025-03-06T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2635251431
+  },
+  {
+    "date": "2025-03-07T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2562947171
+  },
+  {
+    "date": "2025-03-08T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2523753131
+  },
+  {
+    "date": "2025-03-09T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2528274907
+  },
+  {
+    "date": "2025-03-10T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2373010889
+  },
+  {
+    "date": "2025-03-11T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2249209319
+  },
+  {
+    "date": "2025-03-12T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2346099466
+  },
+  {
+    "date": "2025-03-13T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2373317909
+  },
+  {
+    "date": "2025-03-14T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2352481235
+  },
+  {
+    "date": "2025-03-15T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2432323989
+  },
+  {
+    "date": "2025-03-16T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2704546345
+  },
+  {
+    "date": "2025-03-17T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2660739855
+  },
+  {
+    "date": "2025-03-18T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2707049234
+  },
+  {
+    "date": "2025-03-19T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2677171403
+  },
+  {
+    "date": "2025-03-20T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2813936076
+  },
+  {
+    "date": "2025-03-21T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2635770097
+  },
+  {
+    "date": "2025-03-22T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2704561731
+  },
+  {
+    "date": "2025-03-23T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2721095355
+  },
+  {
+    "date": "2025-03-24T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2751286811
+  },
+  {
+    "date": "2025-03-25T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2816466601
+  },
+  {
+    "date": "2025-03-26T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2805105147
+  },
+  {
+    "date": "2025-03-27T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2802693614
+  },
+  {
+    "date": "2025-03-28T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2779004782
+  },
+  {
+    "date": "2025-03-29T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2693641946
+  },
+  {
+    "date": "2025-03-30T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2617488553
+  },
+  {
+    "date": "2025-03-31T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2620430102
+  },
+  {
+    "date": "2025-04-01T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2643070682
+  },
+  {
+    "date": "2025-04-02T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2627520209
+  },
+  {
+    "date": "2025-04-03T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2651266071
+  },
+  {
+    "date": "2025-04-04T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2667196673
+  },
+  {
+    "date": "2025-04-05T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2812855742
+  },
+  {
+    "date": "2025-04-06T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2779274263
+  },
+  {
+    "date": "2025-04-07T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2560070953
+  },
+  {
+    "date": "2025-04-08T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2385169832
+  },
+  {
+    "date": "2025-04-09T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2300736543
+  },
+  {
+    "date": "2025-04-10T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2477099063
+  },
+  {
+    "date": "2025-04-11T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2333393160
+  },
+  {
+    "date": "2025-04-12T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2423708794
+  },
+  {
+    "date": "2025-04-13T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2497071178
+  },
+  {
+    "date": "2025-04-14T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2449944261
+  },
+  {
+    "date": "2025-04-15T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2433988582
+  },
+  {
+    "date": "2025-04-16T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2433603508
+  },
+  {
+    "date": "2025-04-17T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2424921540
+  },
+  {
+    "date": "2025-04-18T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2435370461
+  },
+  {
+    "date": "2025-04-19T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2448667915
+  },
+  {
+    "date": "2025-04-20T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2484208315
+  },
+  {
+    "date": "2025-04-21T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2480606303
+  },
+  {
+    "date": "2025-04-22T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2484787253
+  },
+  {
+    "date": "2025-04-23T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2425197397
+  },
+  {
+    "date": "2025-04-24T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2320872935
+  },
+  {
+    "date": "2025-04-25T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2472117227
+  },
+  {
+    "date": "2025-04-26T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2393485767
+  },
+  {
+    "date": "2025-04-27T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2425136271
+  },
+  {
+    "date": "2025-04-28T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2406443352
+  },
+  {
+    "date": "2025-04-29T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2452895805
+  },
+  {
+    "date": "2025-04-30T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2436901173
+  },
+  {
+    "date": "2025-05-01T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2451604912
+  },
+  {
+    "date": "2025-05-02T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2518176285
+  },
+  {
+    "date": "2025-05-03T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2561320480
+  },
+  {
+    "date": "2025-05-04T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2546719559
+  },
+  {
+    "date": "2025-05-05T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2511909410
+  },
+  {
+    "date": "2025-05-06T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2538092889
+  },
+  {
+    "date": "2025-05-07T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2550151690
+  },
+  {
+    "date": "2025-05-08T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2473991644
+  },
+  {
+    "date": "2025-05-09T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2799269290
+  },
+  {
+    "date": "2025-05-10T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2851681367
+  },
+  {
+    "date": "2025-05-11T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2992290062
+  },
+  {
+    "date": "2025-05-12T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2958885151
+  },
+  {
+    "date": "2025-05-13T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2935031906
+  },
+  {
+    "date": "2025-05-14T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3063244338
+  },
+  {
+    "date": "2025-05-15T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3032521531
+  },
+  {
+    "date": "2025-05-16T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3011972250
+  },
+  {
+    "date": "2025-05-17T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3006020945
+  },
+  {
+    "date": "2025-05-18T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 2942527850
+  },
+  {
+    "date": "2025-05-19T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3036497356
+  },
+  {
+    "date": "2025-05-20T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3076192366
+  },
+  {
+    "date": "2025-05-21T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3110662841
+  },
+  {
+    "date": "2025-05-22T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3177299640
+  },
+  {
+    "date": "2025-05-23T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3223388735
+  },
+  {
+    "date": "2025-05-24T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3121627417
+  },
+  {
+    "date": "2025-05-25T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3134973451
+  },
+  {
+    "date": "2025-05-26T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3188034418
+  },
+  {
+    "date": "2025-05-27T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3189364446
+  },
+  {
+    "date": "2025-05-28T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3286454554
+  },
+  {
+    "date": "2025-05-29T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3262399336
+  },
+  {
+    "date": "2025-05-30T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3180261626
+  },
+  {
+    "date": "2025-05-31T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3110863097
+  },
+  {
+    "date": "2025-06-01T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3125042418
+  },
+  {
+    "date": "2025-06-02T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3169745470
+  },
+  {
+    "date": "2025-06-03T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3205364177
+  },
+  {
+    "date": "2025-06-04T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3222263895
+  },
+  {
+    "date": "2025-06-05T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3197670321
+  },
+  {
+    "date": "2025-06-06T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3096268897
+  },
+  {
+    "date": "2025-06-07T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3211823324
+  },
+  {
+    "date": "2025-06-08T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3246671322
+  },
+  {
+    "date": "2025-06-09T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3250350316
+  },
+  {
+    "date": "2025-06-10T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3403794919
+  },
+  {
+    "date": "2025-06-11T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3462567641
+  },
+  {
+    "date": "2025-06-12T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3409223228
+  },
+  {
+    "date": "2025-06-13T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3291468674
+  },
+  {
+    "date": "2025-06-14T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3306628143
+  },
+  {
+    "date": "2025-06-15T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3273867487
+  },
+  {
+    "date": "2025-06-16T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3280231358
+  },
+  {
+    "date": "2025-06-17T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3347636459
+  },
+  {
+    "date": "2025-06-18T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3284991970
+  },
+  {
+    "date": "2025-06-19T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3322359522
+  },
+  {
+    "date": "2025-06-20T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3342087699
+  },
+  {
+    "date": "2025-06-21T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3210420989
+  },
+  {
+    "date": "2025-06-22T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3171438232
+  },
+  {
+    "date": "2025-06-23T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3117654720
+  },
+  {
+    "date": "2025-06-24T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3311776418
+  },
+  {
+    "date": "2025-06-25T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3364017606
+  },
+  {
+    "date": "2025-06-26T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3325830226
+  },
+  {
+    "date": "2025-06-27T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3345249427
+  },
+  {
+    "date": "2025-06-28T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3294014344
+  },
+  {
+    "date": "2025-06-29T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3316828324
+  },
+  {
+    "date": "2025-06-30T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3376164341
+  },
+  {
+    "date": "2025-07-01T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3361538090
+  },
+  {
+    "date": "2025-07-02T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3286090121
+  },
+  {
+    "date": "2025-07-03T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3427719517
+  },
+  {
+    "date": "2025-07-04T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3474274322
+  },
+  {
+    "date": "2025-07-05T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3407123797
+  },
+  {
+    "date": "2025-07-06T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3423024480
+  },
+  {
+    "date": "2025-07-07T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3459713276
+  },
+  {
+    "date": "2025-07-08T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3419789429
+  },
+  {
+    "date": "2025-07-09T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3471109586
+  },
+  {
+    "date": "2025-07-10T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3600067599
+  },
+  {
+    "date": "2025-07-11T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3738061656
+  },
+  {
+    "date": "2025-07-12T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3777512473
+  },
+  {
+    "date": "2025-07-13T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3801323586
+  },
+  {
+    "date": "2025-07-14T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3850516981
+  },
+  {
+    "date": "2025-07-15T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3852606072
+  },
+  {
+    "date": "2025-07-16T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3879716294
+  },
+  {
+    "date": "2025-07-17T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4013822246
+  },
+  {
+    "date": "2025-07-18T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4051952165
+  },
+  {
+    "date": "2025-07-19T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4081765222
+  },
+  {
+    "date": "2025-07-20T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4113548734
+  },
+  {
+    "date": "2025-07-21T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4194507575
+  },
+  {
+    "date": "2025-07-22T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4276579820
+  },
+  {
+    "date": "2025-07-23T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4299994268
+  },
+  {
+    "date": "2025-07-24T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4154628391
+  },
+  {
+    "date": "2025-07-25T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4127262017
+  },
+  {
+    "date": "2025-07-26T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4243250552
+  },
+  {
+    "date": "2025-07-27T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4232396566
+  },
+  {
+    "date": "2025-07-28T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4318175644
+  },
+  {
+    "date": "2025-07-29T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4193679879
+  },
+  {
+    "date": "2025-07-30T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4222154248
+  },
+  {
+    "date": "2025-07-31T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4193858642
+  },
+  {
+    "date": "2025-08-01T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4108258417
+  },
+  {
+    "date": "2025-08-02T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3990059516
+  },
+  {
+    "date": "2025-08-03T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 3922035416
+  },
+  {
+    "date": "2025-08-04T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4022599511
+  },
+  {
+    "date": "2025-08-05T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4136141272
+  },
+  {
+    "date": "2025-08-06T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4081869465
+  },
+  {
+    "date": "2025-08-07T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4164566538
+  },
+  {
+    "date": "2025-08-08T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4354459120
+  },
+  {
+    "date": "2025-08-09T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4453178640
+  },
+  {
+    "date": "2025-08-10T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4582286774
+  },
+  {
+    "date": "2025-08-11T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4632175977
+  },
+  {
+    "date": "2025-08-12T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4566379390
+  },
+  {
+    "date": "2025-08-13T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4743357082
+  },
+  {
+    "date": "2025-08-14T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4856984642
+  },
+  {
+    "date": "2025-08-15T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4812670189
+  },
+  {
+    "date": "2025-08-16T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4728344106
+  },
+  {
+    "date": "2025-08-17T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4768669321
+  },
+  {
+    "date": "2025-08-18T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4801666188
+  },
+  {
+    "date": "2025-08-19T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4723724539
+  },
+  {
+    "date": "2025-08-20T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4606672398
+  },
+  {
+    "date": "2025-08-21T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4682171127
+  },
+  {
+    "date": "2025-08-22T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4607030202
+  },
+  {
+    "date": "2025-08-23T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4990922641
+  },
+  {
+    "date": "2025-08-24T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4951101478
+  },
+  {
+    "date": "2025-08-25T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4904312647
+  },
+  {
+    "date": "2025-08-26T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4658601853
+  },
+  {
+    "date": "2025-08-27T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4772265617
+  },
+  {
+    "date": "2025-08-28T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4705257183
+  },
+  {
+    "date": "2025-08-29T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4783990342
+  },
+  {
+    "date": "2025-08-30T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4674809909
+  },
+  {
+    "date": "2025-08-31T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4723819426
+  },
+  {
+    "date": "2025-09-01T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4713481647
+  },
+  {
+    "date": "2025-09-02T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4675829028
+  },
+  {
+    "date": "2025-09-03T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4747208065
+  },
+  {
+    "date": "2025-09-04T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4811578981
+  },
+  {
+    "date": "2025-09-05T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4738841891
+  },
+  {
+    "date": "2025-09-06T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4759349242
+  },
+  {
+    "date": "2025-09-07T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4786941395
+  },
+  {
+    "date": "2025-09-08T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4753810209
+  },
+  {
+    "date": "2025-09-09T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4804966088
+  },
+  {
+    "date": "2025-09-10T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4791404400
+  },
+  {
+    "date": "2025-09-11T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4875733253
+  },
+  {
+    "date": "2025-09-12T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4985994470
+  },
+  {
+    "date": "2025-09-13T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5088189721
+  },
+  {
+    "date": "2025-09-14T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5057876152
+  },
+  {
+    "date": "2025-09-15T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5047831616
+  },
+  {
+    "date": "2025-09-16T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5013031767
+  },
+  {
+    "date": "2025-09-17T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5000549264
+  },
+  {
+    "date": "2025-09-18T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5092086786
+  },
+  {
+    "date": "2025-09-19T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5106969610
+  },
+  {
+    "date": "2025-09-20T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5036380657
+  },
+  {
+    "date": "2025-09-21T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5065515466
+  },
+  {
+    "date": "2025-09-22T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4965220007
+  },
+  {
+    "date": "2025-09-23T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4874390464
+  },
+  {
+    "date": "2025-09-24T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4844128161
+  },
+  {
+    "date": "2025-09-25T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4865698762
+  },
+  {
+    "date": "2025-09-26T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4669821791
+  },
+  {
+    "date": "2025-09-27T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4786015465
+  },
+  {
+    "date": "2025-09-28T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4793750989
+  },
+  {
+    "date": "2025-09-29T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4898855098
+  },
+  {
+    "date": "2025-09-30T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4953115064
+  },
+  {
+    "date": "2025-10-01T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4947327434
+  },
+  {
+    "date": "2025-10-02T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5137025734
+  },
+  {
+    "date": "2025-10-03T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5280308388
+  },
+  {
+    "date": "2025-10-04T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5347963349
+  },
+  {
+    "date": "2025-10-05T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5343924818
+  },
+  {
+    "date": "2025-10-06T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5390076915
+  },
+  {
+    "date": "2025-10-07T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5583830380
+  },
+  {
+    "date": "2025-10-08T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5402368187
+  },
+  {
+    "date": "2025-10-09T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5439021318
+  },
+  {
+    "date": "2025-10-10T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5330535279
+  },
+  {
+    "date": "2025-10-11T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4751234248
+  },
+  {
+    "date": "2025-10-12T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4683847195
+  },
+  {
+    "date": "2025-10-13T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5007290713
+  },
+  {
+    "date": "2025-10-14T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5114339101
+  },
+  {
+    "date": "2025-10-15T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5009565842
+  },
+  {
+    "date": "2025-10-16T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4926262183
+  },
+  {
+    "date": "2025-10-17T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4879369261
+  },
+  {
+    "date": "2025-10-18T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4830712544
+  },
+  {
+    "date": "2025-10-19T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4889335955
+  },
+  {
+    "date": "2025-10-20T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4967504425
+  },
+  {
+    "date": "2025-10-21T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5009996547
+  },
+  {
+    "date": "2025-10-22T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4903810243
+  },
+  {
+    "date": "2025-10-23T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4900136582
+  },
+  {
+    "date": "2025-10-24T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4963995832
+  },
+  {
+    "date": "2025-10-25T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5062020464
+  },
+  {
+    "date": "2025-10-26T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5160967266
+  },
+  {
+    "date": "2025-10-27T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5317909472
+  },
+  {
+    "date": "2025-10-28T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5302001008
+  },
+  {
+    "date": "2025-10-29T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5223315904
+  },
+  {
+    "date": "2025-10-30T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5150400880
+  },
+  {
+    "date": "2025-10-31T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5087811144
+  },
+  {
+    "date": "2025-11-01T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5179897700
+  },
+  {
+    "date": "2025-11-02T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5223011215
+  },
+  {
+    "date": "2025-11-03T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 5221161511
+  },
+  {
+    "date": "2025-11-04T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4973453701
+  },
+  {
+    "date": "2025-11-05T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4575540009
+  },
+  {
+    "date": "2025-11-06T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4736247321
+  },
+  {
+    "date": "2025-11-07T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4602963966
+  },
+  {
+    "date": "2025-11-08T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4749806967
+  },
+  {
+    "date": "2025-11-09T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4707993630
+  },
+  {
+    "date": "2025-11-10T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4904257926
+  },
+  {
+    "date": "2025-11-11T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4915574700
+  },
+  {
+    "date": "2025-11-12T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4781709221
+  },
+  {
+    "date": "2025-11-13T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4740252408
+  },
+  {
+    "date": "2025-11-14T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4574037537
+  },
+  {
+    "date": "2025-11-15T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4405125970
+  },
+  {
+    "date": "2025-11-16T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4483563662
+  },
+  {
+    "date": "2025-11-17T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4379617360
+  },
+  {
+    "date": "2025-11-18T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4281008241
+  },
+  {
+    "date": "2025-11-19T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4345017946
+  },
+  {
+    "date": "2025-11-20T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4309065600
+  },
+  {
+    "date": "2025-11-21T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4134194158
+  },
+  {
+    "date": "2025-11-22T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4027460692
+  },
+  {
+    "date": "2025-11-23T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4050096157
+  },
+  {
+    "date": "2025-11-24T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4126110949
+  },
+  {
+    "date": "2025-11-25T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4219326473
+  },
+  {
+    "date": "2025-11-26T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4179697766
+  },
+  {
+    "date": "2025-11-27T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4286060160
+  },
+  {
+    "date": "2025-11-28T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4317414459
+  },
+  {
+    "date": "2025-11-29T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4299674126
+  },
+  {
+    "date": "2025-11-30T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4400617887
+  },
+  {
+    "date": "2025-12-01T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4362108727
+  },
+  {
+    "date": "2025-12-02T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4170447092
+  },
+  {
+    "date": "2025-12-03T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4412816542
+  },
+  {
+    "date": "2025-12-04T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4560715540
+  },
+  {
+    "date": "2025-12-05T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4531681006
+  },
+  {
+    "date": "2025-12-06T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4411251522
+  },
+  {
+    "date": "2025-12-07T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4406830204
+  },
+  {
+    "date": "2025-12-08T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4463805184
+  },
+  {
+    "date": "2025-12-09T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4480384437
+  },
+  {
+    "date": "2025-12-10T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4590813341
+  },
+  {
+    "date": "2025-12-11T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4572139269
+  },
+  {
+    "date": "2025-12-12T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4574664229
+  },
+  {
+    "date": "2025-12-13T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4498544877
+  },
+  {
+    "date": "2025-12-14T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4483737251
+  },
+  {
+    "date": "2025-12-15T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4410234854
+  },
+  {
+    "date": "2025-12-16T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4301284209
+  },
+  {
+    "date": "2025-12-17T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4330682996
+  },
+  {
+    "date": "2025-12-18T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4250282929
+  },
+  {
+    "date": "2025-12-19T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4230679121
+  },
+  {
+    "date": "2025-12-20T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4397861760
+  },
+  {
+    "date": "2025-12-21T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4400417879
+  },
+  {
+    "date": "2025-12-22T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4433211001
+  },
+  {
+    "date": "2025-12-23T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4420733307
+  },
+  {
+    "date": "2025-12-24T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4373081050
+  },
+  {
+    "date": "2025-12-25T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4378579012
+  },
+  {
+    "date": "2025-12-26T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4419890140
+  },
+  {
+    "date": "2025-12-27T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4377976807
+  },
+  {
+    "date": "2025-12-28T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4425904247
+  },
+  {
+    "date": "2025-12-29T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4441387305
+  },
+  {
+    "date": "2025-12-30T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4459358349
+  },
+  {
+    "date": "2025-12-31T00:00:00.000Z",
+    "chain": "base",
+    "tvl_usd": 4502948136
+  }
+];
+
+        // Group by chain
+        const seriesData = {};
+        rawData.forEach(row => {
+            if (row.tvl_usd === null) return;
+            const chain = row.chain;
+            if (!seriesData[chain]) seriesData[chain] = [];
+            seriesData[chain].push([
+                new Date(row.date).getTime(),
+                row.tvl_usd / 1e9  // Convert to billions
+            ]);
+        });
+
+        const colors = {
+            'arbitrum': '#ADD8E6',
+            'base': '#00008B'
+        };
+
+        const series = Object.keys(seriesData).map(chain => ({
+            name: chain.charAt(0).toUpperCase() + chain.slice(1),
+            data: seriesData[chain],
+            color: colors[chain]
+        }));
+
+        Highcharts.chart('chart', {
+            chart: {
+                type: 'line',
+                zoomType: 'xy',
+                panning: { enabled: true, type: 'xy' },
+                panKey: 'shift',
+                backgroundColor: '#ffffff'
+            },
+            title: {
+                text: 'Total Value Locked (TVL)',
+                style: { fontSize: '1.5rem', fontWeight: 'bold', color: '#333' }
+            },
+            subtitle: {
+                text: 'Arbitrum vs Base - 2025',
+                style: { fontSize: '1rem', color: '#666' }
+            },
+            xAxis: {
+                type: 'datetime',
+                title: { text: 'Date', style: { fontSize: '1rem' } },
+                labels: { format: '{value:%b %e}', style: { fontSize: '0.875rem' } }
+            },
+            yAxis: {
+                title: { text: 'TVL (Billions USD)', style: { fontSize: '1rem' } },
+                labels: { format: '${value:.1f}B', style: { fontSize: '0.875rem' } }
+            },
+            tooltip: {
+                shared: true,
+                useHTML: true,
+                headerFormat: '<b>{point.x:%b %e, %Y}</b><br/>',
+                pointFormat: '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>${point.y:.2f}B</b><br/>'
+            },
+            legend: { enabled: true, align: 'center', verticalAlign: 'top' },
+            plotOptions: {
+                line: { marker: { enabled: false }, lineWidth: 2 }
+            },
+            series: series,
+            credits: { text: 'Revenue-TVL Study', style: { fontSize: '0.75rem' } }
+        });
+    </script>
+</body>
+</html>
