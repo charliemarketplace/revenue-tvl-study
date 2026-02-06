@@ -270,6 +270,81 @@ def transform_11_summary_table():
     return result
 
 
+def load_activity_patterns():
+    """Load activity patterns comparison data."""
+    df = pd.read_csv(DATA_DIR / "activity_patterns.csv")
+    return df
+
+
+def transform_12_activity_patterns():
+    """Activity patterns: successful paths vs all paths (log scale)."""
+    df = load_activity_patterns()
+    result = df.to_dict(orient="records")
+    return result
+
+
+def transform_12b_activity_patterns_mult():
+    """Activity patterns as human-readable multipliers."""
+    df = load_activity_patterns()
+
+    result = []
+    for _, row in df.iterrows():
+        success_log = row["Paths_750M+"]
+        all_log = row["All_Paths"]
+
+        result.append({
+            "Metric": row["Metric"],
+            "Success_Mult": round(np.exp(success_log), 2),
+            "All_Mult": round(np.exp(all_log), 2),
+            "Success_Log": round(success_log, 2),
+            "All_Log": round(all_log, 2),
+        })
+    return result
+
+
+def transform_13_success_vs_all_scatter():
+    """Scatter plot of ending TVL vs cumulative activity changes."""
+    df = load_simulation_results()
+
+    # Sample for visualization (too many points otherwise)
+    if len(df) > 5000:
+        df = df.sample(5000, random_state=42)
+
+    result = []
+    for _, row in df.iterrows():
+        result.append({
+            "ending_tvl_m": round(row["ending_tvl_usd"] / 1e6, 1),
+            "cum_d_log_dex_vol_eth": round(row["cum_d_log_dex_vol_eth"], 3),
+            "cum_d_log_n_tx": round(row["cum_d_log_n_tx"], 3),
+            "cumulative_fees": round(row["cumulative_fees_eth"], 1),
+            "reached_750m": row["ending_tvl_usd"] >= 750_000_000
+        })
+    return result
+
+
+def transform_13b_tvl_vs_growth_mult():
+    """Scatter plot with multipliers (human readable)."""
+    df = load_simulation_results()
+
+    # Sample for visualization
+    if len(df) > 5000:
+        df = df.sample(5000, random_state=42)
+
+    result = []
+    for _, row in df.iterrows():
+        eth_mult = np.exp(row["cum_d_log_dex_vol_eth"])
+        ntx_mult = np.exp(row["cum_d_log_n_tx"])
+
+        result.append({
+            "ending_tvl_m": round(row["ending_tvl_usd"] / 1e6, 1),
+            "eth_dex_mult": round(eth_mult, 2),
+            "n_tx_mult": round(ntx_mult, 2),
+            "cumulative_fees": round(row["cumulative_fees_eth"], 1),
+            "reached_750m": row["ending_tvl_usd"] >= 750_000_000
+        })
+    return result
+
+
 # ============================================================================
 # TEMPLATE REGISTRY
 # ============================================================================
@@ -288,6 +363,10 @@ TEMPLATES = {
     "09_feature_importance": transform_09_incremental_r2,
     "10_sample_paths_500m": transform_10_sample_paths,
     "11_summary_table": transform_11_summary_table,
+    "12_activity_patterns": transform_12_activity_patterns,
+    "12b_activity_patterns_mult": transform_12b_activity_patterns_mult,
+    "13_success_vs_all_scatter": transform_13_success_vs_all_scatter,
+    "13b_tvl_vs_growth_mult": transform_13b_tvl_vs_growth_mult,
 }
 
 

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TVL Outcome vs ETH DEX Growth</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #f5f5f5;
+        }
+        #chart-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        #chart { width: 100%; height: 600px; }
+        .insight {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f7ff;
+            border-left: 4px solid #00008B;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="chart-container">
+        <div id="chart"></div>
+        <div class="insight">
+            <strong>Reading this chart:</strong> Each dot is one simulation. X-axis shows how much ETH DEX volume grew (1.0x = no change).
+            Points above the $750M line reached the growth target. Notice most successful paths are on the right (growing DEX volume),
+            while most paths on the left (shrinking volume) stay below $400M.
+        </div>
+    </div>
+
+    <script>
+        const rawData = {{PLACEHOLDER}};
+
+        // Split by success threshold
+        const belowThreshold = rawData.filter(d => !d.reached_750m).map(d => ({
+            x: d.eth_dex_mult,
+            y: d.ending_tvl_m,
+            fees: d.cumulative_fees,
+            ntx: d.n_tx_mult
+        }));
+
+        const aboveThreshold = rawData.filter(d => d.reached_750m).map(d => ({
+            x: d.eth_dex_mult,
+            y: d.ending_tvl_m,
+            fees: d.cumulative_fees,
+            ntx: d.n_tx_mult
+        }));
+
+        Highcharts.chart('chart', {
+            chart: {
+                type: 'scatter',
+                zoomType: 'xy',
+                backgroundColor: '#ffffff'
+            },
+            title: {
+                text: 'Ending TVL vs ETH DEX Volume Growth',
+                style: { fontSize: '1.5rem', fontWeight: 'bold', color: '#333' }
+            },
+            subtitle: {
+                text: '5,000 sampled simulations | X-axis: cumulative growth multiple over 365 days',
+                style: { fontSize: '1rem', color: '#666' }
+            },
+            xAxis: {
+                title: { text: 'ETH DEX Volume Growth Multiple', style: { fontSize: '1rem' } },
+                labels: {
+                    format: '{value}x',
+                    style: { fontSize: '0.875rem' }
+                },
+                plotLines: [{
+                    value: 1,
+                    color: '#333',
+                    width: 2,
+                    dashStyle: 'Dash',
+                    label: {
+                        text: 'No change (1.0x)',
+                        rotation: 270,
+                        style: { color: '#666' }
+                    }
+                }],
+                min: 0,
+                max: 5
+            },
+            yAxis: {
+                title: { text: 'Ending TVL ($M)', style: { fontSize: '1rem' } },
+                labels: { format: '${value}M', style: { fontSize: '0.875rem' } },
+                plotLines: [{
+                    value: 750,
+                    color: '#00008B',
+                    width: 2,
+                    dashStyle: 'Dash',
+                    label: {
+                        text: '$750M target',
+                        style: { color: '#00008B', fontWeight: 'bold' }
+                    }
+                }]
+            },
+            tooltip: {
+                useHTML: true,
+                headerFormat: '',
+                pointFormat: '<b>Ending TVL: ${point.y:.0f}M</b><br/>' +
+                    'ETH DEX growth: <b>{point.x:.2f}x</b><br/>' +
+                    'Transaction growth: <b>{point.ntx:.2f}x</b><br/>' +
+                    'Annual fees: <b>{point.fees:.0f} ETH</b>'
+            },
+            legend: { enabled: true, align: 'center', verticalAlign: 'top' },
+            plotOptions: {
+                scatter: {
+                    marker: { radius: 3, opacity: 0.5 }
+                }
+            },
+            series: [{
+                name: 'Below $750M',
+                data: belowThreshold,
+                color: '#ADD8E6'
+            }, {
+                name: 'Reached $750M+',
+                data: aboveThreshold,
+                color: '#00008B',
+                marker: { radius: 5, opacity: 0.8 }
+            }],
+            credits: { text: 'Revenue-TVL Study | 100k Monte Carlo simulations', style: { fontSize: '0.75rem' } }
+        });
+    </script>
+</body>
+</html>
