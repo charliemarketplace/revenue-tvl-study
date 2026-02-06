@@ -152,10 +152,12 @@ Simulations reaching $750M+ TVL had fundamentally different activity patterns:
 | ETH DEX Volume | **1.76x** | 0.52x | Growing vs shrinking |
 | Transaction Count | **1.53x** | 1.16x | 32% more growth |
 | BTC DEX Volume | **2.02x** | 0.84x | Growing vs shrinking |
-
-The paths that reach $750M+ aren't just "lucky" — they sample weeks with sustained activity growth.
+| Stable Borrow Vol | **2.56x** | 2.04x | Both growing, +25% more |
+| Stablecoin Supply | **0.84x** | 0.96x | Both *shrinking* |
 
 **The average path has shrinking DEX volume** (ETH vol down 48%). Reaching high TVL requires flipping from contraction to **~1.8x growth** in DEX activity.
+
+Stablecoin supply shrinks in all paths — growth isn't about accumulating stables, it's about activity.
 
 # Fee Projections at TVL Targets [Title + Text Only Slide]
 

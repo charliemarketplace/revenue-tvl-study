@@ -260,8 +260,14 @@ Simulations reaching $750M+ TVL had fundamentally different activity patterns:
 | Transaction Count | +0.43 log | +0.15 log | 1.53x vs 1.16x |
 | BTC DEX Volume | +0.70 log | -0.18 log | 2.02x vs 0.84x |
 | Stable DEX Volume | +0.83 log | -0.05 log | 2.30x vs 0.95x |
+| Stable Borrow Volume | +0.94 log | +0.71 log | 2.56x vs 2.04x |
+| Stablecoin Supply | -0.18 log | -0.05 log | 0.84x vs 0.96x |
+| TVL | +1.10 log | +0.17 log | 3.01x vs 1.18x |
 
-**Key insight:** The average path has *shrinking* DEX volume (ETH down 48%). Paths reaching $750M+ require flipping from contraction to ~1.8x growth.
+**Key insights:**
+- The average path has *shrinking* DEX volume (ETH down 48%). Paths reaching $750M+ require flipping from contraction to ~1.8x growth.
+- Borrow volume grows in all paths (2.04x average), but 25% more in successful paths (2.56x).
+- Stablecoin supply *shrinks* in all paths — successful paths aren't accumulating stablecoins, they're generating activity.
 
 ---
 
@@ -372,5 +378,5 @@ uv run python viz/data_swap.py
 | panel_model_ready.csv | 1,092 rows (3 chains × 364 days) |
 | simulation_results.csv | 100,000 rows |
 | simulation_summary.csv | 5 rows (TVL buckets) |
-| activity_patterns.csv | 5 rows (metrics comparison) |
+| activity_patterns.csv | 7 rows (metrics comparison) |
 | viz/*.html | 17 files |

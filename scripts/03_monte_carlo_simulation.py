@@ -175,6 +175,8 @@ def run_simulations_vectorized(n_sims, starting_state, blocks, coefficients, res
     cum_d_log_dex_vol_btc = np.zeros(n_sims)
     cum_d_log_dex_vol_eth = np.zeros(n_sims)
     cum_d_log_dex_vol_stable = np.zeros(n_sims)
+    cum_d_log_borrow_vol_stable = np.zeros(n_sims)
+    cum_d_log_stablecoin_supply = np.zeros(n_sims)
     cum_d_log_n_tx = np.zeros(n_sims)
 
     for sim_idx in range(n_sims):
@@ -189,6 +191,8 @@ def run_simulations_vectorized(n_sims, starting_state, blocks, coefficients, res
         sim_d_log_dex_vol_btc = 0.0
         sim_d_log_dex_vol_eth = 0.0
         sim_d_log_dex_vol_stable = 0.0
+        sim_d_log_borrow_vol_stable = 0.0
+        sim_d_log_stablecoin_supply = 0.0
         sim_d_log_n_tx = 0.0
 
         # Process full weeks
@@ -204,6 +208,8 @@ def run_simulations_vectorized(n_sims, starting_state, blocks, coefficients, res
                 sim_d_log_dex_vol_btc += block[day, 1]
                 sim_d_log_dex_vol_eth += block[day, 2]
                 sim_d_log_dex_vol_stable += block[day, 3]
+                sim_d_log_borrow_vol_stable += block[day, 4]
+                sim_d_log_stablecoin_supply += block[day, 5]
                 sim_d_log_n_tx += block[day, 6]
 
                 # Build feature vector for fee prediction
@@ -245,6 +251,8 @@ def run_simulations_vectorized(n_sims, starting_state, blocks, coefficients, res
                 sim_d_log_dex_vol_btc += block[day, 1]
                 sim_d_log_dex_vol_eth += block[day, 2]
                 sim_d_log_dex_vol_stable += block[day, 3]
+                sim_d_log_borrow_vol_stable += block[day, 4]
+                sim_d_log_stablecoin_supply += block[day, 5]
                 sim_d_log_n_tx += block[day, 6]
 
                 features = np.array([
@@ -273,6 +281,8 @@ def run_simulations_vectorized(n_sims, starting_state, blocks, coefficients, res
         cum_d_log_dex_vol_btc[sim_idx] = sim_d_log_dex_vol_btc
         cum_d_log_dex_vol_eth[sim_idx] = sim_d_log_dex_vol_eth
         cum_d_log_dex_vol_stable[sim_idx] = sim_d_log_dex_vol_stable
+        cum_d_log_borrow_vol_stable[sim_idx] = sim_d_log_borrow_vol_stable
+        cum_d_log_stablecoin_supply[sim_idx] = sim_d_log_stablecoin_supply
         cum_d_log_n_tx[sim_idx] = sim_d_log_n_tx
 
     # Convert to DataFrame
@@ -286,6 +296,8 @@ def run_simulations_vectorized(n_sims, starting_state, blocks, coefficients, res
         "cum_d_log_dex_vol_btc": cum_d_log_dex_vol_btc,
         "cum_d_log_dex_vol_eth": cum_d_log_dex_vol_eth,
         "cum_d_log_dex_vol_stable": cum_d_log_dex_vol_stable,
+        "cum_d_log_borrow_vol_stable": cum_d_log_borrow_vol_stable,
+        "cum_d_log_stablecoin_supply": cum_d_log_stablecoin_supply,
         "cum_d_log_n_tx": cum_d_log_n_tx,
     })
 
@@ -321,6 +333,8 @@ def analyze_activity_patterns(results_df):
         ("cum_d_log_n_tx", "Transaction Count"),
         ("cum_d_log_dex_vol_btc", "BTC DEX Volume"),
         ("cum_d_log_dex_vol_stable", "Stable DEX Volume"),
+        ("cum_d_log_borrow_vol_stable", "Stable Borrow Volume"),
+        ("cum_d_log_stablecoin_supply", "Stablecoin Supply"),
         ("cum_d_log_tvl", "TVL"),
     ]
 

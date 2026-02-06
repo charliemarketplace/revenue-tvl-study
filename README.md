@@ -63,12 +63,16 @@ Simulations reaching $750M+ TVL had fundamentally different activity patterns:
 
 | Metric | Paths → $750M+ | All Paths | Difference |
 |--------|----------------|-----------|------------|
-| ETH DEX Volume | **1.76x** (+0.56 log) | 0.52x (-0.66 log) | Growing vs shrinking |
-| Transaction Count | **1.53x** (+0.43 log) | 1.16x (+0.15 log) | 32% more growth |
-| BTC DEX Volume | **2.02x** (+0.70 log) | 0.84x (-0.18 log) | Growing vs shrinking |
-| Stable DEX Volume | **2.30x** (+0.83 log) | 0.95x (-0.05 log) | Growing vs flat |
+| ETH DEX Volume | **1.76x** | 0.52x | Growing vs shrinking |
+| Transaction Count | **1.53x** | 1.16x | 32% more growth |
+| BTC DEX Volume | **2.02x** | 0.84x | Growing vs shrinking |
+| Stable DEX Volume | **2.30x** | 0.95x | Growing vs flat |
+| Stable Borrow Volume | **2.56x** | 2.04x | Both growing, +25% more |
+| Stablecoin Supply | **0.84x** | 0.96x | Both *shrinking* |
 
 The paths that reach $750M+ aren't just "lucky" — they sample weeks with sustained activity growth. **The average path has shrinking DEX volume** (ETH vol down 48%). Reaching high TVL requires flipping from contraction to ~1.8x growth in DEX activity.
+
+Notably, stablecoin supply *shrinks* in all paths — successful paths aren't accumulating stablecoins, they're generating transactions and trading activity.
 
 ## Business Recommendations
 

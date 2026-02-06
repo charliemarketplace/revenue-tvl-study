@@ -3,4 +3,6 @@ ETH DEX Volume,0.56,-0.66,~1.8x
 Transaction Count,0.43,0.15,~1.5x
 BTC DEX Volume,0.7,-0.18,~2.0x
 Stable DEX Volume,0.83,-0.05,~2.3x
+Stable Borrow Volume,0.94,0.71,~2.6x
+Stablecoin Supply,-0.18,-0.05,~1.0x shrink
 TVL,1.1,0.17,~3.0x

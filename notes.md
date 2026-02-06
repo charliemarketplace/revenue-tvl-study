@@ -774,8 +774,10 @@ Base-only sampling doubles probability of reaching $750M+ (10.5% vs 5.3%).
 | Δlog(BTC vol) | +0.70 | -0.18 | **2.02x vs 0.84x** |
 | Δlog(Stable vol) | +0.83 | -0.05 | **2.30x vs 0.95x** |
 | Δlog(n_tx) | +0.43 | +0.15 | **1.53x vs 1.16x** |
+| Δlog(Borrow vol stable) | +0.94 | +0.71 | **2.56x vs 2.04x** |
+| Δlog(Stablecoin supply) | -0.18 | -0.05 | **0.84x vs 0.96x** |
 
-**Key insight:** Paths reaching $750M+ require ~1.8x growth in ETH DEX volume and ~1.5x growth in transaction count. The average path has *shrinking* ETH volume (down to 0.52x).
+**Key insight:** Paths reaching $750M+ require ~1.8x growth in ETH DEX volume and ~1.5x growth in transaction count. The average path has *shrinking* ETH volume (down to 0.52x). Borrow volume grows in all paths but more in successful ones. Stablecoin supply *shrinks* in all paths — growth isn't about accumulating stablecoins.
 
 ### Fee Forecasts: Cumulative vs ARR at Destination
 
