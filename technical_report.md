@@ -250,6 +250,19 @@ shock_cols = [
 2. **Fees don't scale with TVL:** Paths reaching >$1B have only 8% higher fees than <$400M paths
 3. **Activity drives the difference:** The paths that reach high TVL do so because of sustained activity growth, which also drives fees
 
+### Activity Patterns in Successful Paths
+
+Simulations reaching $750M+ TVL had fundamentally different activity patterns:
+
+| Metric | Paths → $750M+ | All Paths | Multiplier |
+|--------|----------------|-----------|------------|
+| ETH DEX Volume | +0.56 log | -0.66 log | 1.76x vs 0.52x |
+| Transaction Count | +0.43 log | +0.15 log | 1.53x vs 1.16x |
+| BTC DEX Volume | +0.70 log | -0.18 log | 2.02x vs 0.84x |
+| Stable DEX Volume | +0.83 log | -0.05 log | 2.30x vs 0.95x |
+
+**Key insight:** The average path has *shrinking* DEX volume (ETH down 48%). Paths reaching $750M+ require flipping from contraction to ~1.8x growth.
+
 ---
 
 ## Visualization System
@@ -280,6 +293,10 @@ Templates in `viz/templates/` contain `{{PLACEHOLDER}}` markers. The `data_swap.
 | `09_feature_importance.html` | Incremental R² | Hardcoded from model |
 | `10_sample_paths_500m.html` | Sample paths $500M+ | simulation_results.csv |
 | `11_summary_table.html` | Summary statistics table | simulation_summary.csv |
+| `12_activity_patterns.html` | Successful vs all paths (log scale) | activity_patterns.csv |
+| `12b_activity_patterns_mult.html` | Successful vs all paths (multipliers) | activity_patterns.csv |
+| `13_success_vs_all_scatter.html` | TVL vs DEX growth (log scale) | simulation_results.csv |
+| `13b_tvl_vs_growth_mult.html` | TVL vs DEX growth (multipliers) | simulation_results.csv |
 
 ### Regenerating Visualizations
 
@@ -355,4 +372,5 @@ uv run python viz/data_swap.py
 | panel_model_ready.csv | 1,092 rows (3 chains × 364 days) |
 | simulation_results.csv | 100,000 rows |
 | simulation_summary.csv | 5 rows (TVL buckets) |
-| viz/*.html | 13 files |
+| activity_patterns.csv | 5 rows (metrics comparison) |
+| viz/*.html | 17 files |

@@ -770,12 +770,12 @@ Base-only sampling doubles probability of reaching $750M+ (10.5% vs 5.3%).
 
 | Metric | Paths → $750M+ | ALL Paths | Required Growth |
 |--------|---------------|-----------|-----------------|
-| Δlog(ETH vol) | +0.62 | -0.62 | **1.9x** |
-| Δlog(BTC vol) | +0.72 | -0.15 | **2.1x** |
-| Δlog(Stable vol) | +0.72 | +0.00 | **2.1x** |
-| Δlog(n_tx) | +0.47 | +0.16 | **1.6x** |
+| Δlog(ETH vol) | +0.56 | -0.66 | **1.76x vs 0.52x** |
+| Δlog(BTC vol) | +0.70 | -0.18 | **2.02x vs 0.84x** |
+| Δlog(Stable vol) | +0.83 | -0.05 | **2.30x vs 0.95x** |
+| Δlog(n_tx) | +0.43 | +0.15 | **1.53x vs 1.16x** |
 
-**Key insight:** Paths reaching $750M+ require ~2x growth in DEX volumes and ~1.6x growth in transaction count. The average path has *shrinking* ETH volume.
+**Key insight:** Paths reaching $750M+ require ~1.8x growth in ETH DEX volume and ~1.5x growth in transaction count. The average path has *shrinking* ETH volume (down to 0.52x).
 
 ### Fee Forecasts: Cumulative vs ARR at Destination
 

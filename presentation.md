@@ -143,6 +143,20 @@ Filter simulations by ending TVL to answer: "If TVL reaches $X, what fees?"
 
 TVL growth correlates with activity growth, but doesn't cause it.
 
+# What Differentiates Successful Paths? [Title + Table Slide]
+
+Simulations reaching $750M+ TVL had fundamentally different activity patterns:
+
+| Metric | Paths → $750M+ | All Paths | Difference |
+|--------|----------------|-----------|------------|
+| ETH DEX Volume | **1.76x** | 0.52x | Growing vs shrinking |
+| Transaction Count | **1.53x** | 1.16x | 32% more growth |
+| BTC DEX Volume | **2.02x** | 0.84x | Growing vs shrinking |
+
+The paths that reach $750M+ aren't just "lucky" — they sample weeks with sustained activity growth.
+
+**The average path has shrinking DEX volume** (ETH vol down 48%). Reaching high TVL requires flipping from contraction to **~1.8x growth** in DEX activity.
+
 # Fee Projections at TVL Targets [Title + Text Only Slide]
 
 Conditional on reaching TVL targets (from 100k simulations):
@@ -163,17 +177,17 @@ Based on model findings:
 
 1. **Prioritize transaction count over TVL**
    * Transaction count has 1.83x elasticity vs 0.61x for DEX volume
-   * More users doing more transactions = more fees
-   * Focus on retail/micro-transaction use cases
+   * Paths reaching $750M+ grew transactions **1.53x** (vs 1.16x average)
+   * Focus on retail/micro-transaction use cases (gaming, social, micropayments)
 
 2. **ETH trading is the DEX driver**
    * ETH DEX volume is the only significant trading predictor
-   * BTC and stablecoin volumes don't independently drive fees
+   * Successful paths grew ETH DEX volume **1.76x** (average path *shrank* to 0.52x)
    * Prioritize ETH liquidity depth and pairs
 
-3. **TVL growth is an outcome, not a lever**
-   * Paths reaching $1B TVL don't have dramatically higher fees
-   * Growing "idle" TVL won't increase fees
+3. **TVL growth requires activity growth**
+   * Paths reaching $750M+ grew DEX volumes ~2x and n_tx 1.5x
+   * Average path has **shrinking DEX volume** — TVL growth requires reversing this
    * Focus on *active* TVL that generates transactions
 
 4. **Volatility is exogenous but important**
@@ -186,7 +200,8 @@ Based on model findings:
 * TVL does not cause fees - activity does
 * Transaction count is the strongest fee driver (1.83x elasticity)
 * ETH trading volume is the key DEX metric (0.61x elasticity)
-* Reaching $750M TVL would yield ~350 ETH/year (~1.0 ETH/day)
+* Reaching $750M TVL requires: **1.8x DEX volume growth**, **1.5x transaction growth**
+* Average path has **shrinking** DEX volume — growth requires reversing this trend
 * Only 5.5% of simulated paths reach $750M+ TVL
 * To grow fees: grow transactions and ETH trading activity, not idle TVL
 

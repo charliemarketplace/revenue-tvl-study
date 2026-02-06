@@ -57,6 +57,19 @@ d_log(fees) ~ d_log(dex_vol_btc) + d_log(dex_vol_eth) + d_log(dex_vol_stable)
 
 **Key insight:** Paths reaching >$1B TVL only have 8% higher fees than paths staying at <$400M. TVL growth correlates with activity growth, but doesn't cause it.
 
+### What Differentiates Successful Paths?
+
+Simulations reaching $750M+ TVL had fundamentally different activity patterns:
+
+| Metric | Paths → $750M+ | All Paths | Difference |
+|--------|----------------|-----------|------------|
+| ETH DEX Volume | **1.76x** (+0.56 log) | 0.52x (-0.66 log) | Growing vs shrinking |
+| Transaction Count | **1.53x** (+0.43 log) | 1.16x (+0.15 log) | 32% more growth |
+| BTC DEX Volume | **2.02x** (+0.70 log) | 0.84x (-0.18 log) | Growing vs shrinking |
+| Stable DEX Volume | **2.30x** (+0.83 log) | 0.95x (-0.05 log) | Growing vs flat |
+
+The paths that reach $750M+ aren't just "lucky" — they sample weeks with sustained activity growth. **The average path has shrinking DEX volume** (ETH vol down 48%). Reaching high TVL requires flipping from contraction to ~1.8x growth in DEX activity.
+
 ## Business Recommendations
 
 1. **Prioritize transaction count over TVL** — Transaction count has 1.83x elasticity vs 0.61x for DEX volume. More users doing more transactions = more fees.
@@ -110,7 +123,11 @@ revenue-tvl-study/
 │   ├── 08_model_coefficients.html
 │   ├── 09_feature_importance.html
 │   ├── 10_sample_paths_500m.html
-│   └── 11_summary_table.html
+│   ├── 11_summary_table.html
+│   ├── 12_activity_patterns.html    # Successful vs all paths (log scale)
+│   ├── 12b_activity_patterns_mult.html  # Successful vs all paths (multipliers)
+│   ├── 13_success_vs_all_scatter.html   # TVL vs DEX growth (log scale)
+│   └── 13b_tvl_vs_growth_mult.html      # TVL vs DEX growth (multipliers)
 ├── notes.md                     # Research notes
 ├── presentation.md              # Slide deck content
 └── technical_report.md          # Pipeline documentation
