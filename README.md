@@ -55,32 +55,22 @@ d_log(fees) ~ d_log(dex_vol_btc) + d_log(dex_vol_eth) + d_log(dex_vol_stable)
 | $750M-1B | 4% | 351 ETH | 1.0 ETH |
 | >$1B | 1.5% | 362 ETH | 1.0 ETH |
 
-```
-Δlog(fees)ᵢₜ = αᵢ + δ₁ Δlog(dex_vol)ᵢₜ + δ₂ Δlog(borrow_vol)ᵢₜ + δ₃(volatility)ₜ + εᵢₜ
-```
+**Key insight:** Paths reaching >$1B TVL only have 8% higher fees than paths staying at <$400M. TVL growth correlates with activity growth, but doesn't cause it.
 
-**Interpretation:** Activity elasticities tell us which flows drive fees most.
+## Business Recommendations
 
-### Why Panel? Why Differences?
+1. **Prioritize transaction count over TVL** — Transaction count has 1.83x elasticity vs 0.61x for DEX volume. More users doing more transactions = more fees.
 
-| Design Choice | Reason |
-|---------------|--------|
-| Panel (Base + Arb) | Pool data, estimate chain fixed effects, more statistical power |
-| Differences (Δlog) | Avoid spurious regression, capture causal claim about *changes* |
-| Hold out OP | Validate model before projecting |
+2. **ETH trading is the DEX driver** — ETH DEX volume is the only significant trading predictor. Prioritize ETH liquidity depth and pairs.
+
+3. **TVL growth is an outcome, not a lever** — Growing "idle" TVL won't increase fees. Focus on *active* TVL that generates transactions.
+
+4. **Volatility is exogenous but important** — Coefficient of 3.0. Can't control but can prepare. Ensure infrastructure handles vol spikes.
 
 ## Data
 
 **Daily observations, 2025**
 
-| Variable | Type | Description |
-|----------|------|-------------|
-| fees | Flow | Sequencer fee revenue (ETH) |
-| dex_vol | Flow | DEX sell volume (BTC + ETH + stablecoins) |
-| borrow_vol | Flow | Stablecoin borrow volume |
-| tvl | Stock | Total value locked |
-| stable_supply | Stock | Stablecoin supply |
-| eth_volatility | Exogenous | Daily price range (high - low) / open |
 | Source | Variables |
 |--------|-----------|
 | DeFiLlama | TVL (USD), Stablecoin supply (USDC + USDT) |

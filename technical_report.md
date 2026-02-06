@@ -148,8 +148,8 @@ FEATURE_COLS = [
 
 ### Training/Validation Split
 
-- Training: Base + Arbitrum (174 observations)
-- Holdout: Optimism (87 observations)
+- Training: Base + Arbitrum (728 observations)
+- Holdout: Optimism (364 observations)
 
 ### Results
 
@@ -352,7 +352,7 @@ uv run python viz/data_swap.py
 
 | File | Records |
 |------|---------|
-| panel_model_ready.csv | ~260 rows (3 chains × ~87 days) |
+| panel_model_ready.csv | 1,092 rows (3 chains × 364 days) |
 | simulation_results.csv | 100,000 rows |
 | simulation_summary.csv | 5 rows (TVL buckets) |
 | viz/*.html | 13 files |
