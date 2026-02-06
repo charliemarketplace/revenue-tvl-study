@@ -170,12 +170,26 @@ def run_simulations_vectorized(n_sims, starting_state, blocks, coefficients, res
     ending_log_tvl = np.full(n_sims, starting_state["log_tvl"])
     cumulative_fees = np.zeros(n_sims)
 
+    # Track cumulative activity changes for path analysis
+    cum_d_log_tvl = np.zeros(n_sims)
+    cum_d_log_dex_vol_btc = np.zeros(n_sims)
+    cum_d_log_dex_vol_eth = np.zeros(n_sims)
+    cum_d_log_dex_vol_stable = np.zeros(n_sims)
+    cum_d_log_n_tx = np.zeros(n_sims)
+
     for sim_idx in range(n_sims):
         if (sim_idx + 1) % 2000 == 0:
             print(f"  Simulation {sim_idx + 1}/{n_sims}...")
 
         log_tvl = starting_state["log_tvl"]
         day_idx = 0
+
+        # Track activity accumulation for this simulation
+        sim_d_log_tvl = 0.0
+        sim_d_log_dex_vol_btc = 0.0
+        sim_d_log_dex_vol_eth = 0.0
+        sim_d_log_dex_vol_stable = 0.0
+        sim_d_log_n_tx = 0.0
 
         # Process full weeks
         for week_idx in range(n_weeks):
@@ -184,6 +198,13 @@ def run_simulations_vectorized(n_sims, starting_state, blocks, coefficients, res
             for day in range(BLOCK_SIZE):
                 # Update TVL (accumulates - it's a stock variable)
                 log_tvl += block[day, 0]  # d_log_tvl
+
+                # Track activity changes
+                sim_d_log_tvl += block[day, 0]
+                sim_d_log_dex_vol_btc += block[day, 1]
+                sim_d_log_dex_vol_eth += block[day, 2]
+                sim_d_log_dex_vol_stable += block[day, 3]
+                sim_d_log_n_tx += block[day, 6]
 
                 # Build feature vector for fee prediction
                 # Order: const, features (indices 1-7), chain_base
@@ -219,6 +240,13 @@ def run_simulations_vectorized(n_sims, starting_state, blocks, coefficients, res
             for day in range(remaining_days):
                 log_tvl += block[day, 0]  # d_log_tvl
 
+                # Track activity changes
+                sim_d_log_tvl += block[day, 0]
+                sim_d_log_dex_vol_btc += block[day, 1]
+                sim_d_log_dex_vol_eth += block[day, 2]
+                sim_d_log_dex_vol_stable += block[day, 3]
+                sim_d_log_n_tx += block[day, 6]
+
                 features = np.array([
                     1.0,              # const
                     block[day, 1],    # d_log_dex_vol_btc
@@ -240,6 +268,13 @@ def run_simulations_vectorized(n_sims, starting_state, blocks, coefficients, res
 
         ending_log_tvl[sim_idx] = log_tvl
 
+        # Store cumulative activity
+        cum_d_log_tvl[sim_idx] = sim_d_log_tvl
+        cum_d_log_dex_vol_btc[sim_idx] = sim_d_log_dex_vol_btc
+        cum_d_log_dex_vol_eth[sim_idx] = sim_d_log_dex_vol_eth
+        cum_d_log_dex_vol_stable[sim_idx] = sim_d_log_dex_vol_stable
+        cum_d_log_n_tx[sim_idx] = sim_d_log_n_tx
+
     # Convert to DataFrame
     results_df = pd.DataFrame({
         "sim_id": np.arange(n_sims),
@@ -247,6 +282,11 @@ def run_simulations_vectorized(n_sims, starting_state, blocks, coefficients, res
         "ending_tvl_usd": np.exp(ending_log_tvl),
         "cumulative_fees_eth": cumulative_fees,
         "mean_daily_fees": cumulative_fees / horizon_days,
+        "cum_d_log_tvl": cum_d_log_tvl,
+        "cum_d_log_dex_vol_btc": cum_d_log_dex_vol_btc,
+        "cum_d_log_dex_vol_eth": cum_d_log_dex_vol_eth,
+        "cum_d_log_dex_vol_stable": cum_d_log_dex_vol_stable,
+        "cum_d_log_n_tx": cum_d_log_n_tx,
     })
 
     return results_df
@@ -259,6 +299,60 @@ def bucket_tvl(tvl_usd):
         if low <= tvl_m < high:
             return label
     return "Unknown"
+
+
+def analyze_activity_patterns(results_df):
+    """
+    Compare activity patterns in paths reaching $750M+ vs all paths.
+    This answers: what activity changes characterize successful growth?
+    """
+    print("\n" + "=" * 70)
+    print("ACTIVITY PATTERNS: PATHS REACHING $750M+ vs ALL PATHS")
+    print("=" * 70)
+
+    # Define success threshold
+    success_threshold = 750_000_000
+
+    successful = results_df[results_df["ending_tvl_usd"] >= success_threshold]
+    all_paths = results_df
+
+    metrics = [
+        ("cum_d_log_dex_vol_eth", "ETH DEX Volume"),
+        ("cum_d_log_n_tx", "Transaction Count"),
+        ("cum_d_log_dex_vol_btc", "BTC DEX Volume"),
+        ("cum_d_log_dex_vol_stable", "Stable DEX Volume"),
+        ("cum_d_log_tvl", "TVL"),
+    ]
+
+    pattern_data = []
+    for col, name in metrics:
+        success_median = successful[col].median()
+        all_median = all_paths[col].median()
+
+        # Convert log change to approximate multiplier
+        # e^x ≈ 1 + x for small x, but for larger x use actual exp
+        success_mult = np.exp(success_median)
+        all_mult = np.exp(all_median)
+
+        pattern_data.append({
+            "Metric": name,
+            "Paths_750M+": round(success_median, 2),
+            "All_Paths": round(all_median, 2),
+            "Growth_Multiple": f"~{success_mult:.1f}x" if success_median > 0 else f"~{1/abs(all_mult):.1f}x shrink",
+        })
+
+        print(f"{name}:")
+        print(f"  Paths -> $750M+: {success_median:+.2f} log ({success_mult:.2f}x)")
+        print(f"  All paths:       {all_median:+.2f} log ({all_mult:.2f}x)")
+        print()
+
+    pattern_df = pd.DataFrame(pattern_data)
+
+    # Save for visualization
+    pattern_df.to_csv(DATA_DIR / "activity_patterns.csv", index=False)
+    print(f"Activity patterns saved to {DATA_DIR}/activity_patterns.csv")
+
+    return pattern_df
 
 
 def summarize_by_bucket(results_df):
@@ -350,6 +444,9 @@ def main():
 
     # Summarize by TVL bucket
     summary_df = summarize_by_bucket(results_df)
+
+    # Analyze activity patterns (successful vs all paths)
+    pattern_df = analyze_activity_patterns(results_df)
 
     # Save results
     results_df.to_csv(DATA_DIR / "simulation_results.csv", index=False)
